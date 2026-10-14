@@ -32,6 +32,16 @@ class AllocineClient:
             "Referer": "https://www.allocine.fr/",
         })
 
+        # Sécurité : forcer un timeout sur requests si la méthode interne _get_request est appelée
+        if hasattr(self.api, "_get_request"):
+            orig_get_req = self.api._get_request
+            def _safe_get_request(path, params=None):
+                req = requests.get(path, params=params, timeout=15)
+                if req.status_code != 200:
+                    raise Exception("Error " + str(req.status_code))
+                return req.text
+            self.api._get_request = _safe_get_request
+
     def _check_rate_limit(self, error: Exception) -> None:
         """Centralise la détection du rate limit HTTP 429 d'Allociné."""
         if "429" in str(error):

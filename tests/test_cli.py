@@ -143,7 +143,7 @@ def test_cli_sync_all_loop_batches():
         ])
 
         assert result.exit_code == 0
-        assert "Pause de sécurité de 15.0s avant le lot suivant" in result.stdout
+        assert "pause de sécurité de 15s" in result.stdout.lower()
         # All 4 cinemas should have been synced across 2 batches
         assert MockSyncService.return_value.sync_cinema.call_count == 4
         # Pauses between batches should have been called with 15.0

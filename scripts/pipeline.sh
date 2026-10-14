@@ -43,6 +43,9 @@ log_error() {
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+# Forcer l'envoi immédiat des logs Python sans mise en tampon (buffering CI)
+export PYTHONUNBUFFERED=1
+
 # Assurer que ~/.local/bin et les chemins uv standards sont dans le PATH
 for p in "$HOME/.local/bin" "/c/Users/${USER:-}/.local/bin" "${USERPROFILE:-}/.local/bin"; do
   if [[ -n "$p" && -d "$p" && ":$PATH:" != *":$p:"* ]]; then

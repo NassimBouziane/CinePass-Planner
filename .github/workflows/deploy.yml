@@ -82,6 +82,7 @@ jobs:
           bash scripts/pipeline.sh --days 8 --build-web $EXTRA_FLAGS
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path || '/' }}
+          PYTHONUNBUFFERED: "1"
 
       - name: Upload artifact to GitHub Pages
         uses: actions/upload-pages-artifact@v3

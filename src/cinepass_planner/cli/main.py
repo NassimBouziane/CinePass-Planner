@@ -1,4 +1,5 @@
 import random
+import sys
 import time
 import typer
 from datetime import date, datetime, timedelta
@@ -6,6 +7,13 @@ from typing import Optional
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
+
+# Assurer un affichage immédiat en environnement CI (GitHub Actions)
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(line_buffering=True)
+    except Exception:
+        pass
 
 from cinepass_planner.db.connection import get_db_connection
 from cinepass_planner.db.schema import init_db
@@ -292,8 +300,18 @@ def sync_all(
 
         if batch_size and synced_in_batch >= batch_size:
             if loop_batches:
-                console.print(f"[bold cyan]Lot de {synced_in_batch} cinémas terminé. Pause de sécurité de {batch_pause}s avant le lot suivant...[/bold cyan]")
-                time.sleep(batch_pause)
+                console.print(f"[bold cyan]Lot de {synced_in_batch} cinémas terminé. Début de la pause de sécurité de {int(batch_pause)}s avant le lot suivant...[/bold cyan]")
+                # Compte à rebours progressif toutes les 30s pour visibilité de l'avancement
+                step = 30
+                elapsed = 0.0
+                while elapsed < batch_pause:
+                    sleep_duration = min(float(step), batch_pause - elapsed)
+                    time.sleep(sleep_duration)
+                    elapsed += sleep_duration
+                    remaining = int(batch_pause - elapsed)
+                    if remaining > 0:
+                        console.print(f"[dim]Pause inter-lots en cours : reprise dans {remaining}s...[/dim]")
+                console.print("[bold green]Fin de pause : reprise de la synchronisation du lot suivant.[/bold green]")
                 synced_in_batch = 0
             else:
                 console.print(f"[bold cyan]Lot de {synced_in_batch} cinémas terminé. Fin du run actuel.[/bold cyan]")
