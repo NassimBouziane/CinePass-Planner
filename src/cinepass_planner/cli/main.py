@@ -208,6 +208,8 @@ def sync_all(
     days: int = typer.Option(8, "--days", "-d", help="Nombre de jours de séances à synchroniser (par défaut 8)"),
     limit: Optional[int] = typer.Option(None, "--limit", help="Limiter à N cinémas pour test"),
     batch_size: Optional[int] = typer.Option(15, "--batch-size", "-b", help="Nombre maximum de cinémas à synchroniser par lot"),
+    loop_batches: bool = typer.Option(False, "--loop-batches", help="Enchaîner tous les lots avec pause de sécurité jusqu'à synchronisation complète"),
+    batch_pause: float = typer.Option(300.0, "--batch-pause", help="Pause en secondes après chaque lot si loop-batches est activé (défaut: 300s / 5min)"),
     force: bool = typer.Option(False, "--force", help="Forcer la mise à jour même si déjà synchronisé"),
     min_delay: float = typer.Option(0.5, "--min-delay", help="Délai minimal aléatoire (en secondes) entre chaque cinéma"),
     max_delay: float = typer.Option(2.0, "--max-delay", help="Délai maximal aléatoire (en secondes) entre chaque cinéma"),
@@ -220,12 +222,13 @@ def sync_all(
     if limit:
         cinemas = cinemas[:limit]
 
-    console.print(f"[bold cyan]Synchronisation de {len(cinemas)} cinémas sur {days} jours (lot max: {batch_size or 'illimité'})...[/bold cyan]")
+    console.print(f"[bold cyan]Synchronisation de {len(cinemas)} cinémas sur {days} jours (lot max: {batch_size or 'illimité'}, loop: {loop_batches})...[/bold cyan]")
     service = SyncService(conn)
     total_saved = 0
     errors = 0
     skipped_independent = 0
     synced_in_batch = 0
+    total_synced_cinemas = 0
     rate_limited = False
 
     for i, c in enumerate(cinemas, start=1):
@@ -250,6 +253,7 @@ def sync_all(
                 saved = service.sync_cinema(c.id, days_count=days, force=force)
                 total_saved += saved
                 synced_in_batch += 1
+                total_synced_cinemas += 1
                 if saved > 0:
                     console.print(f"[{i}/{len(cinemas)}] [green]✓[/green] {c.name} : {saved} séances")
                 else:
@@ -287,10 +291,15 @@ def sync_all(
             break
 
         if batch_size and synced_in_batch >= batch_size:
-            console.print(f"[bold cyan]Lot de {synced_in_batch} cinémas terminé. Fin du run actuel.[/bold cyan]")
-            break
+            if loop_batches:
+                console.print(f"[bold cyan]Lot de {synced_in_batch} cinémas terminé. Pause de sécurité de {batch_pause}s avant le lot suivant...[/bold cyan]")
+                time.sleep(batch_pause)
+                synced_in_batch = 0
+            else:
+                console.print(f"[bold cyan]Lot de {synced_in_batch} cinémas terminé. Fin du run actuel.[/bold cyan]")
+                break
 
-    msg = f"[bold green]Synchronisation terminée ![/bold green] {total_saved} séances enregistrées ({errors} erreurs, {synced_in_batch} synchronisés ce run)"
+    msg = f"[bold green]Synchronisation terminée ![/bold green] {total_saved} séances enregistrées ({errors} erreurs, {total_synced_cinemas} synchronisés ce run)"
     if skipped_independent > 0:
         msg += f" [dim]({skipped_independent} cinémas indépendants sans code Allociné ignorés)[/dim]"
     console.print(msg)

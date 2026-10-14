@@ -54,6 +54,8 @@ done
 DAYS=8
 LIMIT=""
 BATCH_SIZE=15
+FULL_SYNC=false
+BATCH_PAUSE=300
 FORCE=false
 SKIP_SEED=false
 SKIP_SYNC=false
@@ -73,6 +75,8 @@ Pipeline d'initialisation, de synchronisation des séances et de build du site s
 ${BOLD}Options:${RESET}
   -d, --days <N>       Nombre de jours de séances à synchroniser depuis Allociné (défaut: 8)
   -b, --batch-size <N> Nombre max de cinémas à synchroniser par lot (défaut: 15)
+  -a, --full-sync      Enchaîner tous les lots avec pause de sécurité jusqu'à synchronisation complète
+  --batch-pause <sec>  Pause en secondes entre chaque lot en mode full-sync (défaut: 300 / 5min)
   -l, --limit <N>      Limiter la synchronisation à N cinémas (idéal pour tester rapidement)
   -f, --force          Forcer la synchronisation même si les séances du jour sont déjà fraîches
   --min-delay <sec>    Délai minimal aléatoire entre requêtes cinémas (défaut: 0.5)
@@ -113,6 +117,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     -b|--batch-size)
       BATCH_SIZE="$2"
+      shift 2
+      ;;
+    -a|--full-sync)
+      FULL_SYNC=true
+      shift
+      ;;
+    --batch-pause)
+      BATCH_PAUSE="$2"
       shift 2
       ;;
     -f|--force)
@@ -195,6 +207,9 @@ if [[ "$SKIP_SYNC" == true ]]; then
   log_info "Étape 2/4 : Synchronisation Allociné ignorée (--skip-sync)."
 else
   SYNC_CMD=(uv run cinepass sync-all --days "$DAYS" --batch-size "$BATCH_SIZE" --min-delay "$MIN_DELAY" --max-delay "$MAX_DELAY")
+  if [[ "$FULL_SYNC" == true ]]; then
+    SYNC_CMD+=(--loop-batches --batch-pause "$BATCH_PAUSE")
+  fi
   if [[ -n "$LIMIT" ]]; then
     SYNC_CMD+=(--limit "$LIMIT")
   fi

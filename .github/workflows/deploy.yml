@@ -4,7 +4,18 @@ on:
   schedule:
     # Run every 2 hours on Tuesdays (when weekly cinema schedules are published in France)
     - cron: '0 */2 * * 2'
-  workflow_dispatch: # Allows manual trigger from GitHub Actions UI
+  workflow_dispatch:
+    inputs:
+      full_sync:
+        description: 'Synchroniser tous les cinémas par lots avec pause (Full Sync)'
+        required: false
+        default: true
+        type: boolean
+      batch_pause:
+        description: 'Pause en secondes entre chaque lot de 15 cinémas (défaut: 300s = 5min)'
+        required: false
+        default: '300'
+        type: string
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -63,7 +74,12 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Run pipeline (seed, sync, export & build site)
-        run: bash scripts/pipeline.sh --days 8 --build-web
+        run: |
+          EXTRA_FLAGS=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.full_sync }}" = "true" ]; then
+            EXTRA_FLAGS="--full-sync --batch-pause ${{ github.event.inputs.batch_pause || '300' }}"
+          fi
+          bash scripts/pipeline.sh --days 8 --build-web $EXTRA_FLAGS
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path || '/' }}
 

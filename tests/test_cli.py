@@ -118,3 +118,36 @@ def test_cli_sync_all_respects_batch_size():
         assert MockSyncService.return_value.sync_cinema.call_count == 2
 
 
+def test_cli_sync_all_loop_batches():
+    with patch("cinepass_planner.cli.main.CinemaRepository") as MockCinRepo, \
+         patch("cinepass_planner.cli.main.SyncService") as MockSyncService, \
+         patch("cinepass_planner.cli.main.time.sleep") as mock_sleep:
+
+        MockCinRepo.return_value.list_all.return_value = [
+            Cinema("C1", "Cinema 1", "Paris"),
+            Cinema("C2", "Cinema 2", "Paris"),
+            Cinema("C3", "Cinema 3", "Paris"),
+            Cinema("C4", "Cinema 4", "Paris")
+        ]
+
+        MockSyncService.return_value.is_cinema_fresh.return_value = False
+        MockSyncService.return_value.sync_cinema.return_value = 10
+
+        result = runner.invoke(app, [
+            "sync-all",
+            "--batch-size", "2",
+            "--loop-batches",
+            "--batch-pause", "15",
+            "--min-delay", "0",
+            "--max-delay", "0"
+        ])
+
+        assert result.exit_code == 0
+        assert "Pause de sécurité de 15.0s avant le lot suivant" in result.stdout
+        # All 4 cinemas should have been synced across 2 batches
+        assert MockSyncService.return_value.sync_cinema.call_count == 4
+        # Pauses between batches should have been called with 15.0
+        mock_sleep.assert_any_call(15.0)
+
+
+
