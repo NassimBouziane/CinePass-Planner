@@ -66,7 +66,7 @@ def cinemas(
 @app.command()
 def sync(
     cinema: str = typer.Option(..., "--cinema", "-c", help="ID ou nom partiel du cinéma à synchroniser"),
-    days: int = typer.Option(7, "--days", "-d", help="Nombre de jours de séances à synchroniser (par défaut 7)")
+    days: int = typer.Option(8, "--days", "-d", help="Nombre de jours de séances à synchroniser (par défaut 8)")
 ):
     """Synchroniser les séances d'un cinéma depuis Allociné vers SQLite."""
     conn = ensure_initialized()
@@ -205,7 +205,7 @@ def plan(
 
 @app.command(name="sync-all")
 def sync_all(
-    days: int = typer.Option(5, "--days", "-d", help="Nombre de jours de séances à synchroniser"),
+    days: int = typer.Option(8, "--days", "-d", help="Nombre de jours de séances à synchroniser (par défaut 8)"),
     limit: Optional[int] = typer.Option(None, "--limit", help="Limiter à N cinémas pour test"),
     batch_size: Optional[int] = typer.Option(15, "--batch-size", "-b", help="Nombre maximum de cinémas à synchroniser par lot"),
     force: bool = typer.Option(False, "--force", help="Forcer la mise à jour même si déjà synchronisé"),

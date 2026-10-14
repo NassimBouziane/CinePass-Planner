@@ -51,7 +51,7 @@ for p in "$HOME/.local/bin" "/c/Users/${USER:-}/.local/bin" "${USERPROFILE:-}/.l
 done
 
 # Options par défaut
-DAYS=5
+DAYS=8
 LIMIT=""
 BATCH_SIZE=15
 FORCE=false
@@ -71,7 +71,7 @@ ${BOLD}Usage:${RESET} $0 [OPTIONS]
 Pipeline d'initialisation, de synchronisation des séances et de build du site statique.
 
 ${BOLD}Options:${RESET}
-  -d, --days <N>       Nombre de jours de séances à synchroniser depuis Allociné (défaut: 5)
+  -d, --days <N>       Nombre de jours de séances à synchroniser depuis Allociné (défaut: 8)
   -b, --batch-size <N> Nombre max de cinémas à synchroniser par lot (défaut: 15)
   -l, --limit <N>      Limiter la synchronisation à N cinémas (idéal pour tester rapidement)
   -f, --force          Forcer la synchronisation même si les séances du jour sont déjà fraîches

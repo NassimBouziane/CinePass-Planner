@@ -29,7 +29,7 @@ class SyncService:
         row = cursor.fetchone()
         return bool(row and row["count"] > 0)
 
-    def sync_cinema(self, cinema_id: str, start_date: Optional[date] = None, days_count: int = 7, force: bool = False) -> int:
+    def sync_cinema(self, cinema_id: str, start_date: Optional[date] = None, days_count: int = 8, force: bool = False) -> int:
         """
         Synchronize a cinema's showtimes for days_count starting from start_date (default: today).
         If force is False, skips dates that are already fresh in the local SQLite database (0 API call).

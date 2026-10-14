@@ -63,7 +63,7 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Run pipeline (seed, sync, export & build site)
-        run: bash scripts/pipeline.sh --days 5 --build-web
+        run: bash scripts/pipeline.sh --days 8 --build-web
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path || '/' }}
 
