@@ -1,0 +1,45 @@
+---
+// Header.astro - Neobrutalism Ticket & Pop-Cine Header (No emojis, no tech jargon)
+---
+<header class="border-b-2 border-[#111111] bg-white sticky top-0 z-30 px-4 sm:px-6 lg:px-8 xl:px-12 py-3.5 shadow-[0_2px_0_0_#111111]">
+  <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <!-- Brand / Title -->
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-[10px] bg-[#FFE566] border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] flex items-center justify-center text-[#111111] shrink-0">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+          <path d="M13 5v2"/><path d="M13 11v2"/><path d="M13 17v2"/>
+        </svg>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-[#111111] flex items-center gap-1.5 font-sans">
+            cinépass <span class="bg-[#FFE566] px-2 py-0.5 border-2 border-[#111111] rounded-[6px] shadow-[2px_2px_0px_0px_#111111] rotate-[-1.5deg] inline-block text-base md:text-lg">planner</span>
+          </h1>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[0.7rem] font-extrabold bg-[#C4B5FD] text-[#111111] border-2 border-[#111111] shadow-[1px_1px_0px_0px_#111111] tracking-wider lowercase">
+            marathon en salle
+          </span>
+          <span class="font-hand text-lg text-[#E8635A] font-bold hidden sm:inline-block ml-1">
+            optimise ta journée ciné !
+          </span>
+        </div>
+        <p class="text-xs text-[#555555] font-medium mt-0.5">
+          enchaîne tes films préférés sans temps mort • horaires et salles officielles
+        </p>
+      </div>
+    </div>
+
+    <!-- Sync status badge -->
+    <div class="flex items-center gap-3 self-start md:self-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAFADF] border-2 border-[#111111] text-xs font-bold shadow-[2px_2px_0px_0px_#111111]">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#4ECDC4] border border-[#111111] animate-pulse"></span>
+        <span class="font-mono text-[0.75rem]">séances synchronisées</span>
+      </div>
+
+      <!-- Pop star vector icon -->
+      <svg class="w-5 h-5 text-[#FFE566] hidden md:block" viewBox="0 0 24 24" fill="currentColor" stroke="#111111" stroke-width="1.5">
+        <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+      </svg>
+    </div>
+  </div>
+</header>

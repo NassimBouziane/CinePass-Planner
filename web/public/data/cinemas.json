@@ -1,0 +1,2181 @@
+[
+  {
+    "id": "P0249",
+    "name": "Le Mazarin",
+    "city": "AIX EN PROVENCE",
+    "address": "6, rue Laroque 13100 Aix-en-Provence",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0111",
+    "name": "Le Renoir",
+    "city": "AIX EN PROVENCE",
+    "address": "24, cours Mirabeau 13100 Aix-en-Provence",
+    "group_type": "SAS Societe Aixoise Cinematographique",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_levictor",
+    "name": "Le Victoria",
+    "city": "AIX LES BAINS",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P1545",
+    "name": "Pathé Amiens",
+    "city": "AMIENS",
+    "address": "3 Boulevard de Belfort 80000 Amiens",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0978",
+    "name": "Pathé Angers",
+    "city": "ANGERS",
+    "address": "1, avenue des Droits de l'Homme 49000 Angers",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_centredp",
+    "name": "Centre Départemental de Promotion du Cinéma-Salle La Turbine",
+    "city": "ANNECY",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_cinmaler",
+    "name": "Cinéma Le Rabelais",
+    "city": "ANNECY",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lemikado",
+    "name": "Le Mikado",
+    "city": "ANNECY",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lesnemou",
+    "name": "Les Nemours",
+    "city": "ANNECY",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0996",
+    "name": "Pathé Annecy",
+    "city": "ANNECY",
+    "address": "7, Avenue de Brogny - Parking Courier 74000 Annecy",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_cinmastu",
+    "name": "Cinéma Studio Annemasse",
+    "city": "ANNEMASSE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0668",
+    "name": "Pathé Archamps",
+    "city": "ARCHAMPS",
+    "address": "ArchParc 74160 Archamps",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0451",
+    "name": "Pathé Cap Sud",
+    "city": "AVIGNON",
+    "address": "175, rue Pierre-Seghers 84085 Avignon",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0417",
+    "name": "Multiplexe Liberté",
+    "city": "BREST",
+    "address": "10 Avenue Georges Clemenceau 29200 Brest",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W2920",
+    "name": "Pathé Capucins",
+    "city": "BREST",
+    "address": "25 Rue de Pontaniou 29200 Brest",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_cinmalux",
+    "name": "Cinéma Lux",
+    "city": "CAEN",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0103",
+    "name": "Pathé Les Rives de l'Orne",
+    "city": "CAEN",
+    "address": "14, esplanade Léopold Sédar Senghor, Centre commercial Les Rives de l'Orne 14000 Caen",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0482",
+    "name": "Pathé Cité Europe",
+    "city": "CALAIS",
+    "address": "10 Boulevard du Kent 62231 Coquelles",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W7300",
+    "name": "Pathé Chambéry",
+    "city": "CHAMBERY",
+    "address": "4 rue Derrière les murs 73000 Chambéry",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0144",
+    "name": "Ciné Capitole",
+    "city": "CLERMONT-FERRAND",
+    "address": "32, place Jaude 63000 Clermont-Ferrand",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0956",
+    "name": "Pathé Aubière",
+    "city": "CLERMONT-FERRAND",
+    "address": "Avenue Lavoisier - Zac des Varennes Est 63170 Aubière",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_cincluse",
+    "name": "Ciné Cluses",
+    "city": "CLUSES",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0771",
+    "name": "Ciné Cap Vert",
+    "city": "DIJON",
+    "address": "1, rue du Cap-Vert 21800 Quetigny",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W2101",
+    "name": "Pathé Dijon",
+    "city": "DIJON",
+    "address": "12 Parvis de l'UNESCO 21000 Dijon",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P1114",
+    "name": "Pathé Evreux",
+    "city": "EVREUX",
+    "address": "3 rue du 7ème Chasseur 27000 Évreux",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0657",
+    "name": "Pathé Echirolles",
+    "city": "GRENOBLE",
+    "address": "4, rue Albert Londres 38130 Échirolles",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P1032",
+    "name": "Pathé Grenoble",
+    "city": "GRENOBLE",
+    "address": "21 bd Marechal Lyautey 38000 Grenoble",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lesirius",
+    "name": "Le Sirius",
+    "city": "LE HAVRE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W7660",
+    "name": "Pathé Docks Vauban",
+    "city": "LE HAVRE",
+    "address": "Centre commercial Docks Vauban - Quai des Antilles 76600 Le Havre",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lescinas",
+    "name": "Les Cinéastes",
+    "city": "LE MANS",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W7201",
+    "name": "Pathé Le Mans",
+    "city": "LE MANS",
+    "address": "3, place des Jacobins 72000 Le Mans",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0805",
+    "name": "Pathé Liévin",
+    "city": "LIEVIN",
+    "address": "Rue François Courtin 62800 Liévin",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathcarr",
+    "name": "Pathé Carré de Soie",
+    "city": "LYON",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathvais",
+    "name": "Pathé Vaise",
+    "city": "LYON",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0207",
+    "name": "Pathé Mâcon",
+    "city": "MACON",
+    "address": "70 rue Michel Debré 71000 Mâcon",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_cinmabon",
+    "name": "Cinéma Bonneveine",
+    "city": "MARSEILLE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0680",
+    "name": "Les 3 Palmes",
+    "city": "MARSEILLE",
+    "address": "2 bd Léon Bancal 13011 Marseille 11e arrondissement",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W0213",
+    "name": "Pathé La Joliette",
+    "city": "MARSEILLE",
+    "address": "54 rue de Chanterac 13002 Marseille",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathmade",
+    "name": "Pathé Madeleine",
+    "city": "MARSEILLE",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathplan",
+    "name": "Pathé Plan de Campagne",
+    "city": "MARSEILLE",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_letrfle",
+    "name": "Le Trèfle",
+    "city": "MOLSHEIM",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0917",
+    "name": "Pathé Montataire",
+    "city": "MONTATAIRE",
+    "address": "91 rue Louis Blanc 60160 Montataire",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0076",
+    "name": "Pathé Comédie",
+    "city": "MONTPELLIER",
+    "address": "10 Pl. de la Comédie 34000 Montpellier",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathodys",
+    "name": "Pathé Odysseum",
+    "city": "MONTPELLIER",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0667",
+    "name": "Pathé Atlantis",
+    "city": "NANTES",
+    "address": "8, allée La Pérouse 44800 Saint-Herblain",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0196",
+    "name": "Pathé Nantes",
+    "city": "NANTES",
+    "address": "12, place du Commerce 44000 Nantes",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0602",
+    "name": "Pathé Gare du Sud",
+    "city": "NICE",
+    "address": "9 allée Charles Pasqua 06000 Nice",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathling",
+    "name": "Pathé Lingostière",
+    "city": "NICE",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathmass",
+    "name": "Pathé Masséna",
+    "city": "NICE",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P3582",
+    "name": "Pathé Orléans",
+    "city": "ORLEANS",
+    "address": "2 rue des Halles 45000 Orléans",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0168",
+    "name": "Pathé Saran",
+    "city": "ORLEANS",
+    "address": "ROND POINT TANGENTIELLE / RN 20 NORD 45770 Saran",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_france3c",
+    "name": "France 3 Cinés Robespierre",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_france4d",
+    "name": "France 4 Delta",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_france5c",
+    "name": "France 5 Caumartin",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_france7p",
+    "name": "France 7 Parnassiens",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_franceba",
+    "name": "France Balzac",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francech",
+    "name": "France Christine 21",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_franceci",
+    "name": "France Cinéma Mac-Mahon",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_franceec",
+    "name": "France Ecoles 21",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_franceel",
+    "name": "France Elysées Lincoln",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_franceep",
+    "name": "France Epée de Bois",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francees",
+    "name": "France Espace St Michel",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francefi",
+    "name": "France Filmothèque du Quartier Latin",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francega",
+    "name": "France Gaumont Disney Village",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francela",
+    "name": "France L'Arlequin",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francele",
+    "name": "France Les Reflets Medicis",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francelu",
+    "name": "France Luminor Hôtel de Ville",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francema",
+    "name": "France Majestic Passy",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_franceno",
+    "name": "France Nouvel Odéon",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francepa",
+    "name": "France Pathé Saint Denis",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francepu",
+    "name": "France Publicis cinémas",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_francest",
+    "name": "France Studio des ursulines",
+    "city": "PARIS - ILE DE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_3cinsrob",
+    "name": "3 Cinés Robespierre",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_4delta",
+    "name": "4 Delta",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_5caumart",
+    "name": "5 Caumartin",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P7517",
+    "name": "7 Batignolles",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "86 rue Mstislav Rostropovitch / Au fond de l'allée 75017 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_7parnass",
+    "name": "7 Parnassiens",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_balzac",
+    "name": "Balzac",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_chaplind",
+    "name": "Chaplin Denfert",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_chaplins",
+    "name": "Chaplin Saint Lambert",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_christin",
+    "name": "Christine 21",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_cinmassy",
+    "name": "Ciné Massy",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_cinmalan",
+    "name": "Cinéma Landowski",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_cinmamac",
+    "name": "Cinéma Mac-Mahon",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_cinmades",
+    "name": "Cinéma des Cinéastes",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_cinmadup",
+    "name": "Cinéma du Panthéon",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_ecoles21",
+    "name": "Ecoles 21",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_elysesli",
+    "name": "Elysées Lincoln",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_epedeboi",
+    "name": "Epée de Bois",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_espace17",
+    "name": "Espace 1789",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_espacest",
+    "name": "Espace St Michel",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_filmothq",
+    "name": "Filmothèque du Quartier Latin",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "B0176",
+    "name": "Gaumont Disney Village",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "Esplanade François Truffaut - Disney Village 77705 Chessy",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_larchipe",
+    "name": "L'Archipel",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_larlequi",
+    "name": "L'Arlequin",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lecrande",
+    "name": "L'Ecran de Saint-Denis",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lentrept",
+    "name": "L'Entrepôt",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lescuria",
+    "name": "L'Escurial Panorama",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "C0189",
+    "name": "La Géode",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "26, av. Corentin-Cariou 75019 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lapliade",
+    "name": "La Pléiade",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lebradyc",
+    "name": "Le Brady Cinéma Théâtre",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lecapito",
+    "name": "Le Capitole",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_legranda",
+    "name": "Le Grand Action",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lejeudep",
+    "name": "Le Jeu de Paume",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lelido",
+    "name": "Le Lido",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lelucern",
+    "name": "Le Lucernaire",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lesainta",
+    "name": "Le Saint André des Arts",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_les3luxe",
+    "name": "Les 3 Luxembourg",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_les3pier",
+    "name": "Les 3 Pierrots - St Cloud",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lescapuc",
+    "name": "Les Capucins",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lesrefle",
+    "name": "Les Reflets Medicis",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_luminorh",
+    "name": "Luminor Hôtel de Ville",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_majestic",
+    "name": "Majestic Passy",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_maxlinde",
+    "name": "Max Linder",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_nouvelod",
+    "name": "Nouvel Odéon",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "C0037",
+    "name": "Pathé Alésia",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "73 avenue du Général Leclerc 75014 Paris 14e arrondissement",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Dolby Cinema",
+      "Standard"
+    ]
+  },
+  {
+    "id": "C0116",
+    "name": "Pathé Aquaboulevard",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "8-16, rue du Colonel-Pierre-Avia 75015 Paris 15e arrondissement",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W9329",
+    "name": "Pathé Aéroville",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "30 rue des Buissons - Centre commercial Aéroville 95700 Roissy-en-France",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "C0060",
+    "name": "Pathé BNP Paribas",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "32 Rue Louis le Grand 75002 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W7502",
+    "name": "Pathé Beaugrenelle",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "7 Rue Linois 75015 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "4DX ScreenX",
+      "Dolby Atmos",
+      "Onyx LED",
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathbell",
+    "name": "Pathé Belle Epine",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "B0247",
+    "name": "Pathé Boulogne",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "26, rue Le Corbusier 92100 Boulogne-Billancourt",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "B1139",
+    "name": "Pathé Carré Sénart",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "3 allée du préambule, Centre Commercial Carré Sénart 77127 Lieusaint",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "B0250",
+    "name": "Pathé Conflans",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "Rue de l'Hautil - ZA Les Boutries 78700 Conflans-Sainte-Honorine",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "C0161",
+    "name": "Pathé Convention",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "27, rue Alain-Chartier 75015 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W7719",
+    "name": "Pathé Dammarie",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "La Cartonnerie - 824, avenue du Lys 77190 Dammarie-les-Lys",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathiles",
+    "name": "Pathé Ile Seguin",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W7520",
+    "name": "Pathé La villette",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "30 avenue Corentin Cariou 75019 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "C0024",
+    "name": "Pathé Les Fauvettes",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "58 Av. des Gobelins 75013 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W9230",
+    "name": "Pathé Levallois",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "Centre commercial So Ouest - 28, rue d'Alsace 92300 Levallois-Perret",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P9130",
+    "name": "Pathé Massy",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "21, Place du Grand Ouest 91300 Massy",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "C0052",
+    "name": "Pathé Montparnos",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "16 Rue d'Odessa 75014 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "G02BG",
+    "name": "Pathé Palace",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "2 Blvd des Capucines 75009 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Dolby Atmos",
+      "Standard"
+    ]
+  },
+  {
+    "id": "C0158",
+    "name": "Pathé Parnasse",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "3 Rue d'Odessa 75014 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "B0258",
+    "name": "Pathé Quai d'Ivry",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "2, quai Marcel Boyer 94200 Ivry-sur-Seine",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "4DX",
+      "4DX 3D",
+      "IMAX",
+      "Standard"
+    ]
+  },
+  {
+    "id": "B0242",
+    "name": "Pathé Saint Denis",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "8, rue du Mondial 98 93210 Saint-Denis",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "C0179",
+    "name": "Pathé Wepler",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "140, bd de Clichy et 8, av de Clichy 75018 Paris",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "4DX",
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_publicis",
+    "name": "Publicis cinémas",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_studiode",
+    "name": "Studio des ursulines",
+    "city": "PARIS - ILE DE FRANCE",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0957",
+    "name": "Pathé Thillois",
+    "city": "REIMS",
+    "address": "Parc Millesime 51370 Thillois",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0091",
+    "name": "Pathé Rennes",
+    "city": "RENNES",
+    "address": "Esplanade Charles de Gaulle 35000 Rennes",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_omniarpu",
+    "name": "Omnia République",
+    "city": "ROUEN",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "W7600",
+    "name": "Pathé Docks 76",
+    "city": "ROUEN",
+    "address": "Boulevard Ferdinand de Lesseps, Centre Commercial Docks 76,  76000 Rouen",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathgran",
+    "name": "Pathé Grand Quevilly",
+    "city": "ROUEN",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lestar",
+    "name": "Le Star",
+    "city": "STRASBOURG",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_lestarsa",
+    "name": "Le Star Saint-Exupéry",
+    "city": "STRASBOURG",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_levox",
+    "name": "Le Vox",
+    "city": "STRASBOURG",
+    "address": "",
+    "group_type": "Cinéma indépendant",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": false,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0751",
+    "name": "Pathé Brumath",
+    "city": "STRASBOURG",
+    "address": "rue des Freres-Lumiere 67170 Brumath",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P8316",
+    "name": "Pathé La Valette",
+    "city": "TOULON",
+    "address": "300 avenue de l’université 83160 La Valette-du-Var",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P5418",
+    "name": "Pathé Toulon",
+    "city": "TOULON",
+    "address": "285, Boulevard du Général  Leclerc 83000 Toulon",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathlabg",
+    "name": "Pathé Labège",
+    "city": "TOULOUSE",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "IND_pathwils",
+    "name": "Pathé Wilson",
+    "city": "TOULOUSE",
+    "address": "",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P3701",
+    "name": "Pathé Tours",
+    "city": "TOURS",
+    "address": "141 Rue du Colombier 37100 Tours",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0973",
+    "name": "Pathé Valence",
+    "city": "VALENCE",
+    "address": "53, avenue de Romans 26000 Valence",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  },
+  {
+    "id": "P0617",
+    "name": "Pathé Valenciennes",
+    "city": "VALENCIENNES",
+    "address": "rue des Alpes 59300 Valenciennes",
+    "group_type": "Les Cinémas Pathé",
+    "accepts_gold": true,
+    "accepts_silver": true,
+    "accepts_under26": true,
+    "is_pathe_network": true,
+    "formats": [
+      "Standard"
+    ]
+  }
+]

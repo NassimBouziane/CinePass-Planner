@@ -1,0 +1,1404 @@
+---
+import Header from '../components/Header.astro';
+import '../styles/global.css';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+
+<!doctype html>
+<html lang="fr" class="bg-[#FAFADF] text-[#111111]">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CinéPass Planner — Ton marathon cinéma optimisé</title>
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body class="min-h-screen flex flex-col bg-[#FAFADF] text-[#111111] font-sans selection:bg-[#FFE566]">
+    <Header />
+
+    <main class="w-full max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-5 sm:py-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+      
+      <!-- ==========================================
+           LEFT COLUMN: CONFIGURATION & CINÉMAS
+           ========================================== -->
+      <aside class="lg:col-span-4 xl:col-span-3 space-y-4">
+        
+        <!-- Mobile Toggle Button (Visible only on mobile/tablet) -->
+        <div class="lg:hidden flex items-center justify-between bg-white border-2 border-[#111111] rounded-[10px] p-3 shadow-[3px_3px_0px_0px_#111111]">
+          <div class="flex items-center gap-2">
+            <span class="p-1.5 rounded-[6px] bg-[#FFE566] border border-[#111111] flex items-center justify-center">
+              <svg class="w-4 h-4 text-[#111111]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+                <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+                <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
+              </svg>
+            </span>
+            <span class="text-xs font-bold font-sans">paramètres &amp; cinémas</span>
+          </div>
+          <button
+            id="btn-toggle-filters-mobile"
+            type="button"
+            class="neo-btn text-xs bg-[#FAFADF] border-2 border-[#111111] rounded-[6px] px-3 py-1 font-bold cursor-pointer"
+          >
+            <span id="text-toggle-filters">masquer filtres</span>
+          </button>
+        </div>
+
+        <!-- Filter Card -->
+        <div id="filter-panel-card" class="neo-card p-5 space-y-4">
+          <!-- Card Title & Reset -->
+          <div class="flex justify-between items-center border-b-2 border-[#111111] pb-2">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#111111]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+                <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+                <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
+              </svg>
+              <h2 class="text-xs font-black uppercase tracking-wider text-[#111111] font-sans">
+                paramètres &amp; cinémas
+              </h2>
+            </div>
+            <button
+              id="btn-reset"
+              type="button"
+              class="neo-btn text-[0.7rem] bg-[#FAFADF] text-[#111111] px-2.5 py-0.5 rounded-[6px] hover:bg-[#FFE566] font-bold cursor-pointer"
+              title="Réinitialiser toutes les préférences sauvegardées"
+            >
+              reset
+            </button>
+          </div>
+
+          <!-- Feature 1: Quick Search Bar for Cinemas -->
+          <div>
+            <label for="input-cinema-search" class="block text-xs font-bold text-[#111111] mb-1">
+              1. recherche rapide de cinéma
+            </label>
+            <div class="relative">
+              <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#777777] pointer-events-none">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+              </span>
+              <input
+                type="text"
+                id="input-cinema-search"
+                placeholder="taper un nom (ex: Alésia, Beaugrenelle)..."
+                class="w-full bg-[#FAFADF] border-2 border-[#111111] rounded-[8px] pl-8 pr-7 py-2 text-xs text-[#111111] placeholder:text-[#777777] font-medium focus:outline-none focus:ring-2 focus:ring-[#FFE566] shadow-[2px_2px_0px_0px_#111111] transition-all"
+              />
+              <button
+                type="button"
+                id="btn-clear-search"
+                class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-xs font-bold text-[#777777] hover:text-[#111111] cursor-pointer"
+                title="Effacer la recherche"
+              >
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- City Filter -->
+          <div>
+            <label for="select-city" class="block text-xs font-bold text-[#111111] mb-1">
+              filtrer par ville
+            </label>
+            <select
+              id="select-city"
+              class="w-full bg-white border-2 border-[#111111] rounded-[8px] px-3 py-2 text-xs text-[#111111] font-medium focus:outline-none focus:ring-2 focus:ring-[#FFE566] shadow-[2px_2px_0px_0px_#111111] cursor-pointer"
+            >
+              <option value="Toutes">toutes les villes</option>
+            </select>
+          </div>
+
+          <!-- Cinema Checklist with Persistence -->
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-xs font-bold text-[#111111]">
+                2. cinémas sélectionnés
+              </label>
+              <span
+                id="selected-cinemas-count"
+                class="text-[0.65rem] font-bold text-[#111111] bg-[#FFE566] px-2 py-0.5 rounded-full border border-[#111111] shadow-[1px_1px_0px_0px_#111111]"
+              >
+                0 sélectionné
+              </span>
+            </div>
+            <div
+              id="cinemas-list"
+              class="max-h-48 overflow-y-auto bg-[#FAFADF] border-2 border-[#111111] rounded-[8px] p-2 space-y-1 text-xs shadow-inner"
+            >
+              <p class="text-[#777777] text-center py-4 font-mono">chargement des cinémas...</p>
+            </div>
+            <div class="flex justify-between items-center text-[0.65rem] text-[#555555] mt-1.5">
+              <span>sauvegarde automatique</span>
+              <button id="btn-select-all-city" type="button" class="text-[#111111] underline hover:text-[#E8635A] font-bold cursor-pointer">
+                tout cocher
+              </button>
+            </div>
+          </div>
+
+          <!-- Date Selector -->
+          <div>
+            <label for="select-date" class="block text-xs font-bold text-[#111111] mb-1">
+              3. date de la séance
+            </label>
+            <select
+              id="select-date"
+              class="w-full bg-white border-2 border-[#111111] rounded-[8px] px-3 py-2 text-xs text-[#111111] font-medium focus:outline-none focus:ring-2 focus:ring-[#FFE566] shadow-[2px_2px_0px_0px_#111111] cursor-pointer"
+            >
+              <option value="">chargement des dates...</option>
+            </select>
+          </div>
+
+          <!-- Pass Formula -->
+          <div>
+            <label class="block text-xs font-bold text-[#111111] mb-1">
+              formule d'abonnement
+            </label>
+            <div class="grid grid-cols-3 gap-1.5 bg-[#FAFADF] p-1 rounded-[8px] border-2 border-[#111111]">
+              <label class="cursor-pointer text-center py-2 rounded-[6px] border border-transparent has-[:checked]:border-[#111111] has-[:checked]:bg-[#FFE566] has-[:checked]:shadow-[2px_2px_0px_0px_#111111] font-bold text-xs text-[#111111] transition-all">
+                <input type="radio" name="pass-type" value="Gold" class="sr-only" checked />
+                Gold
+              </label>
+              <label class="cursor-pointer text-center py-2 rounded-[6px] border border-transparent has-[:checked]:border-[#111111] has-[:checked]:bg-[#C4B5FD] has-[:checked]:shadow-[2px_2px_0px_0px_#111111] font-bold text-xs text-[#111111] transition-all">
+                <input type="radio" name="pass-type" value="Silver" class="sr-only" />
+                Silver
+              </label>
+              <label class="cursor-pointer text-center py-2 rounded-[6px] border border-transparent has-[:checked]:border-[#111111] has-[:checked]:bg-[#4ECDC4] has-[:checked]:shadow-[2px_2px_0px_0px_#111111] font-bold text-xs text-[#111111] transition-all">
+                <input type="radio" name="pass-type" value="-26 ans" class="sr-only" />
+                -26 ans
+              </label>
+            </div>
+            <label class="flex items-center gap-2 mt-2 text-xs text-[#111111] cursor-pointer font-medium">
+              <input type="checkbox" id="check-supplements" class="w-4 h-4 accent-[#E8635A] rounded border-2 border-[#111111] cursor-pointer" checked />
+              <span>autoriser suppléments (IMAX, 4DX, Dolby)</span>
+            </label>
+          </div>
+
+          <!-- Language Filter -->
+          <div>
+            <label class="block text-xs font-bold text-[#111111] mb-1">version / langue</label>
+            <div class="grid grid-cols-3 gap-1.5 bg-[#FAFADF] p-1 rounded-[8px] border-2 border-[#111111] text-xs">
+              <label class="cursor-pointer text-center py-2 rounded-[6px] border border-transparent has-[:checked]:border-[#111111] has-[:checked]:bg-[#FFE566] has-[:checked]:shadow-[2px_2px_0px_0px_#111111] font-bold text-[#111111] transition-all">
+                <input type="radio" name="lang-filter" value="ALL" class="sr-only" checked />
+                toutes
+              </label>
+              <label class="cursor-pointer text-center py-2 rounded-[6px] border border-transparent has-[:checked]:border-[#111111] has-[:checked]:bg-[#C4B5FD] has-[:checked]:shadow-[2px_2px_0px_0px_#111111] font-bold text-[#111111] transition-all">
+                <input type="radio" name="lang-filter" value="VOST" class="sr-only" />
+                VOSTFR
+              </label>
+              <label class="cursor-pointer text-center py-2 rounded-[6px] border border-transparent has-[:checked]:border-[#111111] has-[:checked]:bg-[#FAFADF] has-[:checked]:shadow-[2px_2px_0px_0px_#111111] font-bold text-[#111111] transition-all">
+                <input type="radio" name="lang-filter" value="VF" class="sr-only" />
+                VF
+              </label>
+            </div>
+          </div>
+
+          <!-- Formats Filter -->
+          <div>
+            <label class="block text-xs font-bold text-[#111111] mb-1">formats acceptés</label>
+            <div class="grid grid-cols-2 gap-1.5 text-xs bg-[#FAFADF] border-2 border-[#111111] rounded-[8px] p-2">
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
+                <input type="checkbox" class="format-check accent-[#7B6CF6]" value="IMAX" checked /> IMAX
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
+                <input type="checkbox" class="format-check accent-[#E8635A]" value="Dolby Cinema" checked /> Dolby Cinema
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
+                <input type="checkbox" class="format-check accent-[#4ECDC4]" value="4DX" checked /> 4DX
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
+                <input type="checkbox" class="format-check accent-[#C4B5FD]" value="ScreenX" checked /> ScreenX
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
+                <input type="checkbox" class="format-check accent-[#F9A8B8]" value="Dolby Atmos" checked /> Atmos
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
+                <input type="checkbox" class="format-check accent-[#FFE566]" value="Onyx LED" checked /> Onyx LED
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
+                <input type="checkbox" class="format-check accent-[#FFE566]" value="3D" checked /> 3D
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
+                <input type="checkbox" class="format-check accent-[#111111]" value="Standard" checked /> Standard
+              </label>
+            </div>
+          </div>
+
+          <!-- Target Count Slider -->
+          <div>
+            <div class="flex justify-between items-center mb-1 text-xs font-bold text-[#111111]">
+              <span>nombre de films visés :</span>
+              <span id="target-count-val" class="font-mono bg-[#FFE566] px-2 py-0.5 rounded border border-[#111111] shadow-[1px_1px_0px_0px_#111111]">
+                3 films
+              </span>
+            </div>
+            <input type="range" id="range-count" min="1" max="5" value="3" class="neo-slider cursor-pointer" />
+          </div>
+
+          <!-- Time Windows -->
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label for="input-start" class="block text-xs font-bold text-[#111111] mb-1">départ dès</label>
+              <input
+                type="text"
+                id="input-start"
+                value="10:00"
+                class="w-full bg-[#FAFADF] border-2 border-[#111111] rounded-[8px] px-2 py-2 text-xs text-[#111111] font-mono font-bold text-center focus:outline-none focus:ring-2 focus:ring-[#FFE566] shadow-[2px_2px_0px_0px_#111111]"
+              />
+            </div>
+            <div>
+              <label for="input-end" class="block text-xs font-bold text-[#111111] mb-1">fin max</label>
+              <input
+                type="text"
+                id="input-end"
+                value="23:00"
+                class="w-full bg-[#FAFADF] border-2 border-[#111111] rounded-[8px] px-2 py-2 text-xs text-[#111111] font-mono font-bold text-center focus:outline-none focus:ring-2 focus:ring-[#FFE566] shadow-[2px_2px_0px_0px_#111111]"
+              />
+            </div>
+          </div>
+
+          <!-- Meal & Buffer Options -->
+          <div class="space-y-2 text-xs border-t-2 border-[#111111] pt-3 font-medium">
+            <label class="flex items-center gap-2 text-[#111111] cursor-pointer">
+              <input type="checkbox" id="check-meal" class="w-4 h-4 accent-[#E8635A] rounded border-2 border-[#111111] cursor-pointer" checked />
+              <span>pause repas obligatoire (12h-14h ou 19h-21h)</span>
+            </label>
+            <div class="flex items-center justify-between text-[#111111]">
+              <span>marge mini entre films</span>
+              <div class="flex items-center gap-1">
+                <input
+                  type="number"
+                  id="input-buffer"
+                  value="15"
+                  min="5"
+                  max="60"
+                  step="5"
+                  class="w-14 bg-[#FAFADF] border-2 border-[#111111] rounded-[6px] px-1.5 py-1 text-xs font-mono font-bold text-center focus:outline-none focus:ring-2 focus:ring-[#FFE566] shadow-[1px_1px_0px_0px_#111111]"
+                />
+                <span class="text-[#555555] font-mono text-xs">min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==========================================
+           CENTER COLUMN: ITINERARY TIMELINE
+           ========================================== -->
+      <section class="lg:col-span-5 xl:col-span-6 space-y-5">
+        
+        <!-- Enlarged Priority Movies Selector Card -->
+        <div class="neo-card p-4 sm:p-5 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-[#111111] pb-2.5">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#111111]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+              </svg>
+              <h3 class="text-xs font-black uppercase text-[#111111] font-sans">
+                films à voir en priorité
+              </h3>
+              <span id="priority-movies-count" class="text-[0.65rem] font-mono font-black bg-[#FFE566] text-[#111111] px-2 py-0.5 rounded-full border border-[#111111]">
+                0 sélectionné
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="btn-clear-priority" type="button" class="text-[0.7rem] text-[#777777] hover:text-[#111111] underline font-bold cursor-pointer hidden">
+                tout désélectionner
+              </button>
+              <span class="font-hand text-sm text-[#E8635A] font-bold hidden md:inline">verrouille tes coups de cœur</span>
+            </div>
+          </div>
+
+          <!-- Filter input inside priority movies when list is long -->
+          <div class="relative">
+            <input
+              type="text"
+              id="input-priority-filter"
+              placeholder="filtrer un film parmi les séances disponibles..."
+              class="w-full bg-[#FAFADF] border-2 border-[#111111] rounded-[6px] px-3 py-1.5 text-xs text-[#111111] placeholder:text-[#777777] font-medium focus:outline-none focus:ring-2 focus:ring-[#FFE566] shadow-[1px_1px_0px_0px_#111111]"
+            />
+          </div>
+
+          <!-- Enlarged container for movies with scrollbar -->
+          <div id="priority-movies-container" class="flex flex-wrap gap-1.5 text-xs max-h-56 sm:max-h-64 overflow-y-auto p-1 bg-[#FAFADF]/60 rounded-[8px] border border-[#111111]/30">
+            <p class="text-[#777777] text-xs py-3 text-center w-full">sélectionne un cinéma pour afficher les affiches disponibles.</p>
+          </div>
+        </div>
+
+        <!-- Seen Movies Section ("Films déjà vus" to exclude) -->
+        <div class="neo-card p-4 space-y-2 bg-[#FFFFFF]">
+          <div class="flex items-center justify-between border-b border-[#111111]/20 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#E8635A] border border-[#111111]"></span>
+              <h4 class="text-xs font-black uppercase text-[#111111] font-sans">
+                films déjà vus (exclus de la recherche)
+              </h4>
+              <span id="seen-movies-count" class="text-[0.65rem] font-mono font-bold bg-[#FAFADF] text-[#111111] px-1.5 py-0.2 rounded border border-[#111111]">
+                0 exclu
+              </span>
+            </div>
+            <button id="btn-clear-seen" type="button" class="text-[0.7rem] text-[#777777] hover:text-[#E8635A] underline font-bold cursor-pointer hidden">
+              réinitialiser les exclus
+            </button>
+          </div>
+          <div id="seen-movies-container" class="flex flex-wrap gap-1.5 text-xs min-h-[28px]">
+            <span class="text-[0.7rem] text-[#777777] italic py-1">aucun film exclu. clique sur "déjà vu ?" sur une séance pour l'écarter.</span>
+          </div>
+        </div>
+
+        <!-- Scenario Tabs (Optimal, Single Cinema, Short Breaks) -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1" id="scenario-tabs-container">
+          <button
+            type="button"
+            data-scenario="optimal"
+            class="scenario-tab neo-btn px-4 py-2 rounded-full text-xs font-bold bg-[#FFE566] text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] flex items-center gap-2 shrink-0 cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            <span>itinéraire optimal</span>
+          </button>
+          <button
+            type="button"
+            data-scenario="same_cinema"
+            class="scenario-tab neo-btn px-4 py-2 rounded-full text-xs font-bold bg-white text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] flex items-center gap-2 shrink-0 cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
+              <path d="M9 9h1"/><path d="M9 13h1"/><path d="M14 9h1"/><path d="M14 13h1"/>
+            </svg>
+            <span>zéro changement</span>
+          </button>
+          <button
+            type="button"
+            data-scenario="short_breaks"
+            class="scenario-tab neo-btn px-4 py-2 rounded-full text-xs font-bold bg-white text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] flex items-center gap-2 shrink-0 cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>pauses courtes</span>
+          </button>
+        </div>
+
+        <!-- Status Header -->
+        <div id="results-header" class="text-sm font-black text-[#111111] px-1 font-sans"></div>
+
+        <!-- Proposals List / Screening Nodes -->
+        <div id="results-container" class="space-y-4">
+          <div class="neo-card p-8 text-center text-[#777777]">
+            chargement des séances...
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           RIGHT COLUMN: THERMAL TICKET RECEIPT
+           ========================================== -->
+      <aside class="lg:col-span-3 xl:col-span-3 space-y-4">
+        <div class="sticky top-20" id="thermal-receipt-container">
+          <div class="neo-card p-6 text-center text-[#777777]">
+            initialisation du ticket...
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- Poster Lightbox Modal -->
+    <div id="poster-modal" class="fixed inset-0 z-50 bg-[#111111]/75 backdrop-blur-xs hidden flex items-center justify-center p-4">
+      <div class="bg-white border-2 border-[#111111] rounded-[14px] shadow-[8px_8px_0px_0px_#111111] p-4 max-w-sm w-full mx-auto relative animate-in fade-in zoom-in-95 duration-150">
+        <button
+          id="btn-close-poster-modal"
+          type="button"
+          class="absolute -top-3.5 -right-3.5 w-9 h-9 rounded-full bg-[#E8635A] text-white border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] flex items-center justify-center font-black text-sm cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+          title="Fermer l'affiche"
+        >
+          ✕
+        </button>
+        <div class="rounded-[8px] overflow-hidden border-2 border-[#111111] bg-[#FAFADF] mb-3 aspect-[2/3] flex items-center justify-center">
+          <img id="modal-poster-img" src="" alt="Affiche du film" class="w-full h-full object-cover" />
+        </div>
+        <h4 id="modal-poster-title" class="font-extrabold text-base text-[#111111] text-center font-sans tracking-tight"></h4>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t-2 border-[#111111] bg-white text-center py-4 sm:py-5 text-xs font-medium text-[#555555] mt-10 shadow-[0_-2px_0_0_#111111]">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#FFE566] border border-[#111111]"></span>
+          <span class="font-sans font-bold text-[#111111]">cinépass planner</span>
+          <span class="text-[#777777]">• l'optimiseur de journées cinéma</span>
+        </div>
+        <div class="text-[0.7rem] text-[#777777] font-mono">
+          réseau officiel pathé &bull; respect de la vie privée &bull; sans publicité
+        </div>
+      </div>
+    </footer>
+
+    <!-- CLIENT CONTROLLER SCRIPT -->
+    <script>
+      import { Scheduler } from '../core/scheduler';
+      import { PassType, type Cinema, type Showtime, type PlanCriteria, type Itinerary } from '../core/models';
+      import {
+        formatItineraryCardHtml,
+        formatThermalReceiptHtml,
+        ACTIVE_CARD_CLASS,
+        INACTIVE_CARD_CLASS,
+        getSelectionStampHtml,
+      } from '../components/ItineraryCard';
+      import { loadPreferences, savePreferences, clearPreferences } from '../core/storage';
+      import { iconAlert, iconBuilding, iconStar4, iconZap, iconClock, iconSparkles, iconClose } from '../components/Icons';
+
+      const BASE_PATH = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+      let allCinemas: Cinema[] = [];
+      let allDates: string[] = [];
+      let currentShowtimesMap: Record<string, any[]> = {};
+      const showtimesJsonCache = new Map<string, Record<string, any[]>>();
+      let selectedCinemaIds: Set<string> = new Set();
+      let selectedPriorityMovies: Set<string> = new Set();
+      let selectedSeenMovies: Set<string> = new Set();
+      let calculatedPlans: Itinerary[] = [];
+      let activePlanIndex = 0;
+      let activeScenario: string = 'optimal';
+      let cinemaSearchFilter = '';
+      let prioritySearchFilter = '';
+
+      let recalculateTimer: ReturnType<typeof setTimeout> | null = null;
+      let persistDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+      function scheduleRecalculate(delay = 50) {
+        if (recalculateTimer) {
+          clearTimeout(recalculateTimer);
+        }
+        if (delay === 0) {
+          recalculate();
+        } else {
+          recalculateTimer = setTimeout(() => {
+            recalculate();
+          }, delay);
+        }
+      }
+
+      function schedulePersistPreferences(delay = 250) {
+        if (persistDebounceTimer) {
+          clearTimeout(persistDebounceTimer);
+        }
+        persistDebounceTimer = setTimeout(() => {
+          persistCurrentPreferences();
+        }, delay);
+      }
+
+      const scheduler = new Scheduler();
+
+      async function init() {
+        const prefs = loadPreferences();
+        const urlParams = new URLSearchParams(window.location.search);
+        const qCity = urlParams.get('city') || prefs.city;
+        const qPass = urlParams.get('pass') || prefs.pass_formula;
+        const qLang = urlParams.get('lang') || prefs.language;
+        const qCountRaw = urlParams.get('count');
+        const qCount = qCountRaw ? parseInt(qCountRaw, 10) : prefs.target_count;
+        if (prefs.scenario) {
+          activeScenario = prefs.scenario;
+        }
+        if (prefs.seen_movies && Array.isArray(prefs.seen_movies)) {
+          prefs.seen_movies.forEach(m => selectedSeenMovies.add(m));
+        }
+        if (prefs.priority_movies && Array.isArray(prefs.priority_movies)) {
+          prefs.priority_movies.forEach(m => selectedPriorityMovies.add(m));
+        }
+
+        try {
+          const [cinResp, datesResp] = await Promise.all([
+            fetch(`${BASE_PATH}data/cinemas.json`),
+            fetch(`${BASE_PATH}data/dates.json`),
+          ]);
+
+          allCinemas = await cinResp.json();
+          allDates = await datesResp.json();
+
+          // Populate Cities
+          const citySelect = document.getElementById('select-city') as HTMLSelectElement;
+          const uniqueCities = Array.from(new Set(allCinemas.map(c => c.city).filter(Boolean))).sort();
+          for (const city of uniqueCities) {
+            const opt = document.createElement('option');
+            opt.value = city;
+            opt.textContent = city;
+            citySelect.appendChild(opt);
+          }
+
+          if (qCity && (qCity === 'Toutes' || uniqueCities.includes(qCity))) {
+            citySelect.value = qCity;
+          }
+
+          // Populate Dates
+          const dateSelect = document.getElementById('select-date') as HTMLSelectElement;
+          dateSelect.innerHTML = '';
+          const todayStr = new Date().toISOString().slice(0, 10);
+
+          if (allDates.length === 0) {
+            const opt = document.createElement('option');
+            opt.value = '';
+            opt.textContent = 'Aucune séance disponible';
+            dateSelect.appendChild(opt);
+          } else {
+            for (const d of allDates) {
+              const opt = document.createElement('option');
+              opt.value = d;
+              opt.textContent = new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+              });
+              dateSelect.appendChild(opt);
+            }
+
+            const defaultDate = allDates.find(d => d >= todayStr) || allDates[0] || '';
+            dateSelect.value = defaultDate;
+          }
+
+          // Restore preferences into inputs
+          if (qPass) {
+            const radio = document.querySelector(`input[name="pass-type"][value="${qPass}"]`) as HTMLInputElement;
+            if (radio) radio.checked = true;
+          }
+          if (prefs.allow_supplements !== undefined) {
+            (document.getElementById('check-supplements') as HTMLInputElement).checked = prefs.allow_supplements;
+          }
+          if (qLang) {
+            const radio = document.querySelector(`input[name="lang-filter"][value="${qLang}"]`) as HTMLInputElement;
+            if (radio) radio.checked = true;
+          }
+          if (qCount) {
+            (document.getElementById('range-count') as HTMLInputElement).value = String(qCount);
+            (document.getElementById('target-count-val') as HTMLElement).textContent = `${qCount} films`;
+          }
+          if (prefs.start_time) {
+            (document.getElementById('input-start') as HTMLInputElement).value = prefs.start_time;
+          }
+          if (prefs.end_time) {
+            (document.getElementById('input-end') as HTMLInputElement).value = prefs.end_time;
+          }
+          if (prefs.require_meal !== undefined) {
+            (document.getElementById('check-meal') as HTMLInputElement).checked = prefs.require_meal;
+          }
+          if (prefs.min_buffer !== undefined) {
+            (document.getElementById('input-buffer') as HTMLInputElement).value = String(prefs.min_buffer);
+          }
+          if (prefs.selected_formats) {
+            document.querySelectorAll('.format-check').forEach((cb: any) => {
+              cb.checked = prefs.selected_formats!.includes(cb.value);
+            });
+          }
+
+          // Restore selected cinemas
+          if (prefs.selected_cinemas && prefs.selected_cinemas.length > 0) {
+            const validIds = new Set(allCinemas.map(c => c.id));
+            prefs.selected_cinemas.forEach(id => {
+              if (validIds.has(id)) {
+                selectedCinemaIds.add(id);
+              }
+            });
+          }
+
+          if (selectedCinemaIds.size === 0 && allCinemas.length > 0) {
+            selectedCinemaIds.add(allCinemas[0].id);
+          }
+
+          updateScenarioTabsUI();
+          renderCinemasList();
+          renderSeenMovies();
+          setupEventListeners();
+          await onDateOrCinemaChanged();
+        } catch (e) {
+          console.error('Failed to initialize planner', e);
+          const results = document.getElementById('results-container')!;
+          results.innerHTML = `
+            <div class="neo-card bg-[#F9A8B8] p-6 text-center text-xs text-[#111111] font-bold flex flex-col items-center gap-2">
+              ${iconAlert('w-6 h-6 text-[#111111]')}
+              <span>Impossible de charger les séances pour le moment. Veuillez vérifier votre connexion ou réessayer plus tard.</span>
+            </div>
+          `;
+        }
+      }
+
+      function updateScenarioTabsUI() {
+        document.querySelectorAll('.scenario-tab').forEach((tab: any) => {
+          const s = tab.getAttribute('data-scenario');
+          const isOptimal = s === 'optimal';
+          const isSameCinema = s === 'same_cinema';
+          const iconSvg = isOptimal
+            ? iconZap('w-3.5 h-3.5')
+            : (isSameCinema ? iconBuilding('w-3.5 h-3.5') : iconClock('w-3.5 h-3.5'));
+
+          const label = isOptimal ? 'itinéraire optimal' : (isSameCinema ? 'zéro changement' : 'pauses courtes');
+
+          if (s === activeScenario) {
+            tab.className = 'scenario-tab neo-btn px-4 py-2 rounded-full text-xs font-bold bg-[#FFE566] text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] flex items-center gap-2 shrink-0 cursor-pointer';
+          } else {
+            tab.className = 'scenario-tab neo-btn px-4 py-2 rounded-full text-xs font-bold bg-white text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] flex items-center gap-2 shrink-0 hover:bg-[#FAFADF] cursor-pointer';
+          }
+          tab.innerHTML = `${iconSvg}<span>${label}</span>`;
+        });
+      }
+
+      function renderCinemasList() {
+        const cityFilter = (document.getElementById('select-city') as HTMLSelectElement).value;
+        const container = document.getElementById('cinemas-list')!;
+        container.innerHTML = '';
+
+        const cleanSearch = cinemaSearchFilter.trim().toLowerCase();
+
+        const visibleCinemas = allCinemas.filter(c => {
+          if (cleanSearch) {
+            const matchesSearch = c.name.toLowerCase().includes(cleanSearch) || c.city.toLowerCase().includes(cleanSearch);
+            const isChecked = selectedCinemaIds.has(c.id);
+            if (cityFilter !== 'Toutes' && c.city !== cityFilter && !isChecked) {
+              return false;
+            }
+            return matchesSearch || isChecked;
+          }
+
+          if (cityFilter === 'Toutes') return true;
+          return c.city === cityFilter || selectedCinemaIds.has(c.id);
+        });
+
+        visibleCinemas.sort((a, b) => {
+          const aChecked = selectedCinemaIds.has(a.id) ? 1 : 0;
+          const bChecked = selectedCinemaIds.has(b.id) ? 1 : 0;
+          if (aChecked !== bChecked) return bChecked - aChecked;
+          return a.name.localeCompare(b.name);
+        });
+
+        if (visibleCinemas.length === 0) {
+          container.innerHTML = `<p class="text-[#777777] text-center py-4 font-mono text-xs">aucun cinéma trouvé pour "${cinemaSearchFilter}"</p>`;
+          updateSelectedCinemasCount();
+          return;
+        }
+
+        for (const cin of visibleCinemas) {
+          const isChecked = selectedCinemaIds.has(cin.id);
+          const label = document.createElement('label');
+          label.className = `flex items-center justify-between gap-2 p-1.5 rounded-[6px] border border-transparent hover:border-[#111111] hover:bg-white cursor-pointer text-xs transition-colors ${
+            isChecked ? 'bg-[#FFE566]/30 font-bold border-[#111111]/40' : ''
+          }`;
+          label.innerHTML = `
+            <div class="flex items-center gap-2 truncate">
+              <input type="checkbox" value="${cin.id}" class="cinema-checkbox w-3.5 h-3.5 accent-[#E8635A] rounded border border-[#111111] cursor-pointer" ${isChecked ? 'checked' : ''} />
+              <span class="truncate ${isChecked ? 'text-[#111111] font-bold' : 'text-[#333333]'}">${cin.name}</span>
+            </div>
+            <span class="text-[0.65rem] text-[#777777] font-mono shrink-0">${cin.city}</span>
+          `;
+
+          const checkbox = label.querySelector('input')!;
+          checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+              selectedCinemaIds.add(cin.id);
+            } else {
+              selectedCinemaIds.delete(cin.id);
+            }
+            updateSelectedCinemasCount();
+            renderPriorityMovies();
+            recalculate();
+          });
+
+          container.appendChild(label);
+        }
+
+        updateSelectedCinemasCount();
+      }
+
+      function updateSelectedCinemasCount() {
+        const countSpan = document.getElementById('selected-cinemas-count')!;
+        countSpan.textContent = `${selectedCinemaIds.size} sélectionné${selectedCinemaIds.size > 1 ? 's' : ''}`;
+      }
+
+      function renderSeenMovies() {
+        const container = document.getElementById('seen-movies-container')!;
+        const countSpan = document.getElementById('seen-movies-count')!;
+        const clearBtn = document.getElementById('btn-clear-seen')!;
+        container.innerHTML = '';
+
+        countSpan.textContent = `${selectedSeenMovies.size} exclu${selectedSeenMovies.size > 1 ? 's' : ''}`;
+
+        if (selectedSeenMovies.size === 0) {
+          container.innerHTML = `<span class="text-[0.7rem] text-[#777777] italic py-1">aucun film exclu. clique sur "déjà vu ?" sur une séance pour l'écarter.</span>`;
+          clearBtn.classList.add('hidden');
+          return;
+        }
+
+        clearBtn.classList.remove('hidden');
+
+        for (const title of Array.from(selectedSeenMovies).sort()) {
+          const pill = document.createElement('span');
+          pill.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#FAFADF] text-[#111111] border-2 border-[#111111] shadow-[1px_1px_0px_0px_#111111]';
+          pill.innerHTML = `
+            <span class="line-through opacity-85 truncate max-w-[150px]">${title}</span>
+            <button type="button" class="cursor-pointer text-[#E8635A] hover:scale-125 transition-transform font-black" title="Réintégrer ce film dans l'algorithme">✕</button>
+          `;
+          const removeBtn = pill.querySelector('button')!;
+          removeBtn.addEventListener('click', () => {
+            selectedSeenMovies.delete(title);
+            renderSeenMovies();
+            recalculate();
+          });
+          container.appendChild(pill);
+        }
+      }
+
+      async function onDateOrCinemaChanged() {
+        const dateSelect = document.getElementById('select-date') as HTMLSelectElement;
+        const selectedDate = dateSelect.value;
+        if (!selectedDate) {
+          currentShowtimesMap = {};
+          renderPriorityMovies();
+          scheduleRecalculate(0);
+          return;
+        }
+
+        if (showtimesJsonCache.has(selectedDate)) {
+          currentShowtimesMap = showtimesJsonCache.get(selectedDate)!;
+          renderPriorityMovies();
+          scheduleRecalculate(0);
+          return;
+        }
+
+        try {
+          const resp = await fetch(`${BASE_PATH}data/showtimes-${selectedDate}.json`);
+          if (resp.ok) {
+            const data = await resp.json();
+            showtimesJsonCache.set(selectedDate, data);
+            currentShowtimesMap = data;
+          } else {
+            currentShowtimesMap = {};
+          }
+        } catch (e) {
+          currentShowtimesMap = {};
+        }
+
+        renderPriorityMovies();
+        scheduleRecalculate(0);
+      }
+
+      function renderPriorityMovies() {
+        const container = document.getElementById('priority-movies-container')!;
+        const countSpan = document.getElementById('priority-movies-count')!;
+        const clearBtn = document.getElementById('btn-clear-priority')!;
+        container.innerHTML = '';
+
+        const titlesSet = new Set<string>();
+        for (const cid of selectedCinemaIds) {
+          const stList = currentShowtimesMap[cid] || [];
+          for (const st of stList) {
+            if (st.title) titlesSet.add(st.title);
+          }
+        }
+
+        const sortedTitles = Array.from(titlesSet).sort();
+
+        countSpan.textContent = `${selectedPriorityMovies.size} sélectionné${selectedPriorityMovies.size > 1 ? 's' : ''}`;
+        if (selectedPriorityMovies.size > 0) {
+          clearBtn.classList.remove('hidden');
+        } else {
+          clearBtn.classList.add('hidden');
+        }
+
+        if (sortedTitles.length === 0) {
+          container.innerHTML = `<span class="text-[#777777] text-xs font-mono py-3 text-center w-full">aucun film trouvé pour ce filtre.</span>`;
+          return;
+        }
+
+        const frag = document.createDocumentFragment();
+
+        for (const title of sortedTitles) {
+          const isSelected = selectedPriorityMovies.has(title);
+          const isSeen = selectedSeenMovies.has(title);
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.setAttribute('data-movie-title', title);
+          btn.setAttribute('data-clean-title', title.toLowerCase());
+          btn.className = `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border-2 border-[#111111] transition-all cursor-pointer ${
+            isSelected
+              ? 'bg-[#FFE566] text-[#111111] shadow-[2px_2px_0px_0px_#111111]'
+              : (isSeen ? 'bg-gray-100 text-[#888888] line-through border-gray-400 opacity-60' : 'bg-white text-[#111111] shadow-[1px_1px_0px_0px_#111111] hover:bg-[#FAFADF]')
+          }`;
+
+          const starIcon = isSelected ? iconStar4('w-3 h-3 text-[#111111]') : '';
+          btn.innerHTML = `${starIcon}<span>${title}</span>`;
+          btn.addEventListener('click', () => {
+            if (selectedPriorityMovies.has(title)) {
+              selectedPriorityMovies.delete(title);
+            } else {
+              selectedPriorityMovies.add(title);
+              // If priority, remove from seen
+              selectedSeenMovies.delete(title);
+              renderSeenMovies();
+            }
+            renderPriorityMovies();
+            scheduleRecalculate(0);
+          });
+          frag.appendChild(btn);
+        }
+
+        container.appendChild(frag);
+        filterPriorityMoviesInPlace();
+      }
+
+      function filterPriorityMoviesInPlace() {
+        const container = document.getElementById('priority-movies-container')!;
+        const cleanFilter = prioritySearchFilter.trim().toLowerCase();
+        const buttons = container.querySelectorAll<HTMLButtonElement>('button[data-clean-title]');
+        let matched = 0;
+        buttons.forEach((b) => {
+          const t = b.getAttribute('data-clean-title') || '';
+          const isMatch = !cleanFilter || t.includes(cleanFilter);
+          b.classList.toggle('hidden', !isMatch);
+          if (isMatch) matched++;
+        });
+
+        const emptyMsgId = 'priority-filter-empty-msg';
+        let emptyMsg = document.getElementById(emptyMsgId);
+        if (buttons.length > 0 && matched === 0) {
+          if (!emptyMsg) {
+            emptyMsg = document.createElement('span');
+            emptyMsg.id = emptyMsgId;
+            emptyMsg.className = 'text-[#777777] text-xs font-mono py-3 text-center w-full';
+            emptyMsg.textContent = 'aucun film trouvé pour ce filtre.';
+            container.appendChild(emptyMsg);
+          }
+        } else if (emptyMsg) {
+          emptyMsg.remove();
+        }
+      }
+
+      function openPosterModal(posterUrl: string, title: string) {
+        if (!posterUrl) return;
+        const modal = document.getElementById('poster-modal')!;
+        const img = document.getElementById('modal-poster-img') as HTMLImageElement;
+        const titleEl = document.getElementById('modal-poster-title')!;
+        img.src = posterUrl;
+        titleEl.textContent = title;
+        modal.classList.remove('hidden');
+      }
+
+      function closePosterModal() {
+        const modal = document.getElementById('poster-modal')!;
+        modal.classList.add('hidden');
+      }
+
+      function selectActivePlan(idx: number) {
+        if (!calculatedPlans || calculatedPlans.length === 0) return;
+        if (idx < 0 || idx >= calculatedPlans.length) return;
+        activePlanIndex = idx;
+
+        const passFormula = (document.querySelector('input[name="pass-type"]:checked') as HTMLInputElement)?.value || 'Gold';
+        const passTypeEnum = passFormula === 'Gold' ? PassType.GOLD : (passFormula === 'Silver' ? PassType.SILVER : PassType.UNDER26);
+
+        // Update card styles and stamps without rebuilding DOM
+        const cards = document.querySelectorAll<HTMLElement>('#results-container [data-plan-index]');
+        cards.forEach((card, i) => {
+          const isSelected = i === activePlanIndex;
+          card.className = isSelected ? ACTIVE_CARD_CLASS : INACTIVE_CARD_CLASS;
+
+          const stampContainer = card.querySelector('.selection-stamp-container');
+          if (stampContainer) {
+            stampContainer.innerHTML = getSelectionStampHtml(isSelected);
+          }
+
+          const activeBadge = card.querySelector('.active-badge');
+          if (activeBadge) {
+            activeBadge.classList.toggle('hidden', !isSelected);
+          }
+        });
+
+        // Update receipt
+        const receiptContainer = document.getElementById('thermal-receipt-container')!;
+        const currentActivePlan = calculatedPlans[activePlanIndex] || calculatedPlans[0];
+        receiptContainer.innerHTML = formatThermalReceiptHtml(currentActivePlan, passTypeEnum);
+
+        // Re-attach ICS download
+        const exportBtn = document.getElementById('btn-export-ics');
+        if (exportBtn && currentActivePlan) {
+          exportBtn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            downloadIcsCalendar(currentActivePlan);
+          });
+        }
+      }
+
+      function recalculate() {
+        schedulePersistPreferences(250);
+
+        const dateSelect = document.getElementById('select-date') as HTMLSelectElement;
+        const selectedDate = dateSelect.value;
+        const resultsContainer = document.getElementById('results-container')!;
+        const resultsHeader = document.getElementById('results-header')!;
+        const receiptContainer = document.getElementById('thermal-receipt-container')!;
+
+        const passFormula = (document.querySelector('input[name="pass-type"]:checked') as HTMLInputElement)?.value || 'Gold';
+        const passTypeEnum = passFormula === 'Gold' ? PassType.GOLD : (passFormula === 'Silver' ? PassType.SILVER : PassType.UNDER26);
+
+        if (selectedCinemaIds.size === 0) {
+          resultsHeader.innerHTML = '';
+          resultsContainer.innerHTML = `
+            <div class="neo-card p-8 text-center text-[#555555] space-y-2">
+              <div class="w-10 h-10 mx-auto rounded-full bg-[#FAFADF] border-2 border-[#111111] flex items-center justify-center">
+                ${iconBuilding('w-5 h-5 text-[#111111]')}
+              </div>
+              <p class="font-bold text-xs text-[#111111]">Veuillez sélectionner au moins un cinéma dans le panneau latéral pour composer votre marathon.</p>
+            </div>
+          `;
+          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum);
+          return;
+        }
+
+        if (!selectedDate) {
+          resultsHeader.innerHTML = '';
+          resultsContainer.innerHTML = `
+            <div class="neo-card p-8 text-center text-[#555555]">
+              Veuillez sélectionner une date.
+            </div>
+          `;
+          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum);
+          return;
+        }
+
+        const todayStr = new Date().toISOString().slice(0, 10);
+        let warningBanner = '';
+        if (selectedDate < todayStr) {
+          warningBanner = `
+            <div class="neo-card bg-[#FFE566] p-3.5 mb-4 text-xs font-bold text-[#111111] flex items-center gap-3">
+              <span class="p-1 rounded-[4px] bg-white border border-[#111111] shrink-0">
+                ${iconAlert('w-4 h-4 text-[#111111]')}
+              </span>
+              <div>
+                <strong>Attention :</strong> La date sélectionnée (<strong>${selectedDate}</strong>) est déjà passée. Choisissez une date à venir pour organiser votre marathon.
+              </div>
+            </div>
+          `;
+        }
+
+        // Aggregate candidate showtimes including poster_url
+        const candidateShowtimes: Showtime[] = [];
+        const cinemasById = new Map(allCinemas.map(c => [c.id, c.name]));
+
+        for (const cid of selectedCinemaIds) {
+          const rawList = currentShowtimesMap[cid] || [];
+          const cinName = cinemasById.get(cid) || cid;
+          for (const raw of rawList) {
+            candidateShowtimes.push({
+              cinema_id: cid,
+              movie_title: raw.title,
+              starts_at: raw.starts_at,
+              ends_at: raw.ends_at,
+              date_str: selectedDate,
+              version: raw.version || 'ORIGINAL',
+              format: raw.format || 'Standard',
+              cinema_name: cinName,
+              poster_url: raw.poster_url || '',
+            });
+          }
+        }
+
+        if (candidateShowtimes.length === 0) {
+          resultsHeader.innerHTML = '';
+          resultsContainer.innerHTML = `
+            ${warningBanner}
+            <div class="neo-card bg-[#F9A8B8] p-6 text-center text-xs font-bold text-[#111111] flex flex-col items-center gap-2">
+              ${iconAlert('w-5 h-5 text-[#111111]')}
+              <span>Aucune séance trouvée pour les cinémas sélectionnés à la date du ${selectedDate}.</span>
+            </div>
+          `;
+          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum);
+          return;
+        }
+
+        // Criteria with seen_movies exclusion
+        const allowSupplements = (document.getElementById('check-supplements') as HTMLInputElement).checked;
+        const langFilter = (document.querySelector('input[name="lang-filter"]:checked') as HTMLInputElement)?.value || 'ALL';
+        const targetCount = parseInt((document.getElementById('range-count') as HTMLInputElement).value, 10) || 3;
+        const startTime = (document.getElementById('input-start') as HTMLInputElement).value || '10:00';
+        const endTime = (document.getElementById('input-end') as HTMLInputElement).value || '23:00';
+        const requireMeal = (document.getElementById('check-meal') as HTMLInputElement).checked;
+        const minBuffer = parseInt((document.getElementById('input-buffer') as HTMLInputElement).value, 10) || 15;
+
+        const checkedFormats: string[] = [];
+        document.querySelectorAll('.format-check:checked').forEach((cb: any) => {
+          checkedFormats.push(cb.value);
+        });
+
+        const criteria: PlanCriteria = {
+          cinema_ids: Array.from(selectedCinemaIds),
+          date_str: selectedDate,
+          target_films_count: targetCount,
+          start_time: startTime,
+          max_end_time: endTime,
+          priority_movies: Array.from(selectedPriorityMovies),
+          seen_movies: Array.from(selectedSeenMovies),
+          pass_type: passTypeEnum,
+          allow_supplements: allowSupplements,
+          min_buffer_minutes: minBuffer,
+          require_meal_break: requireMeal,
+          language: langFilter,
+          selected_formats: checkedFormats,
+        };
+
+        let plans = scheduler.generatePlans(candidateShowtimes, criteria);
+
+        if (activeScenario === 'same_cinema') {
+          plans.sort((a, b) => {
+            const cinSetA = new Set(a.showtimes.map(s => s.cinema_id)).size;
+            const cinSetB = new Set(b.showtimes.map(s => s.cinema_id)).size;
+            if (cinSetA !== cinSetB) return cinSetA - cinSetB;
+            return b.score - a.score;
+          });
+        } else if (activeScenario === 'short_breaks') {
+          plans.sort((a, b) => {
+            if (a.total_pause_minutes !== b.total_pause_minutes) {
+              return a.total_pause_minutes - b.total_pause_minutes;
+            }
+            return b.score - a.score;
+          });
+        } else {
+          plans.sort((a, b) => b.score - a.score);
+        }
+
+        calculatedPlans = plans;
+
+        if (plans.length === 0) {
+          resultsHeader.innerHTML = '';
+          resultsContainer.innerHTML = `
+            ${warningBanner}
+            <div class="neo-card bg-[#F9A8B8] p-6 text-center text-xs text-[#111111] leading-relaxed font-bold space-y-2">
+              <div class="w-8 h-8 mx-auto rounded-full bg-white border border-[#111111] flex items-center justify-center">
+                ${iconAlert('w-4 h-4 text-[#111111]')}
+              </div>
+              <p>Aucun itinéraire complet ne correspond à toutes vos contraintes.</p>
+              <p class="font-normal text-[0.7rem] text-[#333333]">Astuce : élargis l'amplitude horaire, réintègre certains films déjà vus ou décoche la pause repas obligatoire.</p>
+            </div>
+          `;
+          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum);
+          return;
+        }
+
+        if (activePlanIndex >= plans.length) {
+          activePlanIndex = 0;
+        }
+
+        const cinCountInfo = selectedCinemaIds.size > 1 ? `sur ${selectedCinemaIds.size} cinémas` : `dans votre cinéma`;
+        resultsHeader.innerHTML = `<span class="inline-flex items-center gap-1.5">${iconSparkles('w-4 h-4 text-[#111111]')}<strong>${plans.length} proposition${plans.length > 1 ? 's' : ''} d'itinéraires</strong> trouvée${plans.length > 1 ? 's' : ''} ${cinCountInfo} !</span>`;
+
+        const cardsHtml = plans.map((p, idx) =>
+          formatItineraryCardHtml(p, idx + 1, passTypeEnum, idx === activePlanIndex)
+        ).join('');
+
+        resultsContainer.innerHTML = warningBanner + cardsHtml;
+
+        const currentActivePlan = plans[activePlanIndex] || plans[0];
+        receiptContainer.innerHTML = formatThermalReceiptHtml(currentActivePlan, passTypeEnum);
+
+        // Click to select active marathon card
+        document.querySelectorAll('#results-container [data-plan-index]').forEach(card => {
+          card.addEventListener('click', (ev) => {
+            const target = ev.target as HTMLElement;
+            if (target.closest('.poster-thumb') || target.closest('.btn-mark-seen')) {
+              return;
+            }
+            const idx = parseInt(card.getAttribute('data-plan-index') || '1', 10) - 1;
+            selectActivePlan(idx);
+          });
+        });
+
+        // Click on poster thumbnail to open modal
+        document.querySelectorAll('.poster-thumb').forEach(thumb => {
+          thumb.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            const posterUrl = thumb.getAttribute('data-poster-preview') || '';
+            const title = thumb.getAttribute('data-poster-title') || '';
+            openPosterModal(posterUrl, title);
+          });
+        });
+
+        // Click on "déjà vu ?" button to exclude movie
+        document.querySelectorAll('.btn-mark-seen').forEach(btn => {
+          btn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            const movieTitle = btn.getAttribute('data-movie-title');
+            if (movieTitle) {
+              selectedSeenMovies.add(movieTitle);
+              selectedPriorityMovies.delete(movieTitle);
+              renderSeenMovies();
+              renderPriorityMovies();
+              scheduleRecalculate(0);
+            }
+          });
+        });
+
+        // ICS export listener
+        const exportBtn = document.getElementById('btn-export-ics');
+        if (exportBtn && currentActivePlan) {
+          exportBtn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            downloadIcsCalendar(currentActivePlan);
+          });
+        }
+      }
+
+      function downloadIcsCalendar(itinerary: Itinerary) {
+        if (!itinerary || itinerary.showtimes.length === 0) return;
+
+        function formatIcsDateTime(isoStr: string): string {
+          return isoStr.replace(/[-:]/g, '').replace('.000', '') + 'Z';
+        }
+
+        const events = itinerary.showtimes.map((st, i) => {
+          const dtStart = formatIcsDateTime(st.starts_at);
+          const dtEnd = formatIcsDateTime(st.ends_at);
+          const uid = `cinepass-${Date.now()}-${i}@cinepass-planner.local`;
+          const summary = `CinéPass : ${st.movie_title} (${st.format || 'Standard'})`;
+          const location = st.cinema_name || 'Cinéma';
+          const description = `Séance ${i + 1} du marathon CinéPass.\nCinéma : ${st.cinema_name}\nFormat : ${st.format}\nVersion : ${st.version || 'Standard'}.`;
+
+          return [
+            'BEGIN:VEVENT',
+            `UID:${uid}`,
+            `DTSTAMP:${dtStart}`,
+            `DTSTART:${dtStart}`,
+            `DTEND:${dtEnd}`,
+            `SUMMARY:${summary}`,
+            `LOCATION:${location}`,
+            `DESCRIPTION:${description.replace(/\n/g, '\\n')}`,
+            'STATUS:CONFIRMED',
+            'END:VEVENT'
+          ].join('\r\n');
+        }).join('\r\n');
+
+        const icsContent = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'PRODID:-//CinePass Planner//FR',
+          'CALSCALE:GREGORIAN',
+          'METHOD:PUBLISH',
+          events,
+          'END:VCALENDAR'
+        ].join('\r\n');
+
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        const dateStr = itinerary.showtimes[0]?.date_str || 'marathon';
+        link.setAttribute('download', `marathon-cinepass-${dateStr}.ics`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+
+      function persistCurrentPreferences() {
+        const city = (document.getElementById('select-city') as HTMLSelectElement)?.value;
+        const passFormula = (document.querySelector('input[name="pass-type"]:checked') as HTMLInputElement)?.value;
+        const allowSupplements = (document.getElementById('check-supplements') as HTMLInputElement)?.checked;
+        const lang = (document.querySelector('input[name="lang-filter"]:checked') as HTMLInputElement)?.value;
+        const targetCount = parseInt((document.getElementById('range-count') as HTMLInputElement)?.value, 10);
+        const startTime = (document.getElementById('input-start') as HTMLInputElement)?.value;
+        const endTime = (document.getElementById('input-end') as HTMLInputElement)?.value;
+        const requireMeal = (document.getElementById('check-meal') as HTMLInputElement)?.checked;
+        const minBuffer = parseInt((document.getElementById('input-buffer') as HTMLInputElement)?.value, 10);
+
+        const checkedFormats: string[] = [];
+        document.querySelectorAll('.format-check:checked').forEach((cb: any) => {
+          checkedFormats.push(cb.value);
+        });
+
+        savePreferences({
+          city,
+          selected_cinemas: Array.from(selectedCinemaIds),
+          pass_formula: passFormula,
+          allow_supplements: allowSupplements,
+          language: lang,
+          selected_formats: checkedFormats,
+          target_count: targetCount,
+          start_time: startTime,
+          end_time: endTime,
+          require_meal: requireMeal,
+          min_buffer: minBuffer,
+          scenario: activeScenario,
+          seen_movies: Array.from(selectedSeenMovies),
+          priority_movies: Array.from(selectedPriorityMovies),
+        });
+
+        try {
+          const params = new URLSearchParams();
+          if (city && city !== 'Toutes') params.set('city', city);
+          if (passFormula) params.set('pass', passFormula);
+          if (lang && lang !== 'ALL') params.set('lang', lang);
+          if (targetCount) params.set('count', String(targetCount));
+          const searchStr = params.toString() ? `?${params.toString()}` : '';
+          if (window.location.search !== searchStr) {
+            const newUrl = searchStr || window.location.pathname;
+            window.history.replaceState({}, '', newUrl);
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+
+      function setupEventListeners() {
+        // Modal close listeners
+        document.getElementById('btn-close-poster-modal')!.addEventListener('click', closePosterModal);
+        document.getElementById('poster-modal')!.addEventListener('click', (ev) => {
+          if (ev.target === document.getElementById('poster-modal')) {
+            closePosterModal();
+          }
+        });
+        document.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Escape') closePosterModal();
+        });
+
+        // Clear priority movies
+        document.getElementById('btn-clear-priority')!.addEventListener('click', () => {
+          selectedPriorityMovies.clear();
+          renderPriorityMovies();
+          scheduleRecalculate(0);
+        });
+
+        // Clear seen movies
+        document.getElementById('btn-clear-seen')!.addEventListener('click', () => {
+          selectedSeenMovies.clear();
+          renderSeenMovies();
+          renderPriorityMovies();
+          scheduleRecalculate(0);
+        });
+
+        // Instant In-Place Filter for priority movies (0ms lag, no DOM destruction)
+        const priorityFilterInput = document.getElementById('input-priority-filter') as HTMLInputElement;
+        priorityFilterInput.addEventListener('input', () => {
+          prioritySearchFilter = priorityFilterInput.value;
+          filterPriorityMoviesInPlace();
+        });
+
+        // Mobile filter panel toggle
+        const toggleBtnMobile = document.getElementById('btn-toggle-filters-mobile');
+        const filterPanelCard = document.getElementById('filter-panel-card');
+        const textToggleFilters = document.getElementById('text-toggle-filters');
+
+        if (toggleBtnMobile && filterPanelCard && textToggleFilters) {
+          toggleBtnMobile.addEventListener('click', () => {
+            const isHidden = filterPanelCard.classList.contains('hidden');
+            if (isHidden) {
+              filterPanelCard.classList.remove('hidden');
+              textToggleFilters.textContent = 'masquer filtres';
+            } else {
+              filterPanelCard.classList.add('hidden');
+              textToggleFilters.textContent = 'afficher filtres';
+            }
+          });
+        }
+
+        // Quick Cinema Search Bar event with input debouncing
+        const searchInput = document.getElementById('input-cinema-search') as HTMLInputElement;
+        const clearBtn = document.getElementById('btn-clear-search') as HTMLButtonElement;
+        let cinemaSearchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+        searchInput.addEventListener('input', () => {
+          cinemaSearchFilter = searchInput.value;
+          if (cinemaSearchFilter) {
+            clearBtn.classList.remove('hidden');
+          } else {
+            clearBtn.classList.add('hidden');
+          }
+          if (cinemaSearchDebounceTimer) clearTimeout(cinemaSearchDebounceTimer);
+          cinemaSearchDebounceTimer = setTimeout(() => {
+            renderCinemasList();
+          }, 60);
+        });
+
+        clearBtn.addEventListener('click', () => {
+          searchInput.value = '';
+          cinemaSearchFilter = '';
+          clearBtn.classList.add('hidden');
+          renderCinemasList();
+          searchInput.focus();
+        });
+
+        // Select all cinemas in current filter
+        document.getElementById('btn-select-all-city')!.addEventListener('click', () => {
+          const checkboxes = document.querySelectorAll('.cinema-checkbox') as NodeListOf<HTMLInputElement>;
+          checkboxes.forEach(cb => {
+            cb.checked = true;
+            selectedCinemaIds.add(cb.value);
+          });
+          updateSelectedCinemasCount();
+          renderPriorityMovies();
+          scheduleRecalculate(0);
+        });
+
+        // Scenario tabs switching
+        document.querySelectorAll('.scenario-tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            activeScenario = tab.getAttribute('data-scenario') || 'optimal';
+            activePlanIndex = 0;
+            updateScenarioTabsUI();
+            scheduleRecalculate(0);
+          });
+        });
+
+        document.getElementById('select-city')!.addEventListener('change', () => {
+          renderCinemasList();
+          scheduleRecalculate(0);
+        });
+
+        document.getElementById('select-date')!.addEventListener('change', () => {
+          onDateOrCinemaChanged();
+        });
+
+        document.querySelectorAll('input[name="pass-type"]').forEach(r => {
+          r.addEventListener('change', () => scheduleRecalculate(0));
+        });
+
+        document.getElementById('check-supplements')!.addEventListener('change', () => scheduleRecalculate(0));
+
+        document.querySelectorAll('input[name="lang-filter"]').forEach(r => {
+          r.addEventListener('change', () => scheduleRecalculate(0));
+        });
+
+        document.querySelectorAll('.format-check').forEach(cb => {
+          cb.addEventListener('change', () => scheduleRecalculate(0));
+        });
+
+        // Range count with debounced recalculation (smooth slider drag)
+        const rangeCount = document.getElementById('range-count') as HTMLInputElement;
+        let rangeDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+        rangeCount.addEventListener('input', () => {
+          document.getElementById('target-count-val')!.textContent = `${rangeCount.value} films`;
+          if (rangeDebounceTimer) clearTimeout(rangeDebounceTimer);
+          rangeDebounceTimer = setTimeout(() => {
+            recalculate();
+          }, 60);
+        });
+
+        document.getElementById('input-start')!.addEventListener('change', () => scheduleRecalculate(0));
+        document.getElementById('input-end')!.addEventListener('change', () => scheduleRecalculate(0));
+        document.getElementById('check-meal')!.addEventListener('change', () => scheduleRecalculate(0));
+        document.getElementById('input-buffer')!.addEventListener('change', () => scheduleRecalculate(0));
+
+        document.getElementById('btn-reset')!.addEventListener('click', () => {
+          clearPreferences();
+          location.reload();
+        });
+      }
+
+      init();
+    </script>
+  </body>
+</html>

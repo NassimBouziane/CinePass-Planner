@@ -1,0 +1,31 @@
+import sys
+from pathlib import Path
+
+# Add src to sys.path
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR / "src"))
+
+from cinepass_planner.config import DEFAULT_DB_PATH, DEFAULT_PDF_PATH, DEFAULT_MAPPING_PATH
+from cinepass_planner.db.connection import get_db_connection
+from cinepass_planner.db.schema import init_db
+from cinepass_planner.db.repositories import CinemaRepository
+from cinepass_planner.importer.pdf_parser import load_or_build_cinema_registry
+
+def main():
+    print("🎬 Initialisation de la base de données CinéPass Planner...")
+    conn = get_db_connection(DEFAULT_DB_PATH)
+    init_db(conn)
+    repo = CinemaRepository(conn)
+
+    print(f"📄 Lecture du document officiel : {DEFAULT_PDF_PATH}")
+    registry = load_or_build_cinema_registry(DEFAULT_PDF_PATH, DEFAULT_MAPPING_PATH)
+    print(f"Extraction de {len(registry)} cinémas du réseau CinéPass.")
+
+    for cinema in registry:
+        repo.save(cinema)
+
+    total = len(repo.list_all())
+    print(f"✅ Base de données initialisée avec succès dans {DEFAULT_DB_PATH} ({total} cinémas enregistrés) !")
+
+if __name__ == "__main__":
+    main()

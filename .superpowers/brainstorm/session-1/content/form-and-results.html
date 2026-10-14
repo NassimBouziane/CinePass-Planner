@@ -1,0 +1,123 @@
+<h2>Configuration de la Journée Cinéma & Résultats</h2>
+<p class="subtitle">Formulaire de critères (cinéma, créneaux, nombre de films modulable) et affichage des propositions</p>
+
+<!-- FORMULAIRE -->
+<div class="mockup" style="margin-bottom: 2rem;">
+  <div class="mockup-header">Formulaire de planification (Streamlit & CLI interactif)</div>
+  <div class="mockup-body" style="padding: 1.5rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
+      
+      <!-- Sélection cinéma -->
+      <div>
+        <label class="label">Cinéma Pathé éligible CinéPass</label>
+        <div style="background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem 0.8rem; font-size: 0.9rem; font-weight: 500;">
+          🎬 Pathé Alésia (Paris 14) ▾
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div>
+        <label class="label">Date de la séance</label>
+        <div style="background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem 0.8rem; font-size: 0.9rem;">
+          📅 Samedi 17 Octobre ▾
+        </div>
+      </div>
+
+      <!-- Nombre de films visés -->
+      <div>
+        <label class="label">Nombre de films visés (1 à 5+)</label>
+        <div style="display: flex; gap: 0.4rem;">
+          <button style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-secondary); cursor: pointer;">1</button>
+          <button style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-secondary); cursor: pointer;">2</button>
+          <button style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); background: var(--selected-bg); border-color: var(--accent); color: var(--accent); font-weight: 700; cursor: pointer;">3</button>
+          <button style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-secondary); cursor: pointer;">4</button>
+          <button style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-secondary); cursor: pointer;">5</button>
+        </div>
+      </div>
+
+      <!-- Plage horaire -->
+      <div>
+        <label class="label">Créneau horaire global</label>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <input class="mock-input" style="padding: 0.45rem; text-align: center;" value="10:00" />
+          <span style="color: var(--text-secondary);">&rarr;</span>
+          <input class="mock-input" style="padding: 0.45rem; text-align: center;" value="22:30" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Filtres avancés & Préférences -->
+    <div style="background: var(--bg-primary); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+      <div style="margin-bottom: 0.75rem;">
+        <label class="label">Films prioritaires que tu veux absolument voir</label>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="background: var(--accent); color: white; padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem;">
+            Dune : Deuxième Partie <span style="cursor: pointer;">&times;</span>
+          </span>
+          <span style="background: var(--accent); color: white; padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem;">
+            Challengers <span style="cursor: pointer;">&times;</span>
+          </span>
+          <span style="border: 1px dashed var(--border); color: var(--text-secondary); padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.8rem; cursor: pointer;">
+            + Ajouter un film du catalogue
+          </span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-secondary);">
+        <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+          <input type="checkbox" checked /> Prévoir une pause repas (45 min - 1h30 entre 12h et 14h)
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+          <input type="checkbox" checked /> Marge minimale de 15 min entre deux séances
+        </label>
+      </div>
+    </div>
+
+    <button class="mock-button" style="width: 100%; padding: 0.75rem; font-size: 0.95rem; font-weight: 600; cursor: pointer;">
+      🔍 Calculer les meilleurs plannings
+    </button>
+  </div>
+</div>
+
+<!-- RESULTATS AVEC ONGLETS DE PROPOSITIONS -->
+<div class="section">
+  <h3>Propositions de journées générées</h3>
+  <p class="subtitle">Le moteur peut proposer 2 à 3 combinaisons selon l'espacement et les horaires</p>
+
+  <div class="cards">
+    <!-- Option 1: Optimale -->
+    <div class="card selected" style="border: 2px solid var(--accent);">
+      <div class="card-body">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span style="background: var(--accent); color: white; font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 4px;">Proposition 1 (Recommandée)</span>
+          <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">3 films &bull; Pause déjeuner incluse</span>
+        </div>
+        <div style="font-size: 0.85rem; line-height: 1.6; margin-top: 0.5rem;">
+          <div>🎬 <strong>10:15 - 12:45</strong> : Dune 2 (2h30)</div>
+          <div style="color: var(--success); font-size: 0.8rem;">🥪 <em>Pause déjeuner (1h15)</em></div>
+          <div>🎬 <strong>14:00 - 16:05</strong> : Furiosa (2h05)</div>
+          <div style="color: var(--text-secondary); font-size: 0.8rem;">⏱️ <em>Transition (15 min)</em></div>
+          <div>🎬 <strong>16:20 - 18:25</strong> : Challengers (2h05)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 2: Version plus tardive -->
+    <div class="card">
+      <div class="card-body">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span style="background: var(--bg-tertiary); color: var(--text-secondary); font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 4px;">Proposition 2 (Après-midi / Soirée)</span>
+          <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">3 films &bull; Démarrage 13h30</span>
+        </div>
+        <div style="font-size: 0.85rem; line-height: 1.6; margin-top: 0.5rem;">
+          <div>🎬 <strong>13:30 - 15:35</strong> : Challengers (2h05)</div>
+          <div style="color: var(--text-secondary); font-size: 0.8rem;">⏱️ <em>Transition (25 min)</em></div>
+          <div>🎬 <strong>16:00 - 18:30</strong> : Dune 2 (2h30)</div>
+          <div style="color: var(--success); font-size: 0.8rem;">🍕 <em>Pause dîner (1h00)</em></div>
+          <div>🎬 <strong>19:30 - 21:35</strong> : Furiosa (2h05)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-neo-cream: #FAFADF;
+  --color-neo-white: #FFFFFF;
+  --color-neo-black: #111111;
+  --color-neo-yellow: #FFE566;
+  --color-neo-coral: #E8635A;
+  --color-neo-mint: #4ECDC4;
+  --color-neo-purple: #7B6CF6;
+  --color-neo-pink: #F9A8B8;
+  --color-neo-lavender: #C4B5FD;
+
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-hand: 'Caveat', cursive;
+
+  --shadow-neo-sm: 3px 3px 0px 0px #111111;
+  --shadow-neo: 4px 4px 0px 0px #111111;
+  --shadow-neo-lg: 6px 6px 0px 0px #111111;
+  --shadow-neo-hover: 2px 2px 0px 0px #111111;
+
+  --radius-neo-sm: 6px;
+  --radius-neo: 10px;
+  --radius-neo-lg: 14px;
+  --radius-neo-pill: 999px;
+}
+
+:root {
+  /* Surfaces */
+  --bg-page:    #FAFADF; /* Warm cream paper / ticket stock */
+  --bg-surface: #FFFFFF; /* Crisp white card surface */
+  --bg-dark:    #111111; /* Ink black */
+
+  /* Ticket & Pop-Cine Accents */
+  --color-yellow:    #FFE566; /* CinePass Yellow - active pills, primary highlights */
+  --color-primary:   #E8635A; /* Curtain Coral - primary CTAs and tight-schedule alerts */
+  --color-teal:      #4ECDC4; /* Mint - comfortable transit/buffer indicator */
+  --color-secondary: #7B6CF6; /* Purple - premium formats (IMAX, Dolby, 4DX) & UGC */
+  --color-pink:      #F9A8B8; /* Soft pink - stickers, callouts */
+  --color-lavender:  #C4B5FD; /* Lavender - secondary blocks and hover accents */
+
+  /* Borders & Hard Shadows (Zero blur rule) */
+  --border-color: #111111;
+  --border-width: 2px;
+  --border: var(--border-width) solid var(--border-color);
+
+  --radius-sm:   6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-pill: 999px;
+
+  --shadow-sm:       3px 3px 0px 0px var(--border-color);
+  --shadow-md:       4px 4px 0px 0px var(--border-color);
+  --shadow-lg:       6px 6px 0px 0px var(--border-color);
+  --shadow-sm-hover: 1px 1px 0px 0px var(--border-color);
+  --shadow-md-hover: 2px 2px 0px 0px var(--border-color);
+
+  /* Typography */
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-hand: 'Caveat', cursive;
+
+  --text-primary:   #111111;
+  --text-secondary: #555555;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Mechanical micro-interactions */
+.neo-interactive {
+  border: 2px solid #111111;
+  box-shadow: 4px 4px 0px 0px #111111;
+  transform: translate(0, 0);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+}
+.neo-interactive:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #111111;
+}
+.neo-interactive:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.neo-card {
+  background-color: #FFFFFF;
+  border: 2px solid #111111;
+  border-radius: 10px;
+  box-shadow: 4px 4px 0px 0px #111111;
+}
+
+.neo-pill {
+  border: 2px solid #111111;
+  border-radius: 999px;
+  box-shadow: 2px 2px 0px 0px #111111;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.neo-pill:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px 0px #111111;
+}
+.neo-pill:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+/* Custom range sliders with 2px black border and solid thumb */
+input[type="range"].neo-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #FFFFFF;
+  border: 2px solid #111111;
+  border-radius: 999px;
+  outline: none;
+}
+
+input[type="range"].neo-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FFE566;
+  border: 2px solid #111111;
+  box-shadow: 2px 2px 0px 0px #111111;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+input[type="range"].neo-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+input[type="range"].neo-slider::-webkit-slider-thumb:active {
+  background: #E8635A;
+  box-shadow: none;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAFADF;
+  border-left: 2px solid #111111;
+}
+::-webkit-scrollbar-thumb {
+  background: #FFE566;
+  border: 2px solid #111111;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E8635A;
+}
