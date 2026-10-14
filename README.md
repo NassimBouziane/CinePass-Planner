@@ -10,6 +10,8 @@ Ce projet est un projet personnel ("pet project") développé avec l'assistance 
 
 L'objectif de cette démarche est d'expérimenter les méthodologies récentes de développement logiciel piloté par agents autonomes : exploration de code, architecture logicielle, refactorisation full-stack, portage algorithmique (Python vers TypeScript), design d'interface et mise en place de tests automatisés continus.
 
+J'ai quand même designer toute l'architecture et une relecture du code entière  est en cours.
+
 ---
 
 ## Présentation
@@ -44,6 +46,12 @@ CinéPass Planner résout un problème classique des cinéphiles réguliers : or
 - **CI/CD & Déploiement :**
   - `GitHub Actions` : synchronisation hebdomadaire automatisée et hébergement GitHub Pages.
   - `scripts/pipeline.sh` : script bash unifié pour exécuter le pipeline en local et en CI.
+
+- **IA & Skills :**
+  - `Antigravity CLI`: Gemini 3.8 Flash
+  - `Skills` : 
+    - [Superpowers](https://github.com/obra/superpowers)
+    - Custom [neobrutalism skill](https://github.com/NassimBouziane/CinePass-Planner/blob/main/.agents/skills/neobrutalism-cine/SKILL.md)
 
 ---
 
