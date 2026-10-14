@@ -156,7 +156,9 @@ def test_allocine_client_raises_rate_limit_error_on_429():
     # 2. Fallback encounters HTTP 429
     mock_api_fallback = MagicMock(spec=["get_movies", "get_showtime"])
     mock_api_fallback.get_movies.side_effect = Exception("HTTP 429: Too Many Requests")
-    client_fallback = AllocineClient(api=mock_api_fallback)
+    mock_session = MagicMock()
+    mock_session.get.side_effect = Exception("HTTP 500: Server Error")
+    client_fallback = AllocineClient(api=mock_api_fallback, session=mock_session)
 
     with pytest.raises(AllocineRateLimitError) as exc_info:
         client_fallback.get_daily_showtimes("B0143", "2026-10-18")

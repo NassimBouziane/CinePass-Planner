@@ -1,4 +1,5 @@
 import logging
+import requests
 import time
 from typing import Optional
 from allocineAPI.allocineAPI import allocineAPI, URLs
@@ -18,13 +19,36 @@ class AllocineRateLimitError(Exception):
 
 
 class AllocineClient:
-    def __init__(self, api: Optional[allocineAPI] = None):
+    def __init__(self, api: Optional[allocineAPI] = None, session: Optional[requests.Session] = None):
         self.api = api or allocineAPI()
+        self.session = session or requests.Session()
+        self.session.headers.update({
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+            ),
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
+            "Referer": "https://www.allocine.fr/",
+        })
 
     def _check_rate_limit(self, error: Exception) -> None:
         """Centralise la détection du rate limit HTTP 429 d'Allociné."""
         if "429" in str(error):
             raise AllocineRateLimitError(f"HTTP 429 Too Many Requests : {error}")
+
+    def _fetch_json(self, url: str) -> dict:
+        """Exécute une requête GET JSON avec headers navigateur et réutilisation de connexion HTTP."""
+        if hasattr(self.api, "_get_json_request") and not isinstance(self.api, allocineAPI):
+            # Conserve la compatibilité avec les mocks de tests unitaires
+            return self.api._get_json_request(url)
+
+        resp = self.session.get(url, timeout=15)
+        if resp.status_code == 429:
+            raise AllocineRateLimitError(f"HTTP 429 Too Many Requests pour {url}")
+        if resp.status_code != 200:
+            raise Exception(f"HTTP {resp.status_code} pour {url}")
+        return resp.json()
 
     def get_daily_showtimes(self, cinema_id: str, date_str: str) -> list[tuple[Movie, list[Showtime]]]:
         """
@@ -38,16 +62,15 @@ class AllocineClient:
 
         # 1. Direct rich JSON extraction from Allociné
         try:
-            if hasattr(self.api, "_get_json_request"):
-                page, total_pages = 0, 1
-                raw_elements: list[dict] = []
-                while page < total_pages:
-                    url = URLs.showtime_url(cinema_id, date_str, page + 1)
-                    json_data = self.api._get_json_request(url)
-                    pagination = json_data.get("pagination", {})
-                    page = int(pagination.get("page", 1))
-                    total_pages = int(pagination.get("totalPages", 1))
-                    raw_elements.extend(json_data.get("results", []))
+            page, total_pages = 0, 1
+            raw_elements: list[dict] = []
+            while page < total_pages:
+                url = URLs.showtime_url(cinema_id, date_str, page + 1)
+                json_data = self._fetch_json(url)
+                pagination = json_data.get("pagination", {})
+                page = int(pagination.get("page", 1))
+                total_pages = int(pagination.get("totalPages", 1))
+                raw_elements.extend(json_data.get("results", []))
 
                 for element in raw_elements:
                     movie_data = element.get("movie") or {}

@@ -58,8 +58,8 @@ SKIP_EXPORT=false
 INSTALL_DEPS=false
 BUILD_WEB=false
 OUTPUT_DIR="web/public/data"
-MIN_DELAY=1.0
-MAX_DELAY=5.0
+MIN_DELAY=0.5
+MAX_DELAY=2.0
 
 show_help() {
   cat << EOF
@@ -71,8 +71,8 @@ ${BOLD}Options:${RESET}
   -d, --days <N>       Nombre de jours de séances à synchroniser depuis Allociné (défaut: 8)
   -l, --limit <N>      Limiter la synchronisation à N cinémas (idéal pour tester rapidement)
   -f, --force          Forcer la synchronisation même si les séances du jour sont déjà fraîches
-  --min-delay <sec>    Délai minimal aléatoire entre requêtes cinémas (défaut: 1.0)
-  --max-delay <sec>    Délai maximal aléatoire entre requêtes cinémas (défaut: 5.0)
+  --min-delay <sec>    Délai minimal aléatoire entre requêtes cinémas (défaut: 0.5)
+  --max-delay <sec>    Délai maximal aléatoire entre requêtes cinémas (défaut: 2.0)
   --skip-seed          Passer l'étape d'initialisation du registre des cinémas depuis le PDF
   --skip-sync          Passer l'étape de synchronisation Allociné (utilise la base SQLite locale existante)
   --skip-export        Passer l'étape d'export des fichiers JSON statiques

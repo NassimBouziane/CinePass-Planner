@@ -1,4 +1,5 @@
 import sqlite3
+import time
 from datetime import date, timedelta
 from typing import Optional
 from cinepass_planner.importer.allocine_client import AllocineClient
@@ -46,6 +47,9 @@ class SyncService:
             # If already fresh in SQLite and not forced, SKIP API call!
             if not force and self.is_cinema_fresh(cinema_id, target_date):
                 continue
+
+            if i > 0:
+                time.sleep(0.05)
 
             daily_data = self.client.get_daily_showtimes(cinema_id, date_str)
 

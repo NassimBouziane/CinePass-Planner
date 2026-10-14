@@ -63,9 +63,10 @@ def test_cli_sync_all_command():
             Cinema("P0103", "Pathé Wepler", "Paris")
         ]
 
-        # First cinema succeeds, second is skipped (IND_), third hits rate limit
+        # First cinema succeeds, second is skipped (IND_), third hits rate limit twice (initial + retry)
         MockSyncService.return_value.sync_cinema.side_effect = [
             25,
+            AllocineRateLimitError("429 Too Many Requests"),
             AllocineRateLimitError("429 Too Many Requests")
         ]
 
@@ -83,7 +84,7 @@ def test_cli_sync_all_command():
 
         # Verify random delay was sampled between 1.0 and 5.0
         mock_random.assert_called_with(1.0, 5.0)
-        # Sleep called with 2.5 (from random delay) and 60 (from 429 rate limit backoff)
+        # Sleep called with 2.5 (from random delay) and 30 (from 429 rate limit backoff)
         mock_sleep.assert_any_call(2.5)
-        mock_sleep.assert_any_call(60)
+        mock_sleep.assert_any_call(30)
 

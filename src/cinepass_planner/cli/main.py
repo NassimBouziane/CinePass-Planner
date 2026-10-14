@@ -208,8 +208,8 @@ def sync_all(
     days: int = typer.Option(8, "--days", "-d", help="Nombre de jours de séances à synchroniser"),
     limit: Optional[int] = typer.Option(None, "--limit", help="Limiter à N cinémas pour test"),
     force: bool = typer.Option(False, "--force", help="Forcer la mise à jour même si déjà synchronisé"),
-    min_delay: float = typer.Option(1.0, "--min-delay", help="Délai minimal aléatoire (en secondes) entre chaque cinéma"),
-    max_delay: float = typer.Option(5.0, "--max-delay", help="Délai maximal aléatoire (en secondes) entre chaque cinéma"),
+    min_delay: float = typer.Option(0.5, "--min-delay", help="Délai minimal aléatoire (en secondes) entre chaque cinéma"),
+    max_delay: float = typer.Option(2.0, "--max-delay", help="Délai maximal aléatoire (en secondes) entre chaque cinéma"),
     delay: Optional[float] = typer.Option(None, "--delay", help="Délai fixe (déprécié, préférer --min-delay et --max-delay)")
 ):
     """Synchroniser tous les cinémas du réseau CinéPass depuis Allociné."""
@@ -230,33 +230,40 @@ def sync_all(
             skipped_independent += 1
             continue
 
-        try:
-            saved = service.sync_cinema(c.id, days_count=days, force=force)
-            total_saved += saved
-            if saved > 0:
-                console.print(f"[{i}/{len(cinemas)}] [green]✓[/green] {c.name} : {saved} séances")
-            else:
-                console.print(f"[{i}/{len(cinemas)}] [dim]–[/dim] {c.name} : 0 séance trouvée")
+        for attempt in range(2):
+            try:
+                saved = service.sync_cinema(c.id, days_count=days, force=force)
+                total_saved += saved
+                if saved > 0:
+                    console.print(f"[{i}/{len(cinemas)}] [green]✓[/green] {c.name} : {saved} séances")
+                else:
+                    console.print(f"[{i}/{len(cinemas)}] [dim]–[/dim] {c.name} : 0 séance trouvée")
 
-            # Délai aléatoire entre 1s et 5s (ou fixe si --delay spécifié)
-            if delay is not None and delay >= 0:
-                sleep_time = delay
-            else:
-                low = min(min_delay, max_delay)
-                high = max(min_delay, max_delay)
-                sleep_time = random.uniform(low, high) if high > 0 else 0
+                # Délai aléatoire de politesse
+                if delay is not None and delay >= 0:
+                    sleep_time = delay
+                else:
+                    low = min(min_delay, max_delay)
+                    high = max(min_delay, max_delay)
+                    sleep_time = random.uniform(low, high) if high > 0 else 0
 
-            if sleep_time > 0:
-                time.sleep(sleep_time)
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+                break
 
-        except AllocineRateLimitError as e:
-            errors += 1
-            console.print(f"[{i}/{len(cinemas)}] [bold red]Rate limit Allociné détecté (HTTP 429) pour {c.name} : {e}[/bold red]")
-            console.print("[bold yellow]Pause de sécurité de 60s avant de reprendre...[/bold yellow]")
-            time.sleep(60)
-        except Exception as e:
-            errors += 1
-            console.print(f"[{i}/{len(cinemas)}] [red]✗ Erreur pour {c.name} ({c.id}) : {e}[/red]")
+            except AllocineRateLimitError as e:
+                if attempt == 0:
+                    console.print(f"[{i}/{len(cinemas)}] [bold red]Rate limit Allociné détecté (HTTP 429) pour {c.name}. Pause de 30s puis nouvelle tentative...[/bold red]")
+                    time.sleep(30)
+                else:
+                    errors += 1
+                    console.print(f"[{i}/{len(cinemas)}] [bold red]Échec après tentative (HTTP 429) pour {c.name} : {e}[/bold red]")
+                    console.print("[bold yellow]Pause de sécurité de 30s avant le prochain cinéma...[/bold yellow]")
+                    time.sleep(30)
+            except Exception as e:
+                errors += 1
+                console.print(f"[{i}/{len(cinemas)}] [red]✗ Erreur pour {c.name} ({c.id}) : {e}[/red]")
+                break
 
     msg = f"[bold green]Synchronisation terminée ![/bold green] {total_saved} séances enregistrées ({errors} erreurs)"
     if skipped_independent > 0:
