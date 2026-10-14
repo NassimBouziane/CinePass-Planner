@@ -1,4 +1,5 @@
 import logging
+import time
 from typing import Optional
 from allocineAPI.allocineAPI import allocineAPI, URLs
 from cinepass_planner.core.parser_utils import (
@@ -10,9 +11,20 @@ from cinepass_planner.models import Movie, Showtime
 
 logger = logging.getLogger(__name__)
 
+
+class AllocineRateLimitError(Exception):
+    """Exception levée en cas de limitation de débit HTTP 429 par Allociné."""
+    pass
+
+
 class AllocineClient:
     def __init__(self, api: Optional[allocineAPI] = None):
         self.api = api or allocineAPI()
+
+    def _check_rate_limit(self, error: Exception) -> None:
+        """Centralise la détection du rate limit HTTP 429 d'Allociné."""
+        if "429" in str(error):
+            raise AllocineRateLimitError(f"HTTP 429 Too Many Requests : {error}")
 
     def get_daily_showtimes(self, cinema_id: str, date_str: str) -> list[tuple[Movie, list[Showtime]]]:
         """
@@ -21,6 +33,8 @@ class AllocineClient:
         Returns list of (Movie, [Showtime]).
         """
         results: list[tuple[Movie, list[Showtime]]] = []
+        if not cinema_id or cinema_id.startswith("IND_"):
+            return results
 
         # 1. Direct rich JSON extraction from Allociné
         try:
@@ -116,6 +130,10 @@ class AllocineClient:
                 if results:
                     return results
         except Exception as e:
+            self._check_rate_limit(e)
+            if "404" in str(e):
+                logger.debug(f"Allociné 404 pour {cinema_id}, cinéma non répertorié.")
+                return results
             logger.warning(f"Direct Allociné JSON fetching failed for {cinema_id} ({e}), falling back...")
 
         # 2. Fallback to standard get_movies + get_showtime methods
@@ -123,6 +141,7 @@ class AllocineClient:
             raw_movies = self.api.get_movies(cinema_id, date_str) or []
             raw_showtimes = self.api.get_showtime(cinema_id, date_str) or []
         except Exception as e:
+            self._check_rate_limit(e)
             logger.warning(f"Failed to fetch Allociné showtimes fallback for {cinema_id} on {date_str}: {e}")
             return results
 

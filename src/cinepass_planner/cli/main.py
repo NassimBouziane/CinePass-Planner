@@ -1,3 +1,5 @@
+import random
+import time
 import typer
 from datetime import date, datetime
 from typing import Optional
@@ -8,13 +10,14 @@ from rich.panel import Panel
 from cinepass_planner.db.connection import get_db_connection
 from cinepass_planner.db.schema import init_db
 from cinepass_planner.db.repositories import CinemaRepository, ShowtimeRepository
+from cinepass_planner.importer.allocine_client import AllocineRateLimitError
 from cinepass_planner.importer.sync_service import SyncService
 from cinepass_planner.core.scheduler import Scheduler, PlanCriteria
 from cinepass_planner.models import PassType
 
 app = typer.Typer(
     name="cinepass",
-    help="🎟️ CinéPass Planner - Organisateur de marathons cinéma pour abonnés Pathé CinéPass"
+    help="CinéPass Planner - Organisateur de marathons cinéma pour abonnés Pathé CinéPass"
 )
 console = Console()
 
@@ -204,7 +207,10 @@ def plan(
 def sync_all(
     days: int = typer.Option(8, "--days", "-d", help="Nombre de jours de séances à synchroniser"),
     limit: Optional[int] = typer.Option(None, "--limit", help="Limiter à N cinémas pour test"),
-    force: bool = typer.Option(False, "--force", help="Forcer la mise à jour même si déjà synchronisé")
+    force: bool = typer.Option(False, "--force", help="Forcer la mise à jour même si déjà synchronisé"),
+    min_delay: float = typer.Option(1.0, "--min-delay", help="Délai minimal aléatoire (en secondes) entre chaque cinéma"),
+    max_delay: float = typer.Option(5.0, "--max-delay", help="Délai maximal aléatoire (en secondes) entre chaque cinéma"),
+    delay: Optional[float] = typer.Option(None, "--delay", help="Délai fixe (déprécié, préférer --min-delay et --max-delay)")
 ):
     """Synchroniser tous les cinémas du réseau CinéPass depuis Allociné."""
     conn = ensure_initialized()
@@ -217,18 +223,45 @@ def sync_all(
     service = SyncService(conn)
     total_saved = 0
     errors = 0
+    skipped_independent = 0
 
     for i, c in enumerate(cinemas, start=1):
+        if c.id.startswith("IND_"):
+            skipped_independent += 1
+            continue
+
         try:
             saved = service.sync_cinema(c.id, days_count=days, force=force)
             total_saved += saved
             if saved > 0:
                 console.print(f"[{i}/{len(cinemas)}] [green]✓[/green] {c.name} : {saved} séances")
+            else:
+                console.print(f"[{i}/{len(cinemas)}] [dim]–[/dim] {c.name} : 0 séance trouvée")
+
+            # Délai aléatoire entre 1s et 5s (ou fixe si --delay spécifié)
+            if delay is not None and delay >= 0:
+                sleep_time = delay
+            else:
+                low = min(min_delay, max_delay)
+                high = max(min_delay, max_delay)
+                sleep_time = random.uniform(low, high) if high > 0 else 0
+
+            if sleep_time > 0:
+                time.sleep(sleep_time)
+
+        except AllocineRateLimitError as e:
+            errors += 1
+            console.print(f"[{i}/{len(cinemas)}] [bold red]Rate limit Allociné détecté (HTTP 429) pour {c.name} : {e}[/bold red]")
+            console.print("[bold yellow]Pause de sécurité de 60s avant de reprendre...[/bold yellow]")
+            time.sleep(60)
         except Exception as e:
             errors += 1
             console.print(f"[{i}/{len(cinemas)}] [red]✗ Erreur pour {c.name} ({c.id}) : {e}[/red]")
 
-    console.print(f"✅ [bold green]Synchronisation terminée ![/bold green] {total_saved} séances enregistrées ({errors} erreurs).")
+    msg = f"[bold green]Synchronisation terminée ![/bold green] {total_saved} séances enregistrées ({errors} erreurs)"
+    if skipped_independent > 0:
+        msg += f" [dim]({skipped_independent} cinémas indépendants sans code Allociné ignorés)[/dim]"
+    console.print(msg)
 
 if __name__ == "__main__":
     app()

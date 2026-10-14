@@ -33,6 +33,9 @@ class SyncService:
         If force is False, skips dates that are already fresh in the local SQLite database (0 API call).
         Returns total number of showtimes saved.
         """
+        if not cinema_id or cinema_id.startswith("IND_"):
+            return 0
+
         current_date = start_date or date.today()
         total_showtimes_saved = 0
 

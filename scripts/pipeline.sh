@@ -55,9 +55,11 @@ FORCE=false
 SKIP_SEED=false
 SKIP_SYNC=false
 SKIP_EXPORT=false
-BUILD_WEB=false
 INSTALL_DEPS=false
+BUILD_WEB=false
 OUTPUT_DIR="web/public/data"
+MIN_DELAY=1.0
+MAX_DELAY=5.0
 
 show_help() {
   cat << EOF
@@ -69,6 +71,8 @@ ${BOLD}Options:${RESET}
   -d, --days <N>       Nombre de jours de séances à synchroniser depuis Allociné (défaut: 8)
   -l, --limit <N>      Limiter la synchronisation à N cinémas (idéal pour tester rapidement)
   -f, --force          Forcer la synchronisation même si les séances du jour sont déjà fraîches
+  --min-delay <sec>    Délai minimal aléatoire entre requêtes cinémas (défaut: 1.0)
+  --max-delay <sec>    Délai maximal aléatoire entre requêtes cinémas (défaut: 5.0)
   --skip-seed          Passer l'étape d'initialisation du registre des cinémas depuis le PDF
   --skip-sync          Passer l'étape de synchronisation Allociné (utilise la base SQLite locale existante)
   --skip-export        Passer l'étape d'export des fichiers JSON statiques
@@ -106,6 +110,14 @@ while [[ $# -gt 0 ]]; do
     -f|--force)
       FORCE=true
       shift
+      ;;
+    --min-delay)
+      MIN_DELAY="$2"
+      shift 2
+      ;;
+    --max-delay)
+      MAX_DELAY="$2"
+      shift 2
       ;;
     --skip-seed)
       SKIP_SEED=true
@@ -174,7 +186,7 @@ fi
 if [[ "$SKIP_SYNC" == true ]]; then
   log_info "Étape 2/4 : Synchronisation Allociné ignorée (--skip-sync)."
 else
-  SYNC_CMD=(uv run cinepass sync-all --days "$DAYS")
+  SYNC_CMD=(uv run cinepass sync-all --days "$DAYS" --min-delay "$MIN_DELAY" --max-delay "$MAX_DELAY")
   if [[ -n "$LIMIT" ]]; then
     SYNC_CMD+=(--limit "$LIMIT")
   fi

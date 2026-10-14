@@ -47,3 +47,43 @@ def test_cli_plan_command():
         assert result.exit_code == 0
         assert "Dune 2" in result.stdout
         assert "10:15" in result.stdout
+
+
+def test_cli_sync_all_command():
+    from cinepass_planner.importer.allocine_client import AllocineRateLimitError
+
+    with patch("cinepass_planner.cli.main.CinemaRepository") as MockCinRepo, \
+         patch("cinepass_planner.cli.main.SyncService") as MockSyncService, \
+         patch("cinepass_planner.cli.main.time.sleep") as mock_sleep, \
+         patch("cinepass_planner.cli.main.random.uniform", return_value=2.5) as mock_random:
+
+        MockCinRepo.return_value.list_all.return_value = [
+            Cinema("B0143", "Pathé Belle Epine", "Thiais"),
+            Cinema("IND_test", "Cinéma Indépendant", "Paris"),
+            Cinema("P0103", "Pathé Wepler", "Paris")
+        ]
+
+        # First cinema succeeds, second is skipped (IND_), third hits rate limit
+        MockSyncService.return_value.sync_cinema.side_effect = [
+            25,
+            AllocineRateLimitError("429 Too Many Requests")
+        ]
+
+        result = runner.invoke(app, [
+            "sync-all",
+            "--days", "2",
+            "--min-delay", "1.0",
+            "--max-delay", "5.0"
+        ])
+
+        assert result.exit_code == 0
+        assert "Pathé Belle Epine : 25 séances" in result.stdout
+        assert "Rate limit Allociné détecté" in result.stdout
+        assert "1 cinémas indépendants sans code Allociné ignorés" in " ".join(result.stdout.split())
+
+        # Verify random delay was sampled between 1.0 and 5.0
+        mock_random.assert_called_with(1.0, 5.0)
+        # Sleep called with 2.5 (from random delay) and 60 (from 429 rate limit backoff)
+        mock_sleep.assert_any_call(2.5)
+        mock_sleep.assert_any_call(60)
+

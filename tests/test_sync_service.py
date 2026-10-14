@@ -137,3 +137,28 @@ def test_allocine_client_extracts_rich_formats():
     assert showtimes[2].format == "4DX ScreenX 3D"
     assert showtimes[2].version == "VF"
 
+
+def test_allocine_client_raises_rate_limit_error_on_429():
+    import pytest
+    from cinepass_planner.importer.allocine_client import AllocineClient, AllocineRateLimitError
+
+    # 1. Direct JSON call encounters HTTP 429
+    mock_api_direct = MagicMock()
+    mock_api_direct._get_json_request.side_effect = Exception("429 Client Error: Too Many Requests for url")
+    client_direct = AllocineClient(api=mock_api_direct)
+
+    with pytest.raises(AllocineRateLimitError) as exc_info:
+        client_direct.get_daily_showtimes("B0143", "2026-10-18")
+    assert "429" in str(exc_info.value)
+    # Ensure fallback was NOT called when direct call was rate limited
+    mock_api_direct.get_movies.assert_not_called()
+
+    # 2. Fallback encounters HTTP 429
+    mock_api_fallback = MagicMock(spec=["get_movies", "get_showtime"])
+    mock_api_fallback.get_movies.side_effect = Exception("HTTP 429: Too Many Requests")
+    client_fallback = AllocineClient(api=mock_api_fallback)
+
+    with pytest.raises(AllocineRateLimitError) as exc_info:
+        client_fallback.get_daily_showtimes("B0143", "2026-10-18")
+    assert "429" in str(exc_info.value)
+
