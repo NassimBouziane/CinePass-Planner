@@ -43,14 +43,17 @@ log_error() {
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
-# Assurer que ~/.local/bin est dans le PATH (utile sur Windows / Git Bash / certains serveurs)
-if [[ -d "$HOME/.local/bin" && ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-  export PATH="$HOME/.local/bin:$PATH"
-fi
+# Assurer que ~/.local/bin et les chemins uv standards sont dans le PATH
+for p in "$HOME/.local/bin" "/c/Users/${USER:-}/.local/bin" "${USERPROFILE:-}/.local/bin"; do
+  if [[ -n "$p" && -d "$p" && ":$PATH:" != *":$p:"* ]]; then
+    export PATH="$p:$PATH"
+  fi
+done
 
 # Options par défaut
-DAYS=8
+DAYS=5
 LIMIT=""
+BATCH_SIZE=15
 FORCE=false
 SKIP_SEED=false
 SKIP_SYNC=false
@@ -68,7 +71,8 @@ ${BOLD}Usage:${RESET} $0 [OPTIONS]
 Pipeline d'initialisation, de synchronisation des séances et de build du site statique.
 
 ${BOLD}Options:${RESET}
-  -d, --days <N>       Nombre de jours de séances à synchroniser depuis Allociné (défaut: 8)
+  -d, --days <N>       Nombre de jours de séances à synchroniser depuis Allociné (défaut: 5)
+  -b, --batch-size <N> Nombre max de cinémas à synchroniser par lot (défaut: 15)
   -l, --limit <N>      Limiter la synchronisation à N cinémas (idéal pour tester rapidement)
   -f, --force          Forcer la synchronisation même si les séances du jour sont déjà fraîches
   --min-delay <sec>    Délai minimal aléatoire entre requêtes cinémas (défaut: 0.5)
@@ -105,6 +109,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -l|--limit)
       LIMIT="$2"
+      shift 2
+      ;;
+    -b|--batch-size)
+      BATCH_SIZE="$2"
       shift 2
       ;;
     -f|--force)
@@ -186,7 +194,7 @@ fi
 if [[ "$SKIP_SYNC" == true ]]; then
   log_info "Étape 2/4 : Synchronisation Allociné ignorée (--skip-sync)."
 else
-  SYNC_CMD=(uv run cinepass sync-all --days "$DAYS" --min-delay "$MIN_DELAY" --max-delay "$MAX_DELAY")
+  SYNC_CMD=(uv run cinepass sync-all --days "$DAYS" --batch-size "$BATCH_SIZE" --min-delay "$MIN_DELAY" --max-delay "$MAX_DELAY")
   if [[ -n "$LIMIT" ]]; then
     SYNC_CMD+=(--limit "$LIMIT")
   fi

@@ -1,7 +1,7 @@
 import random
 import time
 import typer
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Optional
 from rich.console import Console
 from rich.table import Table
@@ -205,8 +205,9 @@ def plan(
 
 @app.command(name="sync-all")
 def sync_all(
-    days: int = typer.Option(8, "--days", "-d", help="Nombre de jours de séances à synchroniser"),
+    days: int = typer.Option(5, "--days", "-d", help="Nombre de jours de séances à synchroniser"),
     limit: Optional[int] = typer.Option(None, "--limit", help="Limiter à N cinémas pour test"),
+    batch_size: Optional[int] = typer.Option(15, "--batch-size", "-b", help="Nombre maximum de cinémas à synchroniser par lot"),
     force: bool = typer.Option(False, "--force", help="Forcer la mise à jour même si déjà synchronisé"),
     min_delay: float = typer.Option(0.5, "--min-delay", help="Délai minimal aléatoire (en secondes) entre chaque cinéma"),
     max_delay: float = typer.Option(2.0, "--max-delay", help="Délai maximal aléatoire (en secondes) entre chaque cinéma"),
@@ -219,21 +220,36 @@ def sync_all(
     if limit:
         cinemas = cinemas[:limit]
 
-    console.print(f"[bold cyan]Synchronisation de {len(cinemas)} cinémas sur {days} jours...[/bold cyan]")
+    console.print(f"[bold cyan]Synchronisation de {len(cinemas)} cinémas sur {days} jours (lot max: {batch_size or 'illimité'})...[/bold cyan]")
     service = SyncService(conn)
     total_saved = 0
     errors = 0
     skipped_independent = 0
+    synced_in_batch = 0
+    rate_limited = False
 
     for i, c in enumerate(cinemas, start=1):
         if c.id.startswith("IND_"):
             skipped_independent += 1
             continue
 
+        # Vérifier si au moins une date a besoin d'être synchronisée
+        needs_sync = False
+        for day_offset in range(days):
+            target_date = date.today() + timedelta(days=day_offset)
+            if force or not service.is_cinema_fresh(c.id, target_date):
+                needs_sync = True
+                break
+
+        if not needs_sync:
+            console.print(f"[{i}/{len(cinemas)}] [dim]✓ {c.name} : Déjà à jour en cache[/dim]")
+            continue
+
         for attempt in range(2):
             try:
                 saved = service.sync_cinema(c.id, days_count=days, force=force)
                 total_saved += saved
+                synced_in_batch += 1
                 if saved > 0:
                     console.print(f"[{i}/{len(cinemas)}] [green]✓[/green] {c.name} : {saved} séances")
                 else:
@@ -258,14 +274,23 @@ def sync_all(
                 else:
                     errors += 1
                     console.print(f"[{i}/{len(cinemas)}] [bold red]Échec après tentative (HTTP 429) pour {c.name} : {e}[/bold red]")
-                    console.print("[bold yellow]Pause de sécurité de 30s avant le prochain cinéma...[/bold yellow]")
-                    time.sleep(30)
+                    console.print("[bold yellow]Arrêt gracieux du lot pour protéger le quota Allociné.[/bold yellow]")
+                    rate_limited = True
+                    break
             except Exception as e:
                 errors += 1
                 console.print(f"[{i}/{len(cinemas)}] [red]✗ Erreur pour {c.name} ({c.id}) : {e}[/red]")
                 break
 
-    msg = f"[bold green]Synchronisation terminée ![/bold green] {total_saved} séances enregistrées ({errors} erreurs)"
+        if rate_limited:
+            console.print("[yellow]Interruption gracieuse : les séances récupérées sont conservées.[/yellow]")
+            break
+
+        if batch_size and synced_in_batch >= batch_size:
+            console.print(f"[bold cyan]Lot de {synced_in_batch} cinémas terminé. Fin du run actuel.[/bold cyan]")
+            break
+
+    msg = f"[bold green]Synchronisation terminée ![/bold green] {total_saved} séances enregistrées ({errors} erreurs, {synced_in_batch} synchronisés ce run)"
     if skipped_independent > 0:
         msg += f" [dim]({skipped_independent} cinémas indépendants sans code Allociné ignorés)[/dim]"
     console.print(msg)

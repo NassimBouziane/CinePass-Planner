@@ -63,6 +63,7 @@ def test_cli_sync_all_command():
             Cinema("P0103", "Pathé Wepler", "Paris")
         ]
 
+        MockSyncService.return_value.is_cinema_fresh.return_value = False
         # First cinema succeeds, second is skipped (IND_), third hits rate limit twice (initial + retry)
         MockSyncService.return_value.sync_cinema.side_effect = [
             25,
@@ -87,4 +88,33 @@ def test_cli_sync_all_command():
         # Sleep called with 2.5 (from random delay) and 30 (from 429 rate limit backoff)
         mock_sleep.assert_any_call(2.5)
         mock_sleep.assert_any_call(30)
+
+
+def test_cli_sync_all_respects_batch_size():
+    with patch("cinepass_planner.cli.main.CinemaRepository") as MockCinRepo, \
+         patch("cinepass_planner.cli.main.SyncService") as MockSyncService, \
+         patch("cinepass_planner.cli.main.time.sleep"):
+
+        MockCinRepo.return_value.list_all.return_value = [
+            Cinema("C1", "Cinema 1", "Paris"),
+            Cinema("C2", "Cinema 2", "Paris"),
+            Cinema("C3", "Cinema 3", "Paris"),
+            Cinema("C4", "Cinema 4", "Paris")
+        ]
+
+        MockSyncService.return_value.is_cinema_fresh.return_value = False
+        MockSyncService.return_value.sync_cinema.return_value = 10
+
+        result = runner.invoke(app, [
+            "sync-all",
+            "--batch-size", "2",
+            "--min-delay", "0",
+            "--max-delay", "0"
+        ])
+
+        assert result.exit_code == 0
+        assert "Lot de 2 cinémas terminé" in result.stdout
+        # Only 2 cinemas should have been synced because batch_size=2
+        assert MockSyncService.return_value.sync_cinema.call_count == 2
+
 

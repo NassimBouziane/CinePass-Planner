@@ -12,9 +12,9 @@ class SyncService:
         self.movie_repo = MovieRepository(conn)
         self.showtime_repo = ShowtimeRepository(conn)
 
-    def is_cinema_fresh(self, cinema_id: str, for_date: date) -> bool:
+    def is_cinema_fresh(self, cinema_id: str, for_date: date, ttl_hours: int = 24) -> bool:
         """
-        Check if showtimes for this cinema and date have been synchronized.
+        Check if showtimes for this cinema and date have been synchronized within ttl_hours.
         """
         date_str = for_date.strftime("%Y-%m-%d")
         cursor = self.conn.cursor()
@@ -22,8 +22,9 @@ class SyncService:
             """
             SELECT COUNT(*) as count FROM sync_history
             WHERE cinema_id = ? AND date_str = ? AND status = 'SUCCESS'
+            AND synced_at >= datetime('now', '-' || ? || ' hours')
             """,
-            (cinema_id, date_str),
+            (cinema_id, date_str, ttl_hours),
         )
         row = cursor.fetchone()
         return bool(row and row["count"] > 0)
