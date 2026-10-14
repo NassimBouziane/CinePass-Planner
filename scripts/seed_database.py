@@ -21,6 +21,9 @@ def main():
     registry = load_or_build_cinema_registry(DEFAULT_PDF_PATH, DEFAULT_MAPPING_PATH)
     print(f"Extraction de {len(registry)} cinémas du réseau CinéPass.")
 
+    with conn:
+        conn.execute("DELETE FROM cinemas WHERE id LIKE 'IND_%'")
+
     for cinema in registry:
         repo.save(cinema)
 
