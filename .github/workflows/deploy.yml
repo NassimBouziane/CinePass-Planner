@@ -1,9 +1,17 @@
-name: Sync & Deploy to GitHub Pages
+name: Deploy & Sync to GitHub Pages
 
 on:
   schedule:
     # Run every 2 hours on Tuesdays (when weekly cinema schedules are published in France)
     - cron: '0 */2 * * 2'
+  push:
+    branches:
+      - main
+    paths:
+      - 'web/**'
+      - 'src/**'
+      - 'scripts/**'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
     inputs:
       full_sync:
@@ -22,9 +30,9 @@ on:
         default: '300'
         type: string
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages and push data commits
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -42,6 +50,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Restore/Save SQLite database cache
         uses: actions/cache@v4
@@ -68,28 +78,65 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 26
+          cache: 'npm'
+          cache-dependency-path: 'web/package-lock.json'
 
       - name: Install web dependencies
         run: |
           cd web
-          npm install
+          npm ci || npm install
+
+      - name: Run web unit tests
+        run: |
+          cd web
+          npm test
 
       - name: Setup GitHub Pages
         id: pages
         uses: actions/configure-pages@v4
 
+      - name: Determine execution mode
+        id: mode
+        run: |
+          IS_SYNC="false"
+          EXTRA_FLAGS=""
+
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            IS_SYNC="true"
+            EXTRA_FLAGS="--full-sync --batch-pause 300"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ "${{ github.event.inputs.frontend_only }}" = "true" ]; then
+              EXTRA_FLAGS="--skip-seed --skip-sync"
+            elif [ "${{ github.event.inputs.full_sync }}" = "true" ]; then
+              IS_SYNC="true"
+              EXTRA_FLAGS="--full-sync --batch-pause ${{ github.event.inputs.batch_pause || '300' }}"
+            fi
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            EXTRA_FLAGS="--skip-seed --skip-sync"
+          fi
+
+          echo "is_sync=$IS_SYNC" >> $GITHUB_OUTPUT
+          echo "extra_flags=$EXTRA_FLAGS" >> $GITHUB_OUTPUT
+
       - name: Run pipeline (seed, sync, export & build site)
         run: |
-          EXTRA_FLAGS=""
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.frontend_only }}" = "true" ]; then
-            EXTRA_FLAGS="--skip-seed --skip-sync"
-          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.full_sync }}" = "true" ]; then
-            EXTRA_FLAGS="--full-sync --batch-pause ${{ github.event.inputs.batch_pause || '300' }}"
-          fi
-          bash scripts/pipeline.sh --days 8 --build-web $EXTRA_FLAGS
+          bash scripts/pipeline.sh --days 8 --build-web ${{ steps.mode.outputs.extra_flags }}
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path || '/' }}
           PYTHONUNBUFFERED: "1"
+
+      - name: Commit and push updated JSON data to main (Sync only)
+        if: steps.mode.outputs.is_sync == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -d "web/public/data" ] && [ -n "$(git status --porcelain web/public/data)" ]; then
+            git add web/public/data
+            git commit -m "chore(data): synchronisation automatique des seances [skip ci]"
+            git push origin main
+          else
+            echo "Aucune modification de donnees a committer."
+          fi
 
       - name: Upload artifact to GitHub Pages
         uses: actions/upload-pages-artifact@v3
