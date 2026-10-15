@@ -314,13 +314,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
               </span>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
-              <!-- Scope Tabs: All Day vs Selected Cinemas -->
+              <!-- Scope Tabs: Selected Cinemas vs All Day -->
               <div class="inline-flex rounded-full border-2 border-[#111111] bg-white p-0.5 text-[0.68rem] font-bold shadow-[1px_1px_0px_0px_#111111]">
-                <button type="button" id="btn-priority-scope-all" class="px-2.5 py-0.5 rounded-full bg-[#FFE566] text-[#111111] border border-[#111111] font-bold cursor-pointer transition-all">
-                  tous les films
-                </button>
-                <button type="button" id="btn-priority-scope-selected" class="px-2.5 py-0.5 rounded-full text-[#555555] hover:text-[#111111] border border-transparent font-bold cursor-pointer transition-all">
+                <button type="button" id="btn-priority-scope-selected" class="px-2.5 py-0.5 rounded-full bg-[#FFE566] text-[#111111] border border-[#111111] font-bold cursor-pointer transition-all">
                   cinémas cochés
+                </button>
+                <button type="button" id="btn-priority-scope-all" class="px-2.5 py-0.5 rounded-full text-[#555555] hover:text-[#111111] border border-transparent font-bold cursor-pointer transition-all">
+                  tous les films
                 </button>
               </div>
               <button id="btn-clear-priority" type="button" class="text-[0.7rem] text-[#777777] hover:text-[#111111] underline font-bold cursor-pointer hidden">
@@ -489,7 +489,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       let activeScenario: string = 'optimal';
       let cinemaSearchFilter = '';
       let prioritySearchFilter = '';
-      let priorityMovieScope: 'all_day' | 'selected' = 'all_day';
+      let priorityMovieScope: 'selected' | 'all_day' = 'selected';
 
       let recalculateTimer: ReturnType<typeof setTimeout> | null = null;
       let persistDebounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -821,11 +821,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
         const visibleCinemas = allCinemas.filter(c => {
           if (cleanSearch) {
-            // When searching, EXCLUDE already checked cinemas per user requirement:
-            // "Quand on fait une recherche de cinema, enlever ceux deja cocher"
-            if (selectedCinemaIds.has(c.id)) {
-              return false;
-            }
             const matchesSearch = normalizeText(c.name).includes(cleanSearch) || normalizeText(c.city).includes(cleanSearch);
             if (cityFilter !== 'Toutes' && c.city !== cityFilter) {
               return false;
@@ -1008,12 +1003,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         btnAll.textContent = allCount !== undefined ? `${allLabel} (${allCount})` : allLabel;
         btnSelected.textContent = selectedCount !== undefined ? `${selectedLabel} (${selectedCount})` : selectedLabel;
 
-        if (priorityMovieScope === 'all_day') {
-          btnAll.className = 'px-2.5 py-0.5 rounded-full bg-[#FFE566] text-[#111111] border border-[#111111] font-bold cursor-pointer shadow-[1px_1px_0px_0px_#111111] transition-all';
-          btnSelected.className = 'px-2.5 py-0.5 rounded-full text-[#555555] hover:text-[#111111] border border-transparent font-bold cursor-pointer transition-all';
-        } else {
+        if (priorityMovieScope === 'selected') {
           btnSelected.className = 'px-2.5 py-0.5 rounded-full bg-[#FFE566] text-[#111111] border border-[#111111] font-bold cursor-pointer shadow-[1px_1px_0px_0px_#111111] transition-all';
           btnAll.className = 'px-2.5 py-0.5 rounded-full text-[#555555] hover:text-[#111111] border border-transparent font-bold cursor-pointer transition-all';
+        } else {
+          btnAll.className = 'px-2.5 py-0.5 rounded-full bg-[#FFE566] text-[#111111] border border-[#111111] font-bold cursor-pointer shadow-[1px_1px_0px_0px_#111111] transition-all';
+          btnSelected.className = 'px-2.5 py-0.5 rounded-full text-[#555555] hover:text-[#111111] border border-transparent font-bold cursor-pointer transition-all';
         }
       }
 
@@ -1052,13 +1047,21 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           }
         }
 
-        const allDayTitles = Array.from(movieCinemasMap.keys()).sort((a, b) => a.localeCompare(b));
-        const selectedCinemaTitles = Array.from(selectedMoviesSet).sort((a, b) => a.localeCompare(b));
+        const allDayTitles = Array.from(movieCinemasMap.keys());
+        const selectedCinemaTitles = Array.from(selectedMoviesSet);
 
         // Update scope counts and active tab UI
         updatePriorityScopeUI(allDayTitles.length, selectedCinemaTitles.length);
 
-        const titlesToShow = priorityMovieScope === 'all_day' ? allDayTitles : selectedCinemaTitles;
+        const titlesToShow = priorityMovieScope === 'selected' ? selectedCinemaTitles : allDayTitles;
+
+        // Put movies playing in checked cinemas first, then alphabetical
+        titlesToShow.sort((a, b) => {
+          const aInChecked = Array.from(movieCinemasMap.get(a) || []).some(cid => selectedCinemaIds.has(cid)) ? 1 : 0;
+          const bInChecked = Array.from(movieCinemasMap.get(b) || []).some(cid => selectedCinemaIds.has(cid)) ? 1 : 0;
+          if (aInChecked !== bInChecked) return bInChecked - aInChecked;
+          return a.localeCompare(b);
+        });
 
         countSpan.textContent = `${selectedPriorityMovies.size} ${t('selectedCinemasCount', currentLang)}${selectedPriorityMovies.size > 1 && currentLang === 'fr' ? 's' : ''}`;
         if (selectedPriorityMovies.size > 0) {
@@ -1157,10 +1160,24 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         let emptyMsg = document.getElementById(emptyMsgId);
         if (buttons.length > 0 && matched === 0) {
           if (!emptyMsg) {
-            emptyMsg = document.createElement('span');
+            emptyMsg = document.createElement('div');
             emptyMsg.id = emptyMsgId;
-            emptyMsg.className = 'text-[#777777] text-xs font-mono py-3 text-center w-full';
-            emptyMsg.textContent = t('noPriorityFound', currentLang);
+            emptyMsg.className = 'w-full py-3 text-center flex flex-col items-center gap-2';
+
+            if (priorityMovieScope === 'selected') {
+              emptyMsg.innerHTML = `
+                <span class="text-[#777777] text-xs font-mono">${t('priorityOtherCinemasHint', currentLang)}</span>
+                <button type="button" id="btn-quick-switch-all-scope" class="px-3 py-1 rounded-full text-xs font-bold bg-[#FFE566] text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] cursor-pointer hover:bg-[#FAFADF]">
+                  ${currentLang === 'en' ? 'Search in all movies today' : 'Rechercher dans tous les films du jour'}
+                </button>
+              `;
+              emptyMsg.querySelector('#btn-quick-switch-all-scope')?.addEventListener('click', () => {
+                priorityMovieScope = 'all_day';
+                renderPriorityMovies();
+              });
+            } else {
+              emptyMsg.innerHTML = `<span class="text-[#777777] text-xs font-mono py-1">${t('noPriorityFound', currentLang)}</span>`;
+            }
             container.appendChild(emptyMsg);
           }
         } else if (emptyMsg) {

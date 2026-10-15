@@ -268,6 +268,54 @@ describe('Scheduler', () => {
     const fourthPlan = results[3];
     expect(fourthPlan.is_favorite_pick).toBe(true);
     expect(fourthPlan.showtimes.map((s) => s.movie_title)).toContain('My Liked Indie');
+    expect(fourthPlan.showtimes.every((s) => criteria.priority_movies.includes(s.movie_title))).toBe(true);
+  });
+
+  it('guarantees that favorite marathon contains ONLY the user selected priority movies when 3 are chosen', () => {
+    const scheduler = new Scheduler();
+    const showtimes: Showtime[] = [
+      // Random non-priority movies
+      { cinema_id: 'C1', movie_title: 'Random A', starts_at: '2026-10-18T10:00:00', ends_at: '2026-10-18T11:45:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Random B', starts_at: '2026-10-18T12:00:00', ends_at: '2026-10-18T13:45:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Random C', starts_at: '2026-10-18T14:00:00', ends_at: '2026-10-18T15:45:00', date_str: '2026-10-18' },
+
+      // 3 priority movies selected by user
+      { cinema_id: 'C1', movie_title: 'Coup de coeur 1', starts_at: '2026-10-18T10:00:00', ends_at: '2026-10-18T12:00:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Coup de coeur 2', starts_at: '2026-10-18T12:30:00', ends_at: '2026-10-18T14:30:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Coup de coeur 3', starts_at: '2026-10-18T15:00:00', ends_at: '2026-10-18T17:00:00', date_str: '2026-10-18' },
+    ];
+
+    const priorityTitles = ['Coup de coeur 1', 'Coup de coeur 2', 'Coup de coeur 3'];
+
+    const criteria: PlanCriteria = {
+      cinema_ids: ['C1'],
+      date_str: '2026-10-18',
+      target_films_count: 3,
+      start_time: '09:00',
+      max_end_time: '23:00',
+      priority_movies: priorityTitles,
+      pass_type: PassType.GOLD,
+      allow_supplements: true,
+      min_buffer_minutes: 15,
+      require_meal_break: false,
+      language: 'ALL',
+      selected_formats: [],
+    };
+
+    const results = scheduler.generatePlans(showtimes, criteria);
+    const favoritePlan = results.find((r) => r.is_favorite_pick);
+    expect(favoritePlan).toBeDefined();
+
+    // The favorite marathon MUST contain ONLY priority movies
+    const favTitles = favoritePlan!.showtimes.map((s) => s.movie_title);
+    expect(favTitles).toHaveLength(3);
+    for (const title of favTitles) {
+      expect(priorityTitles).toContain(title);
+    }
+    // Absolutely NO non-priority movie allowed
+    expect(favTitles).not.toContain('Random A');
+    expect(favTitles).not.toContain('Random B');
+    expect(favTitles).not.toContain('Random C');
   });
 });
 
