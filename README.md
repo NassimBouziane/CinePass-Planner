@@ -1,16 +1,14 @@
 # CinéPass Planner
 
-> Planificateur d'itinéraires et de marathons cinématographiques pour les abonnés Pathé CinéPass (Gold, Silver, -26 ans, Standard).
+> Planificateur de marathons cinématographiques pour les abonnés Pathé CinéPass (Gold, Silver, -26 ans, Standard).
 
 ---
 
 ## Préambule
 
-Ce projet est un projet personnel ("pet project") développé avec l'assistance d'une intelligence artificielle (**Gemini 3.8 Flash** via la suite d'agents **Antigravity CLI**). 
+Ce projet est un projet personnel ("pet project") développé avec l'assistance d'une IA (**Gemini 3.8 Flash** via **Antigravity CLI**). 
 
-L'objectif de cette démarche est d'expérimenter les méthodologies récentes de développement logiciel piloté par agents autonomes : exploration de code, architecture logicielle, refactorisation full-stack, portage algorithmique (Python vers TypeScript), design d'interface et mise en place de tests automatisés continus.
-
-J'ai quand même designer toute l'architecture et une relecture du code entière  est en cours.
+L'objectif de cette démarche est d'expérimenter les méthodologies récentes de développement logiciel piloté par agents autonomes, J'ai quand même designé toute l'architecture et une relecture entière du code est en cours.
 
 ---
 
@@ -33,15 +31,10 @@ CinéPass Planner résout un problème classique des cinéphiles réguliers : or
   - `uv` : gestionnaire d'environnement et de dépendances.
   - `SQLite` : stockage local des cinémas et des séances.
   - `allocine-seances` : récupération des programmations Allociné, basé sur le package open-source [AllocineAPI](https://github.com/lefevre-dev/AllocineAPI).
-  - `pypdf` : extraction du réseau des cinémas partenaires depuis le PDF officiel Pathé.
-  - `Typer` & `Rich` : interface en ligne de commande (CLI).
-  - `pytest` : suite de tests automatisés (27 tests).
 
 - **Frontend & Moteur de Calcul (TypeScript / Astro) :**
   - `Astro 7` : générateur de site statique (SSG) sans serveur runtime.
   - `Tailwind CSS 4` : design Neobrutalism (bordures 2px, ombres franches, typographie monospace).
-  - `Moteur client` : algorithme de backtracking en TypeScript (timestamps pré-calculés, lookups $O(1)$, calcul sous les 10 ms).
-  - `Vitest` : tests unitaires du moteur de planification et des parsers (14 tests).
 
 - **CI/CD & Déploiement :**
   - `GitHub Actions` : synchronisation hebdomadaire automatisée et hébergement GitHub Pages.
@@ -51,7 +44,7 @@ CinéPass Planner résout un problème classique des cinéphiles réguliers : or
   - `Antigravity CLI`: Gemini 3.8 Flash
   - `Skills` : 
     - [Superpowers](https://github.com/obra/superpowers)
-    - Custom [neobrutalism skill](https://github.com/NassimBouziane/CinePass-Planner/blob/main/.agents/skills/neobrutalism-cine/SKILL.md)
+    - Custom [neobrutalism skill](https://github.com/NassimBouziane/CinePass-Planner/blob/main/.agents/skills/neobrutalism-cine/SKILL.md) pour le visuel
 
 ---
 
@@ -111,6 +104,29 @@ bash scripts/pipeline.sh --force
 
 ---
 
+## Utilisation de l'Interface Web
+
+L'interface web statique peut être lancée localement en mode développement :
+
+```bash
+cd web
+npm run dev
+```
+
+L'application est alors accessible sur `http://localhost:4321`.
+
+Fonctionnalités disponibles dans l'interface :
+- Recherche textuelle rapide de cinémas et sélection multi-cinémas.
+- Filtrage par date, créneau horaire, durée de pause minimale et pause déjeuner/dîner.
+- Filtrage par version (Toutes, VOSTFR, VF) et formats techniques (Standard, IMAX, Dolby Cinema, 4DX, ScreenX).
+- Sélection de films prioritaires et recherche dans la programmation du jour.
+- Exclusion de films déjà vus d'un simple clic ("déjà vu ?") avec retrait immédiat des propositions.
+- Visualisation du marathon sous forme de timeline avec affiches en miniature et lightbox haute résolution.
+- Ticket thermique récapitulatif avec estimation des suppléments éventuels et export direct du calendrier `.ics`.
+- Mémorisation automatique de l'ensemble de vos choix via `localStorage`.
+
+---
+
 ## Utilisation en Ligne de Commande (CLI)
 
 Le binaire CLI `cinepass` est directement accessible via `uv run` :
@@ -143,29 +159,6 @@ uv run cinepass plan --cinema W7502 --date 2026-10-18 --films 3 --start 10:00 --
 # Spécifier une formule Silver et refuser les suppléments tarifaires
 uv run cinepass plan --cinema W7502 --films 3 --pass Silver --no-supplements
 ```
-
----
-
-## Utilisation de l'Interface Web
-
-L'interface web statique peut être lancée localement en mode développement :
-
-```bash
-cd web
-npm run dev
-```
-
-L'application est alors accessible sur `http://localhost:4321`.
-
-Fonctionnalités disponibles dans l'interface :
-- Recherche textuelle rapide de cinémas et sélection multi-cinémas.
-- Filtrage par date, créneau horaire, durée de pause minimale et pause déjeuner/dîner.
-- Filtrage par version (Toutes, VOSTFR, VF) et formats techniques (Standard, IMAX, Dolby Cinema, 4DX, ScreenX).
-- Sélection de films prioritaires et recherche dans la programmation du jour.
-- Exclusion de films déjà vus d'un simple clic ("déjà vu ?") avec retrait immédiat des propositions.
-- Visualisation du marathon sous forme de timeline avec affiches en miniature et lightbox haute résolution.
-- Ticket thermique récapitulatif avec estimation des suppléments éventuels et export direct du calendrier `.ics`.
-- Mémorisation automatique de l'ensemble de vos choix via `localStorage`.
 
 ---
 
