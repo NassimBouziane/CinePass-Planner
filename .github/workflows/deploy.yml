@@ -11,6 +11,11 @@ on:
         required: false
         default: true
         type: boolean
+      frontend_only:
+        description: 'Déployer UNIQUEMENT le frontend (sans resynchroniser Allociné)'
+        required: false
+        default: false
+        type: boolean
       batch_pause:
         description: 'Pause en secondes entre chaque lot de 15 cinémas (défaut: 300s = 5min)'
         required: false
@@ -76,7 +81,9 @@ jobs:
       - name: Run pipeline (seed, sync, export & build site)
         run: |
           EXTRA_FLAGS=""
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.full_sync }}" = "true" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.frontend_only }}" = "true" ]; then
+            EXTRA_FLAGS="--skip-seed --skip-sync"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.full_sync }}" = "true" ]; then
             EXTRA_FLAGS="--full-sync --batch-pause ${{ github.event.inputs.batch_pause || '300' }}"
           fi
           bash scripts/pipeline.sh --days 8 --build-web $EXTRA_FLAGS
