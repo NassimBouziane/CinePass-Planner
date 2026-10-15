@@ -16,24 +16,45 @@
           <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-[#111111] flex items-center gap-1.5 font-sans">
             cinépass <span class="bg-[#FFE566] px-2 py-0.5 border-2 border-[#111111] rounded-[6px] shadow-[2px_2px_0px_0px_#111111] rotate-[-1.5deg] inline-block text-base md:text-lg">planner</span>
           </h1>
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[0.7rem] font-extrabold bg-[#C4B5FD] text-[#111111] border-2 border-[#111111] shadow-[1px_1px_0px_0px_#111111] tracking-wider lowercase">
+          <span id="header-tagline" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[0.7rem] font-extrabold bg-[#C4B5FD] text-[#111111] border-2 border-[#111111] shadow-[1px_1px_0px_0px_#111111] tracking-wider lowercase">
             marathon en salle
           </span>
-          <span class="font-hand text-lg text-[#E8635A] font-bold hidden sm:inline-block ml-1">
+          <span id="header-handnote" class="font-hand text-lg text-[#E8635A] font-bold hidden sm:inline-block ml-1">
             optimise ta journée ciné !
           </span>
         </div>
-        <p class="text-xs text-[#555555] font-medium mt-0.5">
-          enchaîne tes films préférés sans temps mort • horaires et salles officielles
+        <p id="header-subtitle" class="text-xs text-[#555555] font-medium mt-0.5">
+          enchaîne tes films préférés sans temps mort • cinémas et horaires du réseau cinépass
         </p>
       </div>
     </div>
 
-    <!-- Sync status badge -->
-    <div class="flex items-center gap-3 self-start md:self-auto">
+    <!-- Sync status badge & Language Switcher -->
+    <div class="flex items-center gap-3 self-start md:self-auto flex-wrap">
+      <!-- Language Selector -->
+      <div class="flex items-center bg-[#FAFADF] border-2 border-[#111111] rounded-full p-0.5 shadow-[2px_2px_0px_0px_#111111]">
+        <button
+          type="button"
+          id="btn-lang-fr"
+          class="btn-lang px-2.5 py-0.5 rounded-full text-xs font-mono font-black border border-transparent cursor-pointer bg-[#FFE566] text-[#111111] border-[#111111] transition-all"
+          title="Passer en Français"
+        >
+          FR
+        </button>
+        <button
+          type="button"
+          id="btn-lang-en"
+          class="btn-lang px-2.5 py-0.5 rounded-full text-xs font-mono font-black border border-transparent cursor-pointer text-[#555555] hover:text-[#111111] transition-all"
+          title="Switch to English"
+        >
+          EN
+        </button>
+      </div>
+
+      <!-- Sync Status -->
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAFADF] border-2 border-[#111111] text-xs font-bold shadow-[2px_2px_0px_0px_#111111]">
         <span class="w-2.5 h-2.5 rounded-full bg-[#4ECDC4] border border-[#111111] animate-pulse"></span>
-        <span class="font-mono text-[0.75rem]">séances synchronisées</span>
+        <span id="header-synced" class="font-mono text-[0.75rem]">séances synchronisées</span>
       </div>
 
       <!-- Pop star vector icon -->

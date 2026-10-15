@@ -152,3 +152,28 @@ export function determineShowtimeFormat(
 
   return 'Standard';
 }
+
+export function normalizeText(str: string | null | undefined): string {
+  if (!str) return '';
+  return String(str)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/['’\-–—/.]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+export function formatCityShort(city: string | null | undefined): string {
+  if (!city) return '';
+  const upper = city.toUpperCase();
+  if (upper.includes('PARIS') || upper.includes('ILE DE FRANCE')) {
+    return 'Paris-IDF';
+  }
+  return city
+    .toLowerCase()
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+

@@ -36,6 +36,8 @@ export interface Itinerary {
   total_pause_minutes: number;
   score: number;
   has_meal_break: boolean;
+  is_favorite_pick?: boolean;
+  priority_matches_count?: number;
 }
 
 export interface PlanCriteria {

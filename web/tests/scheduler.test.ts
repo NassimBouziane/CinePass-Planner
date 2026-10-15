@@ -223,5 +223,51 @@ describe('Scheduler', () => {
     expect(res[0].showtimes.length).toBe(1);
     expect(res[0].showtimes[0].movie_title).toBe('Film Nouveau');
   });
+
+  it('provides up to 3 standard itineraries and a dedicated 4th marathon for favorite/liked movies', () => {
+    const scheduler = new Scheduler();
+    // 5 standard high-scoring movies with perfect 15-min gaps (giving 3 standard paths)
+    // and 1 movie with a priority like that has a huge 90-min gap (low score)
+    const showtimes: Showtime[] = [
+      // Track A (perfect short gaps)
+      { cinema_id: 'C1', movie_title: 'Blockbuster 1', starts_at: '2026-10-18T10:00:00', ends_at: '2026-10-18T12:00:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Blockbuster 2', starts_at: '2026-10-18T12:15:00', ends_at: '2026-10-18T14:15:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Blockbuster 3', starts_at: '2026-10-18T14:30:00', ends_at: '2026-10-18T16:30:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Blockbuster 4', starts_at: '2026-10-18T16:45:00', ends_at: '2026-10-18T18:45:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Blockbuster 5', starts_at: '2026-10-18T19:00:00', ends_at: '2026-10-18T21:00:00', date_str: '2026-10-18' },
+
+      // Track B (Indie Favorite, with large gaps resulting in heavy penalties)
+      { cinema_id: 'C1', movie_title: 'My Liked Indie', starts_at: '2026-10-18T10:00:00', ends_at: '2026-10-18T12:00:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Indie Part 2', starts_at: '2026-10-18T14:00:00', ends_at: '2026-10-18T16:00:00', date_str: '2026-10-18' },
+    ];
+
+    const criteria: PlanCriteria = {
+      cinema_ids: ['C1'],
+      date_str: '2026-10-18',
+      target_films_count: 2,
+      start_time: '09:00',
+      max_end_time: '22:00',
+      priority_movies: ['My Liked Indie'],
+      pass_type: PassType.GOLD,
+      allow_supplements: true,
+      min_buffer_minutes: 15,
+      require_meal_break: false,
+      language: 'ALL',
+      selected_formats: [],
+    };
+
+    const results = scheduler.generatePlans(showtimes, criteria);
+    // Should have top 3 standard proposals + 1 dedicated 4th favorite proposal = 4 total
+    expect(results.length).toBe(4);
+
+    const standardPlans = results.slice(0, 3);
+    for (const p of standardPlans) {
+      expect(p.is_favorite_pick).toBe(false);
+    }
+
+    const fourthPlan = results[3];
+    expect(fourthPlan.is_favorite_pick).toBe(true);
+    expect(fourthPlan.showtimes.map((s) => s.movie_title)).toContain('My Liked Indie');
+  });
 });
 

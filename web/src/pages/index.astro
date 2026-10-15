@@ -18,12 +18,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   <body class="min-h-screen flex flex-col bg-[#FAFADF] text-[#111111] font-sans selection:bg-[#FFE566]">
     <Header />
 
-    <main class="w-full max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-5 sm:py-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+    <main class="w-full max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-6 xl:px-10 py-5 sm:py-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 xl:gap-7">
       
       <!-- ==========================================
            LEFT COLUMN: CONFIGURATION & CINÉMAS
            ========================================== -->
-      <aside class="lg:col-span-4 xl:col-span-3 space-y-4">
+      <aside class="lg:col-span-4 xl:col-span-3 space-y-4 min-w-0">
         
         <!-- Mobile Toggle Button (Visible only on mobile/tablet) -->
         <div class="lg:hidden flex items-center justify-between bg-white border-2 border-[#111111] rounded-[10px] p-3 shadow-[3px_3px_0px_0px_#111111]">
@@ -36,7 +36,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
                 <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
               </svg>
             </span>
-            <span class="text-xs font-bold font-sans">paramètres &amp; cinémas</span>
+            <span class="text-xs font-bold font-sans" id="mobile-toggle-label">paramètres &amp; cinémas</span>
           </div>
           <button
             id="btn-toggle-filters-mobile"
@@ -48,7 +48,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         </div>
 
         <!-- Filter Card -->
-        <div id="filter-panel-card" class="neo-card p-5 space-y-4">
+        <div id="filter-panel-card" class="neo-card p-4 sm:p-5 space-y-4">
           <!-- Card Title & Reset -->
           <div class="flex justify-between items-center border-b-2 border-[#111111] pb-2">
             <div class="flex items-center gap-2">
@@ -58,7 +58,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
                 <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
                 <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
               </svg>
-              <h2 class="text-xs font-black uppercase tracking-wider text-[#111111] font-sans">
+              <h2 id="settings-panel-title" class="text-xs font-black uppercase tracking-wider text-[#111111] font-sans">
                 paramètres &amp; cinémas
               </h2>
             </div>
@@ -74,7 +74,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
           <!-- Feature 1: Quick Search Bar for Cinemas -->
           <div>
-            <label for="input-cinema-search" class="block text-xs font-bold text-[#111111] mb-1">
+            <label for="input-cinema-search" id="label-cinema-search" class="block text-xs font-bold text-[#111111] mb-1">
               1. recherche rapide de cinéma
             </label>
             <div class="relative">
@@ -102,9 +102,15 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             </div>
           </div>
 
+          <!-- Selected Cinemas Active Chips -->
+          <div id="selected-cinemas-chips-wrapper" class="hidden space-y-1">
+            <span class="text-[0.68rem] font-bold text-[#555555] uppercase tracking-wider block" id="label-selected-chips">cinémas cochés :</span>
+            <div id="selected-cinemas-chips" class="flex flex-wrap gap-1 max-h-24 overflow-y-auto p-1 bg-white border border-[#111111]/30 rounded-[6px]"></div>
+          </div>
+
           <!-- City Filter -->
           <div>
-            <label for="select-city" class="block text-xs font-bold text-[#111111] mb-1">
+            <label for="select-city" id="label-city-filter" class="block text-xs font-bold text-[#111111] mb-1">
               filtrer par ville
             </label>
             <select
@@ -118,8 +124,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           <!-- Cinema Checklist with Persistence -->
           <div>
             <div class="flex justify-between items-center mb-1">
-              <label class="block text-xs font-bold text-[#111111]">
-                2. cinémas sélectionnés
+              <label id="label-cinemas-list" class="block text-xs font-bold text-[#111111]">
+                cinémas disponibles
               </label>
               <span
                 id="selected-cinemas-count"
@@ -135,7 +141,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
               <p class="text-[#777777] text-center py-4 font-mono">chargement des cinémas...</p>
             </div>
             <div class="flex justify-between items-center text-[0.65rem] text-[#555555] mt-1.5">
-              <span>sauvegarde automatique</span>
+              <span>sauvegarde auto</span>
               <button id="btn-select-all-city" type="button" class="text-[#111111] underline hover:text-[#E8635A] font-bold cursor-pointer">
                 tout cocher
               </button>
@@ -144,8 +150,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
           <!-- Date Selector -->
           <div>
-            <label for="select-date" class="block text-xs font-bold text-[#111111] mb-1">
-              3. date de la séance
+            <label for="select-date" id="label-date-select" class="block text-xs font-bold text-[#111111] mb-1">
+              2. date de la séance
             </label>
             <select
               id="select-date"
@@ -157,7 +163,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
           <!-- Pass Formula -->
           <div>
-            <label class="block text-xs font-bold text-[#111111] mb-1">
+            <label id="label-pass-formula" class="block text-xs font-bold text-[#111111] mb-1">
               formule d'abonnement
             </label>
             <div class="grid grid-cols-3 gap-1.5 bg-[#FAFADF] p-1 rounded-[8px] border-2 border-[#111111]">
@@ -176,17 +182,17 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             </div>
             <label class="flex items-center gap-2 mt-2 text-xs text-[#111111] cursor-pointer font-medium">
               <input type="checkbox" id="check-supplements" class="w-4 h-4 accent-[#E8635A] rounded border-2 border-[#111111] cursor-pointer" checked />
-              <span>autoriser suppléments (IMAX, 4DX, Dolby)</span>
+              <span id="label-supplements-text">autoriser suppléments (4DX, IMAX...)</span>
             </label>
           </div>
 
           <!-- Language Filter -->
           <div>
-            <label class="block text-xs font-bold text-[#111111] mb-1">version / langue</label>
+            <label id="label-lang-filter" class="block text-xs font-bold text-[#111111] mb-1">version / langue</label>
             <div class="grid grid-cols-3 gap-1.5 bg-[#FAFADF] p-1 rounded-[8px] border-2 border-[#111111] text-xs">
               <label class="cursor-pointer text-center py-2 rounded-[6px] border border-transparent has-[:checked]:border-[#111111] has-[:checked]:bg-[#FFE566] has-[:checked]:shadow-[2px_2px_0px_0px_#111111] font-bold text-[#111111] transition-all">
                 <input type="radio" name="lang-filter" value="ALL" class="sr-only" checked />
-                toutes
+                <span id="radio-lang-all-text">toutes</span>
               </label>
               <label class="cursor-pointer text-center py-2 rounded-[6px] border border-transparent has-[:checked]:border-[#111111] has-[:checked]:bg-[#C4B5FD] has-[:checked]:shadow-[2px_2px_0px_0px_#111111] font-bold text-[#111111] transition-all">
                 <input type="radio" name="lang-filter" value="VOST" class="sr-only" />
@@ -201,7 +207,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
           <!-- Formats Filter -->
           <div>
-            <label class="block text-xs font-bold text-[#111111] mb-1">formats acceptés</label>
+            <label id="label-formats-filter" class="block text-xs font-bold text-[#111111] mb-1">technologies &amp; formats</label>
             <div class="grid grid-cols-2 gap-1.5 text-xs bg-[#FAFADF] border-2 border-[#111111] rounded-[8px] p-2">
               <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
                 <input type="checkbox" class="format-check accent-[#7B6CF6]" value="IMAX" checked /> IMAX
@@ -233,7 +239,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           <!-- Target Count Slider -->
           <div>
             <div class="flex justify-between items-center mb-1 text-xs font-bold text-[#111111]">
-              <span>nombre de films visés :</span>
+              <span id="label-target-count">nombre de films visés :</span>
               <span id="target-count-val" class="font-mono bg-[#FFE566] px-2 py-0.5 rounded border border-[#111111] shadow-[1px_1px_0px_0px_#111111]">
                 3 films
               </span>
@@ -244,7 +250,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           <!-- Time Windows -->
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label for="input-start" class="block text-xs font-bold text-[#111111] mb-1">départ dès</label>
+              <label for="input-start" id="label-time-start" class="block text-xs font-bold text-[#111111] mb-1">départ dès</label>
               <input
                 type="text"
                 id="input-start"
@@ -253,7 +259,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
               />
             </div>
             <div>
-              <label for="input-end" class="block text-xs font-bold text-[#111111] mb-1">fin max</label>
+              <label for="input-end" id="label-time-end" class="block text-xs font-bold text-[#111111] mb-1">fin max</label>
               <input
                 type="text"
                 id="input-end"
@@ -267,10 +273,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           <div class="space-y-2 text-xs border-t-2 border-[#111111] pt-3 font-medium">
             <label class="flex items-center gap-2 text-[#111111] cursor-pointer">
               <input type="checkbox" id="check-meal" class="w-4 h-4 accent-[#E8635A] rounded border-2 border-[#111111] cursor-pointer" checked />
-              <span>pause repas obligatoire (12h-14h ou 19h-21h)</span>
+              <span id="label-meal-break-text">pause repas (min 45 min) (12h-14h ou 19h-21h)</span>
             </label>
             <div class="flex items-center justify-between text-[#111111]">
-              <span>marge mini entre films</span>
+              <span id="label-buffer">buffer min entre séances</span>
               <div class="flex items-center gap-1">
                 <input
                   type="number"
@@ -291,16 +297,16 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       <!-- ==========================================
            CENTER COLUMN: ITINERARY TIMELINE
            ========================================== -->
-      <section class="lg:col-span-5 xl:col-span-6 space-y-5">
+      <section class="lg:col-span-5 xl:col-span-6 space-y-5 min-w-0">
         
-        <!-- Enlarged Priority Movies Selector Card -->
+        <!-- Priority Movies Selector Card -->
         <div class="neo-card p-4 sm:p-5 space-y-3">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-[#111111] pb-2.5">
             <div class="flex items-center gap-2">
               <svg class="w-4 h-4 text-[#111111]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
               </svg>
-              <h3 class="text-xs font-black uppercase text-[#111111] font-sans">
+              <h3 id="priority-movies-title" class="text-xs font-black uppercase text-[#111111] font-sans">
                 films à voir en priorité
               </h3>
               <span id="priority-movies-count" class="text-[0.65rem] font-mono font-black bg-[#FFE566] text-[#111111] px-2 py-0.5 rounded-full border border-[#111111]">
@@ -309,9 +315,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             </div>
             <div class="flex items-center gap-2">
               <button id="btn-clear-priority" type="button" class="text-[0.7rem] text-[#777777] hover:text-[#111111] underline font-bold cursor-pointer hidden">
-                tout désélectionner
+                effacer
               </button>
-              <span class="font-hand text-sm text-[#E8635A] font-bold hidden md:inline">verrouille tes coups de cœur</span>
             </div>
           </div>
 
@@ -320,7 +325,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             <input
               type="text"
               id="input-priority-filter"
-              placeholder="filtrer un film parmi les séances disponibles..."
+              placeholder="filtrer par titre de film..."
               class="w-full bg-[#FAFADF] border-2 border-[#111111] rounded-[6px] px-3 py-1.5 text-xs text-[#111111] placeholder:text-[#777777] font-medium focus:outline-none focus:ring-2 focus:ring-[#FFE566] shadow-[1px_1px_0px_0px_#111111]"
             />
           </div>
@@ -336,15 +341,15 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           <div class="flex items-center justify-between border-b border-[#111111]/20 pb-2">
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-[#E8635A] border border-[#111111]"></span>
-              <h4 class="text-xs font-black uppercase text-[#111111] font-sans">
-                films déjà vus (exclus de la recherche)
+              <h4 id="seen-movies-title" class="text-xs font-black uppercase text-[#111111] font-sans">
+                films déjà vus (exclus)
               </h4>
               <span id="seen-movies-count" class="text-[0.65rem] font-mono font-bold bg-[#FAFADF] text-[#111111] px-1.5 py-0.2 rounded border border-[#111111]">
                 0 exclu
               </span>
             </div>
             <button id="btn-clear-seen" type="button" class="text-[0.7rem] text-[#777777] hover:text-[#E8635A] underline font-bold cursor-pointer hidden">
-              réinitialiser les exclus
+              effacer
             </button>
           </div>
           <div id="seen-movies-container" class="flex flex-wrap gap-1.5 text-xs min-h-[28px]">
@@ -401,7 +406,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       <!-- ==========================================
            RIGHT COLUMN: THERMAL TICKET RECEIPT
            ========================================== -->
-      <aside class="lg:col-span-3 xl:col-span-3 space-y-4">
+      <aside class="lg:col-span-3 xl:col-span-3 space-y-4 min-w-0">
         <div class="sticky top-20" id="thermal-receipt-container">
           <div class="neo-card p-6 text-center text-[#777777]">
             initialisation du ticket...
@@ -434,11 +439,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-[#FFE566] border border-[#111111]"></span>
-          <span class="font-sans font-bold text-[#111111]">cinépass planner</span>
-          <span class="text-[#777777]">• l'optimiseur de journées cinéma</span>
+          <span class="font-sans font-bold text-[#111111]" id="footer-brand">cinépass planner</span>
+          <span class="text-[#777777]" id="footer-sub">• l'optimiseur de journées cinéma</span>
         </div>
-        <div class="text-[0.7rem] text-[#777777] font-mono">
-          réseau officiel pathé &bull; respect de la vie privée &bull; sans publicité
+        <div class="text-[0.7rem] text-[#777777] font-mono" id="footer-meta">
+          réseau cinépass • respect de la vie privée • sans publicité
         </div>
       </div>
     </footer>
@@ -455,10 +460,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         getSelectionStampHtml,
       } from '../components/ItineraryCard';
       import { loadPreferences, savePreferences, clearPreferences } from '../core/storage';
-      import { iconAlert, iconBuilding, iconStar4, iconZap, iconClock, iconSparkles, iconClose } from '../components/Icons';
+      import { normalizeText, formatCityShort } from '../core/parser_utils';
+      import { escapeHtml } from '../components/Badge';
+      import { getStoredLanguage, setStoredLanguage, t, formatDateLocalized, type Lang } from '../core/i18n';
+      import { iconAlert, iconBuilding, iconStar4, iconZap, iconClock, iconSparkles } from '../components/Icons';
 
       const BASE_PATH = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
+      let currentLang: Lang = getStoredLanguage();
       let allCinemas: Cinema[] = [];
       let allDates: string[] = [];
       let currentShowtimesMap: Record<string, any[]> = {};
@@ -532,7 +541,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           for (const city of uniqueCities) {
             const opt = document.createElement('option');
             opt.value = city;
-            opt.textContent = city;
+            opt.textContent = formatCityShort(city);
             citySelect.appendChild(opt);
           }
 
@@ -548,17 +557,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           if (allDates.length === 0) {
             const opt = document.createElement('option');
             opt.value = '';
-            opt.textContent = 'Aucune séance disponible';
+            opt.textContent = t('noShowtimesDateTitle', currentLang);
             dateSelect.appendChild(opt);
           } else {
             for (const d of allDates) {
               const opt = document.createElement('option');
               opt.value = d;
-              opt.textContent = new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-              });
+              opt.textContent = formatDateLocalized(d, currentLang);
               dateSelect.appendChild(opt);
             }
 
@@ -580,7 +585,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           }
           if (qCount) {
             (document.getElementById('range-count') as HTMLInputElement).value = String(qCount);
-            (document.getElementById('target-count-val') as HTMLElement).textContent = `${qCount} films`;
+            (document.getElementById('target-count-val') as HTMLElement).textContent = t('targetCountText', currentLang, { n: qCount });
           }
           if (prefs.start_time) {
             (document.getElementById('input-start') as HTMLInputElement).value = prefs.start_time;
@@ -614,9 +619,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             selectedCinemaIds.add(allCinemas[0].id);
           }
 
-          updateScenarioTabsUI();
-          renderCinemasList();
-          renderSeenMovies();
+          applyLanguage(currentLang);
           setupEventListeners();
           await onDateOrCinemaChanged();
         } catch (e) {
@@ -625,9 +628,143 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           results.innerHTML = `
             <div class="neo-card bg-[#F9A8B8] p-6 text-center text-xs text-[#111111] font-bold flex flex-col items-center gap-2">
               ${iconAlert('w-6 h-6 text-[#111111]')}
-              <span>Impossible de charger les séances pour le moment. Veuillez vérifier votre connexion ou réessayer plus tard.</span>
+              <span>${t('syncErrorMessage', currentLang)}</span>
             </div>
           `;
+        }
+      }
+
+      function applyLanguage(lang: Lang) {
+        currentLang = lang;
+        setStoredLanguage(lang);
+        document.documentElement.lang = lang;
+
+        // Header buttons toggle
+        const btnFr = document.getElementById('btn-lang-fr');
+        const btnEn = document.getElementById('btn-lang-en');
+        if (btnFr && btnEn) {
+          if (lang === 'fr') {
+            btnFr.className = 'btn-lang px-2.5 py-0.5 rounded-full text-xs font-mono font-black border border-transparent cursor-pointer bg-[#FFE566] text-[#111111] border-[#111111] transition-all';
+            btnEn.className = 'btn-lang px-2.5 py-0.5 rounded-full text-xs font-mono font-black border border-transparent cursor-pointer text-[#555555] hover:text-[#111111] transition-all';
+          } else {
+            btnEn.className = 'btn-lang px-2.5 py-0.5 rounded-full text-xs font-mono font-black border border-transparent cursor-pointer bg-[#FFE566] text-[#111111] border-[#111111] transition-all';
+            btnFr.className = 'btn-lang px-2.5 py-0.5 rounded-full text-xs font-mono font-black border border-transparent cursor-pointer text-[#555555] hover:text-[#111111] transition-all';
+          }
+        }
+
+        // Header texts
+        const elTagline = document.getElementById('header-tagline');
+        if (elTagline) elTagline.textContent = t('taglineBadge', lang);
+        const elHandnote = document.getElementById('header-handnote');
+        if (elHandnote) elHandnote.textContent = t('handNote', lang);
+        const elSubtitle = document.getElementById('header-subtitle');
+        if (elSubtitle) elSubtitle.textContent = t('subtitle', lang);
+        const elSynced = document.getElementById('header-synced');
+        if (elSynced) elSynced.textContent = t('syncedBadge', lang);
+
+        // Sidebar elements
+        const elSettingsTitle = document.getElementById('settings-panel-title');
+        if (elSettingsTitle) elSettingsTitle.textContent = t('settingsTitle', lang);
+        const elResetBtn = document.getElementById('btn-reset');
+        if (elResetBtn) {
+          elResetBtn.textContent = t('resetBtn', lang);
+          elResetBtn.title = t('resetTitle', lang);
+        }
+        const elSearchLabel = document.getElementById('label-cinema-search');
+        if (elSearchLabel) elSearchLabel.textContent = t('searchCinemaLabel', lang);
+        const elSearchInput = document.getElementById('input-cinema-search') as HTMLInputElement;
+        if (elSearchInput) elSearchInput.placeholder = t('searchCinemaPlaceholder', lang);
+        const elClearSearch = document.getElementById('btn-clear-search');
+        if (elClearSearch) elClearSearch.title = t('clearSearch', lang);
+
+        const elSelectedChipsLabel = document.getElementById('label-selected-chips');
+        if (elSelectedChipsLabel) elSelectedChipsLabel.textContent = `${t('selectedCinemasHeader', lang)} :`;
+
+        const elCityLabel = document.getElementById('label-city-filter');
+        if (elCityLabel) elCityLabel.textContent = lang === 'en' ? 'filter by city' : 'filtrer par ville';
+        const citySelect = document.getElementById('select-city') as HTMLSelectElement;
+        if (citySelect && citySelect.options.length > 0) {
+          citySelect.options[0].textContent = t('allCities', lang);
+        }
+
+        const elCinemasListLabel = document.getElementById('label-cinemas-list');
+        if (elCinemasListLabel) elCinemasListLabel.textContent = lang === 'en' ? 'available cinemas' : 'cinémas disponibles';
+
+        const elDateLabel = document.getElementById('label-date-select');
+        if (elDateLabel) elDateLabel.textContent = t('dateLabel', lang);
+        updateDateOptionsLabels();
+
+        const elFormulaLabel = document.getElementById('label-pass-formula');
+        if (elFormulaLabel) elFormulaLabel.textContent = t('passFormulaLabel', lang);
+        const elSupplementsSpan = document.getElementById('label-supplements-text');
+        if (elSupplementsSpan) elSupplementsSpan.textContent = t('allowSupplementsText', lang);
+
+        const elLangFilterLabel = document.getElementById('label-lang-filter');
+        if (elLangFilterLabel) elLangFilterLabel.textContent = t('langFilterTitle', lang);
+        const elRadioAllSpan = document.getElementById('radio-lang-all-text');
+        if (elRadioAllSpan) elRadioAllSpan.textContent = t('langAll', lang);
+
+        const elFormatsLabel = document.getElementById('label-formats-filter');
+        if (elFormatsLabel) elFormatsLabel.textContent = t('techFormatsTitle', lang);
+
+        const elCountLabel = document.getElementById('label-target-count');
+        if (elCountLabel) elCountLabel.textContent = `${t('countLabel', lang)} :`;
+        const rangeCount = (document.getElementById('range-count') as HTMLInputElement)?.value || '3';
+        const elCountVal = document.getElementById('target-count-val');
+        if (elCountVal) elCountVal.textContent = t('targetCountText', lang, { n: rangeCount });
+
+        const elStartLabel = document.getElementById('label-time-start');
+        if (elStartLabel) elStartLabel.textContent = t('startTimeLabel', lang);
+        const elEndLabel = document.getElementById('label-time-end');
+        if (elEndLabel) elEndLabel.textContent = t('endTimeLabel', lang);
+
+        const elMealSpan = document.getElementById('label-meal-break-text');
+        if (elMealSpan) elMealSpan.textContent = `${t('mealBreakLabel', lang)} (${t('mealBreakHint', lang)})`;
+        const elBufferLabel = document.getElementById('label-buffer');
+        if (elBufferLabel) elBufferLabel.textContent = t('minBufferLabel', lang);
+
+        // Priority movies
+        const elPriorityTitle = document.getElementById('priority-movies-title');
+        if (elPriorityTitle) elPriorityTitle.textContent = t('priorityTitle', lang);
+        const elPriorityFilter = document.getElementById('input-priority-filter') as HTMLInputElement;
+        if (elPriorityFilter) elPriorityFilter.placeholder = t('prioritySearchPlaceholder', lang);
+        const elClearPriority = document.getElementById('btn-clear-priority');
+        if (elClearPriority) {
+          elClearPriority.textContent = t('clearPriorityBtn', lang);
+          elClearPriority.title = t('clearPriorityTitle', lang);
+        }
+
+        // Seen movies
+        const elSeenTitle = document.getElementById('seen-movies-title');
+        if (elSeenTitle) elSeenTitle.textContent = t('seenMoviesTitle', lang);
+        const elClearSeen = document.getElementById('btn-clear-seen');
+        if (elClearSeen) {
+          elClearSeen.textContent = t('clearSeenBtn', lang);
+          elClearSeen.title = t('clearSeenTitle', lang);
+        }
+
+        // Footer
+        const elFooterSub = document.getElementById('footer-sub');
+        if (elFooterSub) elFooterSub.textContent = t('footerSub', lang);
+        const elFooterMeta = document.getElementById('footer-meta');
+        if (elFooterMeta) elFooterMeta.textContent = t('footerMeta', lang);
+
+        updateScenarioTabsUI();
+        renderCinemasList();
+        renderSelectedCinemasChips();
+        renderSeenMovies();
+        renderPriorityMovies();
+        recalculate();
+      }
+
+      function updateDateOptionsLabels() {
+        const dateSelect = document.getElementById('select-date') as HTMLSelectElement;
+        if (!dateSelect) return;
+        for (let i = 0; i < dateSelect.options.length; i++) {
+          const opt = dateSelect.options[i];
+          if (opt.value) {
+            opt.textContent = formatDateLocalized(opt.value, currentLang);
+          }
         }
       }
 
@@ -640,7 +777,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             ? iconZap('w-3.5 h-3.5')
             : (isSameCinema ? iconBuilding('w-3.5 h-3.5') : iconClock('w-3.5 h-3.5'));
 
-          const label = isOptimal ? 'itinéraire optimal' : (isSameCinema ? 'zéro changement' : 'pauses courtes');
+          const label = isOptimal
+            ? t('scenarioOptimal', currentLang)
+            : (isSameCinema ? t('scenarioSameCinema', currentLang) : t('scenarioShortBreaks', currentLang));
 
           if (s === activeScenario) {
             tab.className = 'scenario-tab neo-btn px-4 py-2 rounded-full text-xs font-bold bg-[#FFE566] text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] flex items-center gap-2 shrink-0 cursor-pointer';
@@ -656,16 +795,20 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         const container = document.getElementById('cinemas-list')!;
         container.innerHTML = '';
 
-        const cleanSearch = cinemaSearchFilter.trim().toLowerCase();
+        const cleanSearch = normalizeText(cinemaSearchFilter);
 
         const visibleCinemas = allCinemas.filter(c => {
           if (cleanSearch) {
-            const matchesSearch = c.name.toLowerCase().includes(cleanSearch) || c.city.toLowerCase().includes(cleanSearch);
-            const isChecked = selectedCinemaIds.has(c.id);
-            if (cityFilter !== 'Toutes' && c.city !== cityFilter && !isChecked) {
+            // When searching, EXCLUDE already checked cinemas per user requirement:
+            // "Quand on fait une recherche de cinema, enlever ceux deja cocher"
+            if (selectedCinemaIds.has(c.id)) {
               return false;
             }
-            return matchesSearch || isChecked;
+            const matchesSearch = normalizeText(c.name).includes(cleanSearch) || normalizeText(c.city).includes(cleanSearch);
+            if (cityFilter !== 'Toutes' && c.city !== cityFilter) {
+              return false;
+            }
+            return matchesSearch;
           }
 
           if (cityFilter === 'Toutes') return true;
@@ -680,7 +823,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         });
 
         if (visibleCinemas.length === 0) {
-          container.innerHTML = `<p class="text-[#777777] text-center py-4 font-mono text-xs">aucun cinéma trouvé pour "${cinemaSearchFilter}"</p>`;
+          container.innerHTML = `<p class="text-[#777777] text-center py-4 font-mono text-xs">${t('noCinemaFound', currentLang)} "${escapeHtml(cinemaSearchFilter)}"</p>`;
           updateSelectedCinemasCount();
           return;
         }
@@ -688,15 +831,15 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         for (const cin of visibleCinemas) {
           const isChecked = selectedCinemaIds.has(cin.id);
           const label = document.createElement('label');
-          label.className = `flex items-center justify-between gap-2 p-1.5 rounded-[6px] border border-transparent hover:border-[#111111] hover:bg-white cursor-pointer text-xs transition-colors ${
+          label.className = `flex items-center justify-between gap-2 p-1.5 rounded-[6px] border border-transparent hover:border-[#111111] hover:bg-white cursor-pointer text-xs transition-colors min-w-0 ${
             isChecked ? 'bg-[#FFE566]/30 font-bold border-[#111111]/40' : ''
           }`;
           label.innerHTML = `
-            <div class="flex items-center gap-2 truncate">
-              <input type="checkbox" value="${cin.id}" class="cinema-checkbox w-3.5 h-3.5 accent-[#E8635A] rounded border border-[#111111] cursor-pointer" ${isChecked ? 'checked' : ''} />
-              <span class="truncate ${isChecked ? 'text-[#111111] font-bold' : 'text-[#333333]'}">${cin.name}</span>
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <input type="checkbox" value="${cin.id}" class="cinema-checkbox w-3.5 h-3.5 accent-[#E8635A] rounded border border-[#111111] cursor-pointer shrink-0" ${isChecked ? 'checked' : ''} />
+              <span class="truncate ${isChecked ? 'text-[#111111] font-bold' : 'text-[#333333]'}" title="${escapeHtml(cin.name)}">${escapeHtml(cin.name)}</span>
             </div>
-            <span class="text-[0.65rem] text-[#777777] font-mono shrink-0">${cin.city}</span>
+            <span class="text-[0.65rem] text-[#777777] font-mono shrink-0 ml-1.5">${escapeHtml(formatCityShort(cin.city))}</span>
           `;
 
           const checkbox = label.querySelector('input')!;
@@ -707,6 +850,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
               selectedCinemaIds.delete(cin.id);
             }
             updateSelectedCinemasCount();
+            renderSelectedCinemasChips();
+            renderCinemasList();
             renderPriorityMovies();
             recalculate();
           });
@@ -717,9 +862,50 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         updateSelectedCinemasCount();
       }
 
+      function renderSelectedCinemasChips() {
+        const wrapper = document.getElementById('selected-cinemas-chips-wrapper');
+        const container = document.getElementById('selected-cinemas-chips');
+        if (!wrapper || !container) return;
+
+        if (selectedCinemaIds.size === 0) {
+          wrapper.classList.add('hidden');
+          container.innerHTML = '';
+          return;
+        }
+
+        wrapper.classList.remove('hidden');
+        container.innerHTML = '';
+
+        const cinemasById = new Map(allCinemas.map(c => [c.id, c]));
+
+        for (const cid of selectedCinemaIds) {
+          const cin = cinemasById.get(cid);
+          if (!cin) continue;
+
+          const chip = document.createElement('span');
+          chip.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.68rem] font-bold bg-[#FFE566] text-[#111111] border border-[#111111] shadow-[1px_1px_0px_0px_#111111] max-w-full';
+          chip.innerHTML = `
+            <span class="truncate max-w-[130px] font-sans" title="${escapeHtml(cin.name)}">${escapeHtml(cin.name)}</span>
+            <button type="button" class="btn-remove-chip cursor-pointer text-[#E8635A] hover:scale-125 font-black text-xs leading-none transition-transform" data-cinema-id="${cin.id}" title="${t('removeCinemaTitle', currentLang)}">✕</button>
+          `;
+
+          chip.querySelector('button')!.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            selectedCinemaIds.delete(cin.id);
+            updateSelectedCinemasCount();
+            renderSelectedCinemasChips();
+            renderCinemasList();
+            renderPriorityMovies();
+            recalculate();
+          });
+
+          container.appendChild(chip);
+        }
+      }
+
       function updateSelectedCinemasCount() {
         const countSpan = document.getElementById('selected-cinemas-count')!;
-        countSpan.textContent = `${selectedCinemaIds.size} sélectionné${selectedCinemaIds.size > 1 ? 's' : ''}`;
+        countSpan.textContent = `${selectedCinemaIds.size} ${t('selectedCinemasCount', currentLang)}${selectedCinemaIds.size > 1 && currentLang === 'fr' ? 's' : ''}`;
       }
 
       function renderSeenMovies() {
@@ -728,10 +914,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         const clearBtn = document.getElementById('btn-clear-seen')!;
         container.innerHTML = '';
 
-        countSpan.textContent = `${selectedSeenMovies.size} exclu${selectedSeenMovies.size > 1 ? 's' : ''}`;
+        countSpan.textContent = `${selectedSeenMovies.size} ${currentLang === 'en' ? 'excluded' : 'exclu'}${selectedSeenMovies.size > 1 && currentLang === 'fr' ? 's' : ''}`;
 
         if (selectedSeenMovies.size === 0) {
-          container.innerHTML = `<span class="text-[0.7rem] text-[#777777] italic py-1">aucun film exclu. clique sur "déjà vu ?" sur une séance pour l'écarter.</span>`;
+          container.innerHTML = `<span class="text-[0.7rem] text-[#777777] italic py-1">${t('noSeenMoviesHint', currentLang)}</span>`;
           clearBtn.classList.add('hidden');
           return;
         }
@@ -742,8 +928,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           const pill = document.createElement('span');
           pill.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#FAFADF] text-[#111111] border-2 border-[#111111] shadow-[1px_1px_0px_0px_#111111]';
           pill.innerHTML = `
-            <span class="line-through opacity-85 truncate max-w-[150px]">${title}</span>
-            <button type="button" class="cursor-pointer text-[#E8635A] hover:scale-125 transition-transform font-black" title="Réintégrer ce film dans l'algorithme">✕</button>
+            <span class="line-through opacity-85 truncate max-w-[150px]">${escapeHtml(title)}</span>
+            <button type="button" class="cursor-pointer text-[#E8635A] hover:scale-125 transition-transform font-black" title="Réintégrer ce film">✕</button>
           `;
           const removeBtn = pill.querySelector('button')!;
           removeBtn.addEventListener('click', () => {
@@ -795,17 +981,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         const clearBtn = document.getElementById('btn-clear-priority')!;
         container.innerHTML = '';
 
-        const titlesSet = new Set<string>();
+        const titlesToPosterMap = new Map<string, string>();
         for (const cid of selectedCinemaIds) {
           const stList = currentShowtimesMap[cid] || [];
           for (const st of stList) {
-            if (st.title) titlesSet.add(st.title);
+            if (st.title && !titlesToPosterMap.has(st.title)) {
+              titlesToPosterMap.set(st.title, st.poster_url || '');
+            }
           }
         }
 
-        const sortedTitles = Array.from(titlesSet).sort();
+        const sortedTitles = Array.from(titlesToPosterMap.keys()).sort();
 
-        countSpan.textContent = `${selectedPriorityMovies.size} sélectionné${selectedPriorityMovies.size > 1 ? 's' : ''}`;
+        countSpan.textContent = `${selectedPriorityMovies.size} ${t('selectedCinemasCount', currentLang)}${selectedPriorityMovies.size > 1 && currentLang === 'fr' ? 's' : ''}`;
         if (selectedPriorityMovies.size > 0) {
           clearBtn.classList.remove('hidden');
         } else {
@@ -813,7 +1001,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         }
 
         if (sortedTitles.length === 0) {
-          container.innerHTML = `<span class="text-[#777777] text-xs font-mono py-3 text-center w-full">aucun film trouvé pour ce filtre.</span>`;
+          container.innerHTML = `<span class="text-[#777777] text-xs font-mono py-3 text-center w-full">${t('noPriorityFound', currentLang)}</span>`;
           return;
         }
 
@@ -822,18 +1010,24 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         for (const title of sortedTitles) {
           const isSelected = selectedPriorityMovies.has(title);
           const isSeen = selectedSeenMovies.has(title);
+          const posterUrl = titlesToPosterMap.get(title);
+
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.setAttribute('data-movie-title', title);
-          btn.setAttribute('data-clean-title', title.toLowerCase());
-          btn.className = `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border-2 border-[#111111] transition-all cursor-pointer ${
+          btn.setAttribute('data-clean-title', normalizeText(title));
+          btn.className = `inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border-2 border-[#111111] transition-all cursor-pointer ${
             isSelected
               ? 'bg-[#FFE566] text-[#111111] shadow-[2px_2px_0px_0px_#111111]'
               : (isSeen ? 'bg-gray-100 text-[#888888] line-through border-gray-400 opacity-60' : 'bg-white text-[#111111] shadow-[1px_1px_0px_0px_#111111] hover:bg-[#FAFADF]')
           }`;
 
-          const starIcon = isSelected ? iconStar4('w-3 h-3 text-[#111111]') : '';
-          btn.innerHTML = `${starIcon}<span>${title}</span>`;
+          const miniPoster = posterUrl
+            ? `<img src="${escapeHtml(posterUrl)}" alt="" class="w-4 h-5 rounded-[2px] object-cover border border-[#111111] shrink-0" loading="lazy" />`
+            : '';
+          const starIcon = isSelected ? iconStar4('w-3 h-3 text-[#111111] shrink-0') : '';
+          btn.innerHTML = `${miniPoster}${starIcon}<span class="truncate max-w-[170px]">${escapeHtml(title)}</span>`;
+
           btn.addEventListener('click', () => {
             if (selectedPriorityMovies.has(title)) {
               selectedPriorityMovies.delete(title);
@@ -855,7 +1049,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
       function filterPriorityMoviesInPlace() {
         const container = document.getElementById('priority-movies-container')!;
-        const cleanFilter = prioritySearchFilter.trim().toLowerCase();
+        const cleanFilter = normalizeText(prioritySearchFilter);
         const buttons = container.querySelectorAll<HTMLButtonElement>('button[data-clean-title]');
         let matched = 0;
         buttons.forEach((b) => {
@@ -872,7 +1066,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             emptyMsg = document.createElement('span');
             emptyMsg.id = emptyMsgId;
             emptyMsg.className = 'text-[#777777] text-xs font-mono py-3 text-center w-full';
-            emptyMsg.textContent = 'aucun film trouvé pour ce filtre.';
+            emptyMsg.textContent = t('noPriorityFound', currentLang);
             container.appendChild(emptyMsg);
           }
         } else if (emptyMsg) {
@@ -911,7 +1105,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
           const stampContainer = card.querySelector('.selection-stamp-container');
           if (stampContainer) {
-            stampContainer.innerHTML = getSelectionStampHtml(isSelected);
+            stampContainer.innerHTML = getSelectionStampHtml(isSelected, currentLang);
           }
 
           const activeBadge = card.querySelector('.active-badge');
@@ -923,7 +1117,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         // Update receipt
         const receiptContainer = document.getElementById('thermal-receipt-container')!;
         const currentActivePlan = calculatedPlans[activePlanIndex] || calculatedPlans[0];
-        receiptContainer.innerHTML = formatThermalReceiptHtml(currentActivePlan, passTypeEnum);
+        receiptContainer.innerHTML = formatThermalReceiptHtml(currentActivePlan, passTypeEnum, currentLang);
 
         // Re-attach ICS download
         const exportBtn = document.getElementById('btn-export-ics');
@@ -954,10 +1148,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
               <div class="w-10 h-10 mx-auto rounded-full bg-[#FAFADF] border-2 border-[#111111] flex items-center justify-center">
                 ${iconBuilding('w-5 h-5 text-[#111111]')}
               </div>
-              <p class="font-bold text-xs text-[#111111]">Veuillez sélectionner au moins un cinéma dans le panneau latéral pour composer votre marathon.</p>
+              <p class="font-bold text-xs text-[#111111]">${t('noCinemaSelectedAdvice', currentLang)}</p>
             </div>
           `;
-          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum);
+          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum, currentLang);
           return;
         }
 
@@ -965,10 +1159,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           resultsHeader.innerHTML = '';
           resultsContainer.innerHTML = `
             <div class="neo-card p-8 text-center text-[#555555]">
-              Veuillez sélectionner une date.
+              ${t('noShowtimesDateTitle', currentLang)}
             </div>
           `;
-          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum);
+          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum, currentLang);
           return;
         }
 
@@ -981,7 +1175,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
                 ${iconAlert('w-4 h-4 text-[#111111]')}
               </span>
               <div>
-                <strong>Attention :</strong> La date sélectionnée (<strong>${selectedDate}</strong>) est déjà passée. Choisissez une date à venir pour organiser votre marathon.
+                <strong>${currentLang === 'en' ? 'Notice:' : 'Attention :'}</strong> ${currentLang === 'en' ? 'The selected date' : 'La date sélectionnée'} (<strong>${selectedDate}</strong>) ${currentLang === 'en' ? 'has already passed.' : 'est déjà passée.'}
               </div>
             </div>
           `;
@@ -1015,10 +1209,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             ${warningBanner}
             <div class="neo-card bg-[#F9A8B8] p-6 text-center text-xs font-bold text-[#111111] flex flex-col items-center gap-2">
               ${iconAlert('w-5 h-5 text-[#111111]')}
-              <span>Aucune séance trouvée pour les cinémas sélectionnés à la date du ${selectedDate}.</span>
+              <span>${t('noShowtimesDateTitle', currentLang)} (${selectedDate}).</span>
             </div>
           `;
-          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum);
+          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum, currentLang);
           return;
         }
 
@@ -1056,6 +1250,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
         if (activeScenario === 'same_cinema') {
           plans.sort((a, b) => {
+            if (Boolean(a.is_favorite_pick) !== Boolean(b.is_favorite_pick)) {
+              return a.is_favorite_pick ? 1 : -1;
+            }
             const cinSetA = new Set(a.showtimes.map(s => s.cinema_id)).size;
             const cinSetB = new Set(b.showtimes.map(s => s.cinema_id)).size;
             if (cinSetA !== cinSetB) return cinSetA - cinSetB;
@@ -1063,13 +1260,21 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           });
         } else if (activeScenario === 'short_breaks') {
           plans.sort((a, b) => {
+            if (Boolean(a.is_favorite_pick) !== Boolean(b.is_favorite_pick)) {
+              return a.is_favorite_pick ? 1 : -1;
+            }
             if (a.total_pause_minutes !== b.total_pause_minutes) {
               return a.total_pause_minutes - b.total_pause_minutes;
             }
             return b.score - a.score;
           });
         } else {
-          plans.sort((a, b) => b.score - a.score);
+          plans.sort((a, b) => {
+            if (Boolean(a.is_favorite_pick) !== Boolean(b.is_favorite_pick)) {
+              return a.is_favorite_pick ? 1 : -1;
+            }
+            return b.score - a.score;
+          });
         }
 
         calculatedPlans = plans;
@@ -1082,11 +1287,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
               <div class="w-8 h-8 mx-auto rounded-full bg-white border border-[#111111] flex items-center justify-center">
                 ${iconAlert('w-4 h-4 text-[#111111]')}
               </div>
-              <p>Aucun itinéraire complet ne correspond à toutes vos contraintes.</p>
-              <p class="font-normal text-[0.7rem] text-[#333333]">Astuce : élargis l'amplitude horaire, réintègre certains films déjà vus ou décoche la pause repas obligatoire.</p>
+              <p>${t('noPlansTitle', currentLang)}</p>
+              <p class="font-normal text-[0.7rem] text-[#333333]">${t('noPlansAdvice', currentLang)}</p>
             </div>
           `;
-          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum);
+          receiptContainer.innerHTML = formatThermalReceiptHtml(null, passTypeEnum, currentLang);
           return;
         }
 
@@ -1094,17 +1299,58 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           activePlanIndex = 0;
         }
 
-        const cinCountInfo = selectedCinemaIds.size > 1 ? `sur ${selectedCinemaIds.size} cinémas` : `dans votre cinéma`;
-        resultsHeader.innerHTML = `<span class="inline-flex items-center gap-1.5">${iconSparkles('w-4 h-4 text-[#111111]')}<strong>${plans.length} proposition${plans.length > 1 ? 's' : ''} d'itinéraires</strong> trouvée${plans.length > 1 ? 's' : ''} ${cinCountInfo} !</span>`;
+        const cinCountInfo = selectedCinemaIds.size > 1
+          ? t('proposalsInCinemas', currentLang, { n: selectedCinemaIds.size })
+          : t('proposalsInOneCinema', currentLang);
 
-        const cardsHtml = plans.map((p, idx) =>
-          formatItineraryCardHtml(p, idx + 1, passTypeEnum, idx === activePlanIndex)
+        const standardPlans = plans.filter((p) => !p.is_favorite_pick);
+        const favoritePlan = plans.find((p) => p.is_favorite_pick);
+
+        const proposalsFoundText = favoritePlan && standardPlans.length > 0
+          ? t('proposalsFoundWithFavorite', currentLang, {
+              n: standardPlans.length,
+              s: standardPlans.length > 1 ? 's' : '',
+            })
+          : t('proposalsFound', currentLang, {
+              n: plans.length,
+              s: plans.length > 1 ? 's' : '',
+            });
+
+        resultsHeader.innerHTML = `<span class="inline-flex items-center gap-1.5">${iconSparkles('w-4 h-4 text-[#111111]')}<strong>${proposalsFoundText}</strong> ${cinCountInfo} !</span>`;
+
+        let cardsHtml = standardPlans.map((p, idx) =>
+          formatItineraryCardHtml(p, idx + 1, passTypeEnum, idx === activePlanIndex, currentLang)
         ).join('');
+
+        if (favoritePlan) {
+          const favIndex = plans.indexOf(favoritePlan);
+          const isFavSelected = favIndex === activePlanIndex;
+          const favCardHtml = formatItineraryCardHtml(favoritePlan, favIndex + 1, passTypeEnum, isFavSelected, currentLang);
+
+          cardsHtml += `
+            <div class="pt-5 mt-6 border-t-2 border-dashed border-[#111111] space-y-3">
+              <div class="flex items-center justify-between gap-2 flex-wrap bg-[#FAFADF] border-2 border-[#111111] p-3 rounded-[10px] shadow-[2px_2px_0px_0px_#111111]">
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#FFE566] border-2 border-[#111111] font-mono font-black text-xs shadow-[1px_1px_0px_0px_#111111]">
+                    ★
+                  </span>
+                  <h3 class="text-xs sm:text-sm font-black text-[#111111] font-sans lowercase">
+                    ${t('favoriteMarathonSectionTitle', currentLang)}
+                  </h3>
+                </div>
+                <span class="text-[0.65rem] font-mono font-black text-[#111111] bg-white border border-[#111111] px-2.5 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#111111] uppercase tracking-wider">
+                  ${t('favoriteMarathonSectionBadge', currentLang)}
+                </span>
+              </div>
+              ${favCardHtml}
+            </div>
+          `;
+        }
 
         resultsContainer.innerHTML = warningBanner + cardsHtml;
 
         const currentActivePlan = plans[activePlanIndex] || plans[0];
-        receiptContainer.innerHTML = formatThermalReceiptHtml(currentActivePlan, passTypeEnum);
+        receiptContainer.innerHTML = formatThermalReceiptHtml(currentActivePlan, passTypeEnum, currentLang);
 
         // Click to select active marathon card
         document.querySelectorAll('#results-container [data-plan-index]').forEach(card => {
@@ -1154,49 +1400,47 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       }
 
       function downloadIcsCalendar(itinerary: Itinerary) {
-        if (!itinerary || itinerary.showtimes.length === 0) return;
+        if (!itinerary || !itinerary.showtimes || itinerary.showtimes.length === 0) return;
 
-        function formatIcsDateTime(isoStr: string): string {
-          return isoStr.replace(/[-:]/g, '').replace('.000', '') + 'Z';
-        }
+        const formatIcsDate = (isoStr: string) => {
+          return isoStr.replace(/[-:]/g, '').split('.')[0] + 'Z';
+        };
 
-        const events = itinerary.showtimes.map((st, i) => {
-          const dtStart = formatIcsDateTime(st.starts_at);
-          const dtEnd = formatIcsDateTime(st.ends_at);
-          const uid = `cinepass-${Date.now()}-${i}@cinepass-planner.local`;
-          const summary = `CinéPass : ${st.movie_title} (${st.format || 'Standard'})`;
-          const location = st.cinema_name || 'Cinéma';
-          const description = `Séance ${i + 1} du marathon CinéPass.\nCinéma : ${st.cinema_name}\nFormat : ${st.format}\nVersion : ${st.version || 'Standard'}.`;
+        const nowIcs = formatIcsDate(new Date().toISOString());
+        let icsEvents = '';
 
-          return [
-            'BEGIN:VEVENT',
-            `UID:${uid}`,
-            `DTSTAMP:${dtStart}`,
-            `DTSTART:${dtStart}`,
-            `DTEND:${dtEnd}`,
-            `SUMMARY:${summary}`,
-            `LOCATION:${location}`,
-            `DESCRIPTION:${description.replace(/\n/g, '\\n')}`,
-            'STATUS:CONFIRMED',
-            'END:VEVENT'
-          ].join('\r\n');
-        }).join('\r\n');
+        itinerary.showtimes.forEach((st, i) => {
+          const dtStart = formatIcsDate(new Date(st.starts_at).toISOString());
+          const dtEnd = formatIcsDate(new Date(st.ends_at).toISOString());
+          const uid = `cinepass-${Date.now()}-${i}@cinepass.planner`;
 
-        const icsContent = [
-          'BEGIN:VCALENDAR',
-          'VERSION:2.0',
-          'PRODID:-//CinePass Planner//FR',
-          'CALSCALE:GREGORIAN',
-          'METHOD:PUBLISH',
-          events,
-          'END:VCALENDAR'
-        ].join('\r\n');
+          icsEvents += `
+BEGIN:VEVENT
+UID:${uid}
+DTSTAMP:${nowIcs}
+DTSTART:${dtStart}
+DTEND:${dtEnd}
+SUMMARY:CinéPass : ${st.movie_title} (${st.format || 'Standard'})
+LOCATION:${st.cinema_name || 'Cinéma'}
+DESCRIPTION:Séance n°${i + 1} de votre marathon cinépass. Version: ${st.version || 'VF/VOST'}.
+STATUS:CONFIRMED
+END:VEVENT`;
+        });
+
+        const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CinePass Planner//FR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Marathon CinéPass
+X-WR-TIMEZONE:Europe/Paris${icsEvents}
+END:VCALENDAR`.trim();
 
         const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        const dateStr = itinerary.showtimes[0]?.date_str || 'marathon';
+        const dateStr = itinerary.showtimes[0]?.date_str || 'seance';
         link.setAttribute('download', `marathon-cinepass-${dateStr}.ics`);
         document.body.appendChild(link);
         link.click();
@@ -1254,6 +1498,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       }
 
       function setupEventListeners() {
+        // Language switcher buttons
+        document.getElementById('btn-lang-fr')?.addEventListener('click', () => {
+          applyLanguage('fr');
+        });
+        document.getElementById('btn-lang-en')?.addEventListener('click', () => {
+          applyLanguage('en');
+        });
+
         // Modal close listeners
         document.getElementById('btn-close-poster-modal')!.addEventListener('click', closePosterModal);
         document.getElementById('poster-modal')!.addEventListener('click', (ev) => {
@@ -1280,7 +1532,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           scheduleRecalculate(0);
         });
 
-        // Instant In-Place Filter for priority movies (0ms lag, no DOM destruction)
+        // Instant In-Place Filter for priority movies
         const priorityFilterInput = document.getElementById('input-priority-filter') as HTMLInputElement;
         priorityFilterInput.addEventListener('input', () => {
           prioritySearchFilter = priorityFilterInput.value;
@@ -1297,10 +1549,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             const isHidden = filterPanelCard.classList.contains('hidden');
             if (isHidden) {
               filterPanelCard.classList.remove('hidden');
-              textToggleFilters.textContent = 'masquer filtres';
+              textToggleFilters.textContent = currentLang === 'en' ? 'hide filters' : 'masquer filtres';
             } else {
               filterPanelCard.classList.add('hidden');
-              textToggleFilters.textContent = 'afficher filtres';
+              textToggleFilters.textContent = currentLang === 'en' ? 'show filters' : 'afficher filtres';
             }
           });
         }
@@ -1332,13 +1584,21 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         });
 
         // Select all cinemas in current filter
-        document.getElementById('btn-select-all-city')!.addEventListener('click', () => {
+        const btnToggleAll = document.getElementById('btn-select-all-city')!;
+        btnToggleAll.addEventListener('click', () => {
           const checkboxes = document.querySelectorAll('.cinema-checkbox') as NodeListOf<HTMLInputElement>;
+          const anyUnchecked = Array.from(checkboxes).some(cb => !cb.checked);
           checkboxes.forEach(cb => {
-            cb.checked = true;
-            selectedCinemaIds.add(cb.value);
+            cb.checked = anyUnchecked;
+            if (anyUnchecked) {
+              selectedCinemaIds.add(cb.value);
+            } else {
+              selectedCinemaIds.delete(cb.value);
+            }
           });
+          btnToggleAll.textContent = anyUnchecked ? t('deselectAll', currentLang) : t('selectAll', currentLang);
           updateSelectedCinemasCount();
+          renderSelectedCinemasChips();
           renderPriorityMovies();
           scheduleRecalculate(0);
         });
@@ -1380,7 +1640,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         const rangeCount = document.getElementById('range-count') as HTMLInputElement;
         let rangeDebounceTimer: ReturnType<typeof setTimeout> | null = null;
         rangeCount.addEventListener('input', () => {
-          document.getElementById('target-count-val')!.textContent = `${rangeCount.value} films`;
+          document.getElementById('target-count-val')!.textContent = t('targetCountText', currentLang, { n: rangeCount.value });
           if (rangeDebounceTimer) clearTimeout(rangeDebounceTimer);
           rangeDebounceTimer = setTimeout(() => {
             recalculate();

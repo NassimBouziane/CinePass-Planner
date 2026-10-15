@@ -139,5 +139,25 @@ describe('parser_utils', () => {
     const badgeImaxGold = getFormatBadgeHtml('IMAX', PassType.GOLD);
     expect(badgeImaxGold).toContain('Inclus Gold');
   });
+
+  it('normalizes text stripping accents, casing, and special characters', async () => {
+    const { normalizeText } = await import('../src/core/parser_utils');
+    expect(normalizeText('Pathé Alésia')).toBe('pathe alesia');
+    expect(normalizeText('Élysées-BiarrITZ')).toBe('elysees biarritz');
+    expect(normalizeText("L'Arlequin")).toBe('l arlequin');
+    expect(normalizeText('  Ciné   Cap-Vert  ')).toBe('cine cap vert');
+    expect(normalizeText(null)).toBe('');
+    expect(normalizeText(undefined)).toBe('');
+  });
+
+  it('formats city name cleanly and shortens Paris - Ile de France', async () => {
+    const { formatCityShort } = await import('../src/core/parser_utils');
+    expect(formatCityShort('PARIS - ILE DE FRANCE')).toBe('Paris-IDF');
+    expect(formatCityShort('Paris - Ile de France')).toBe('Paris-IDF');
+    expect(formatCityShort('LYON')).toBe('Lyon');
+    expect(formatCityShort('aix-en-provence')).toBe('Aix-en-provence');
+    expect(formatCityShort('')).toBe('');
+    expect(formatCityShort(null)).toBe('');
+  });
 });
 

@@ -1,6 +1,6 @@
 # CinéPass Planner
 
-> Planificateur de marathons cinématographiques pour les abonnés Pathé CinéPass (Gold, Silver, -26 ans, Standard).
+> Planificateur de marathons cinématographiques pour les abonnés CinéPass (Gold, Silver, -26 ans). Application indépendante non affiliée à Pathé.
 
 ---
 

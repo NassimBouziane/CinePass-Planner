@@ -104,12 +104,14 @@ export class Scheduler {
       let totalMovieMin = 0;
       let totalPauseMin = 0;
       let score = path.length * 1000;
+      let priorityMatches = 0;
 
       for (const st of path) {
         totalMovieMin += st.runtime_min;
 
         if (prioritySet.has(st.movie_title)) {
           score += 2000;
+          priorityMatches++;
         }
       }
 
@@ -143,13 +145,14 @@ export class Scheduler {
         total_pause_minutes: totalPauseMin,
         score,
         has_meal_break: hasMeal,
+        priority_matches_count: priorityMatches,
       });
     }
 
     // Sort by score descending
     itineraries.sort((a, b) => b.score - a.score);
 
-    // Deduplicate top 3 unique paths
+    // Deduplicate top 3 unique standard paths
     const uniqueItineraries: Itinerary[] = [];
     const seenSignatures = new Set<string>();
 
@@ -157,10 +160,37 @@ export class Scheduler {
       const sig = it.showtimes.map((s) => `${s.movie_title}@${s.starts_at}`).join('-');
       if (!seenSignatures.has(sig)) {
         seenSignatures.add(sig);
-        uniqueItineraries.push(it);
+        uniqueItineraries.push({ ...it, is_favorite_pick: false });
       }
       if (uniqueItineraries.length >= 3) {
         break;
+      }
+    }
+
+    // Add a dedicated 4th marathon separated from the top 3 specifically for liked/priority movies
+    if (prioritySet.size > 0) {
+      const priorityCandidates = itineraries.filter((it) => (it.priority_matches_count || 0) > 0);
+      if (priorityCandidates.length > 0) {
+        priorityCandidates.sort((a, b) => {
+          const diffMatches = (b.priority_matches_count || 0) - (a.priority_matches_count || 0);
+          if (diffMatches !== 0) return diffMatches;
+          return b.score - a.score;
+        });
+
+        // Prefer a priority itinerary not already in top 3, otherwise take the best one
+        const distinctPriority = priorityCandidates.find((cand) => {
+          const candSig = cand.showtimes.map((s) => `${s.movie_title}@${s.starts_at}`).join('-');
+          return !seenSignatures.has(candSig);
+        });
+
+        const chosenPriority = distinctPriority || priorityCandidates[0];
+        const favoriteItinerary: Itinerary = {
+          ...chosenPriority,
+          showtimes: [...chosenPriority.showtimes],
+          is_favorite_pick: true,
+        };
+
+        uniqueItineraries.push(favoriteItinerary);
       }
     }
 
