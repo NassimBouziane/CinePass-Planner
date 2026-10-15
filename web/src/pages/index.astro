@@ -302,7 +302,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         <!-- Priority Movies Selector Card -->
         <div class="neo-card p-4 sm:p-5 space-y-3">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-[#111111] pb-2.5">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
               <svg class="w-4 h-4 text-[#111111]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
               </svg>
@@ -313,7 +313,16 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
                 0 sélectionné
               </span>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
+              <!-- Scope Tabs: All Day vs Selected Cinemas -->
+              <div class="inline-flex rounded-full border-2 border-[#111111] bg-white p-0.5 text-[0.68rem] font-bold shadow-[1px_1px_0px_0px_#111111]">
+                <button type="button" id="btn-priority-scope-all" class="px-2.5 py-0.5 rounded-full bg-[#FFE566] text-[#111111] border border-[#111111] font-bold cursor-pointer transition-all">
+                  tous les films
+                </button>
+                <button type="button" id="btn-priority-scope-selected" class="px-2.5 py-0.5 rounded-full text-[#555555] hover:text-[#111111] border border-transparent font-bold cursor-pointer transition-all">
+                  cinémas cochés
+                </button>
+              </div>
               <button id="btn-clear-priority" type="button" class="text-[0.7rem] text-[#777777] hover:text-[#111111] underline font-bold cursor-pointer hidden">
                 effacer
               </button>
@@ -332,7 +341,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
           <!-- Enlarged container for movies with scrollbar -->
           <div id="priority-movies-container" class="flex flex-wrap gap-1.5 text-xs max-h-56 sm:max-h-64 overflow-y-auto p-1 bg-[#FAFADF]/60 rounded-[8px] border border-[#111111]/30">
-            <p class="text-[#777777] text-xs py-3 text-center w-full">sélectionne un cinéma pour afficher les affiches disponibles.</p>
+            <p class="text-[#777777] text-xs py-3 text-center w-full">chargement des films disponibles...</p>
           </div>
         </div>
 
@@ -480,6 +489,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       let activeScenario: string = 'optimal';
       let cinemaSearchFilter = '';
       let prioritySearchFilter = '';
+      let priorityMovieScope: 'all_day' | 'selected' = 'all_day';
 
       let recalculateTimer: ReturnType<typeof setTimeout> | null = null;
       let persistDebounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -616,7 +626,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           }
 
           if (selectedCinemaIds.size === 0 && allCinemas.length > 0) {
-            selectedCinemaIds.add(allCinemas[0].id);
+            const citySelect = document.getElementById('select-city') as HTMLSelectElement;
+            const chosenCity = citySelect?.value || 'Toutes';
+            if (chosenCity !== 'Toutes') {
+              const cityCinemas = allCinemas.filter(c => c.city === chosenCity);
+              cityCinemas.forEach(c => selectedCinemaIds.add(c.id));
+            } else {
+              const parisCinemas = allCinemas.filter(c => c.city === 'PARIS - ILE DE FRANCE');
+              if (parisCinemas.length > 0) {
+                parisCinemas.forEach(c => selectedCinemaIds.add(c.id));
+              } else {
+                selectedCinemaIds.add(allCinemas[0].id);
+              }
+            }
           }
 
           applyLanguage(currentLang);
@@ -975,23 +997,68 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         scheduleRecalculate(0);
       }
 
+      function updatePriorityScopeUI(allCount?: number, selectedCount?: number) {
+        const btnAll = document.getElementById('btn-priority-scope-all');
+        const btnSelected = document.getElementById('btn-priority-scope-selected');
+        if (!btnAll || !btnSelected) return;
+
+        const allLabel = t('priorityScopeAll', currentLang);
+        const selectedLabel = t('priorityScopeSelected', currentLang);
+
+        btnAll.textContent = allCount !== undefined ? `${allLabel} (${allCount})` : allLabel;
+        btnSelected.textContent = selectedCount !== undefined ? `${selectedLabel} (${selectedCount})` : selectedLabel;
+
+        if (priorityMovieScope === 'all_day') {
+          btnAll.className = 'px-2.5 py-0.5 rounded-full bg-[#FFE566] text-[#111111] border border-[#111111] font-bold cursor-pointer shadow-[1px_1px_0px_0px_#111111] transition-all';
+          btnSelected.className = 'px-2.5 py-0.5 rounded-full text-[#555555] hover:text-[#111111] border border-transparent font-bold cursor-pointer transition-all';
+        } else {
+          btnSelected.className = 'px-2.5 py-0.5 rounded-full bg-[#FFE566] text-[#111111] border border-[#111111] font-bold cursor-pointer shadow-[1px_1px_0px_0px_#111111] transition-all';
+          btnAll.className = 'px-2.5 py-0.5 rounded-full text-[#555555] hover:text-[#111111] border border-transparent font-bold cursor-pointer transition-all';
+        }
+      }
+
       function renderPriorityMovies() {
         const container = document.getElementById('priority-movies-container')!;
         const countSpan = document.getElementById('priority-movies-count')!;
         const clearBtn = document.getElementById('btn-clear-priority')!;
         container.innerHTML = '';
 
-        const titlesSet = new Set<string>();
-        for (const cid of selectedCinemaIds) {
-          const stList = currentShowtimesMap[cid] || [];
+        const cinemasById = new Map(allCinemas.map(c => [c.id, c]));
+        const cityFilter = (document.getElementById('select-city') as HTMLSelectElement)?.value || 'Toutes';
+
+        // Collect all movies for the date, filtered by city if specified
+        // movieCinemasMap: movie title -> Set of cinema IDs
+        const movieCinemasMap = new Map<string, Set<string>>();
+        const selectedMoviesSet = new Set<string>();
+
+        for (const [cid, stList] of Object.entries(currentShowtimesMap)) {
+          const cin = cinemasById.get(cid);
+          // If a specific city is selected, only consider showtimes from that city
+          if (cityFilter !== 'Toutes' && cin && cin.city !== cityFilter) {
+            continue;
+          }
+          const isCinemaSelected = selectedCinemaIds.has(cid);
           for (const st of stList) {
-            if (st.title) {
-              titlesSet.add(st.title);
+            if (st && st.title) {
+              if (!movieCinemasMap.has(st.title)) {
+                movieCinemasMap.set(st.title, new Set());
+              }
+              movieCinemasMap.get(st.title)!.add(cid);
+
+              if (isCinemaSelected) {
+                selectedMoviesSet.add(st.title);
+              }
             }
           }
         }
 
-        const sortedTitles = Array.from(titlesSet).sort();
+        const allDayTitles = Array.from(movieCinemasMap.keys()).sort((a, b) => a.localeCompare(b));
+        const selectedCinemaTitles = Array.from(selectedMoviesSet).sort((a, b) => a.localeCompare(b));
+
+        // Update scope counts and active tab UI
+        updatePriorityScopeUI(allDayTitles.length, selectedCinemaTitles.length);
+
+        const titlesToShow = priorityMovieScope === 'all_day' ? allDayTitles : selectedCinemaTitles;
 
         countSpan.textContent = `${selectedPriorityMovies.size} ${t('selectedCinemasCount', currentLang)}${selectedPriorityMovies.size > 1 && currentLang === 'fr' ? 's' : ''}`;
         if (selectedPriorityMovies.size > 0) {
@@ -1000,38 +1067,69 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           clearBtn.classList.add('hidden');
         }
 
-        if (sortedTitles.length === 0) {
+        if (titlesToShow.length === 0) {
           container.innerHTML = `<span class="text-[#777777] text-xs font-mono py-3 text-center w-full">${t('noPriorityFound', currentLang)}</span>`;
           return;
         }
 
         const frag = document.createDocumentFragment();
 
-        for (const title of sortedTitles) {
+        for (const title of titlesToShow) {
           const isSelected = selectedPriorityMovies.has(title);
           const isSeen = selectedSeenMovies.has(title);
+          const cids = movieCinemasMap.get(title) || new Set<string>();
+          const isPlayingInCheckedCinema = Array.from(cids).some(cid => selectedCinemaIds.has(cid));
+
+          const cinemaNames = Array.from(cids).map(cid => cinemasById.get(cid)?.name || cid);
+          const cinemasTooltip = cinemaNames.join(', ');
 
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.setAttribute('data-movie-title', title);
           btn.setAttribute('data-clean-title', normalizeText(title));
-          btn.className = `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border-2 border-[#111111] transition-all cursor-pointer ${
-            isSelected
-              ? 'bg-[#FFE566] text-[#111111] shadow-[2px_2px_0px_0px_#111111]'
-              : (isSeen ? 'bg-gray-100 text-[#888888] line-through border-gray-400 opacity-60' : 'bg-white text-[#111111] shadow-[1px_1px_0px_0px_#111111] hover:bg-[#FAFADF]')
-          }`;
+          btn.setAttribute('data-in-selected', isPlayingInCheckedCinema ? 'true' : 'false');
+          btn.title = isPlayingInCheckedCinema
+            ? `${title} (${cinemasTooltip})`
+            : `${title} - ${cinemasTooltip} (${currentLang === 'en' ? 'click to add cinema & prioritize' : 'cliquer pour ajouter ce cinéma et prioriser'})`;
+
+          let btnColorClass = 'bg-white text-[#111111] shadow-[1px_1px_0px_0px_#111111] hover:bg-[#FAFADF]';
+          if (isSelected) {
+            btnColorClass = 'bg-[#FFE566] text-[#111111] shadow-[2px_2px_0px_0px_#111111]';
+          } else if (isSeen) {
+            btnColorClass = 'bg-gray-100 text-[#888888] line-through border-gray-400 opacity-60';
+          } else if (!isPlayingInCheckedCinema) {
+            btnColorClass = 'bg-[#FAFADF] text-[#333333] border-dashed border-[#111111] hover:bg-[#FFE566]/50 shadow-[1px_1px_0px_0px_#111111]';
+          }
+
+          btn.className = `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border-2 border-[#111111] transition-all cursor-pointer ${btnColorClass}`;
 
           const starIcon = isSelected ? iconStar4('w-3 h-3 text-[#111111] shrink-0') : '';
-          btn.innerHTML = `${starIcon}<span class="truncate max-w-[170px]">${escapeHtml(title)}</span>`;
+
+          let cinemaBadgeHtml = '';
+          if (!isPlayingInCheckedCinema && cinemaNames.length > 0) {
+            const shortCinName = cinemaNames[0].replace(/^Pathé\s+/i, '');
+            cinemaBadgeHtml = `<span class="text-[0.62rem] font-mono px-1 rounded bg-[#E8635A]/15 text-[#111111] border border-[#111111]/30 shrink-0">+ ${escapeHtml(shortCinName)}</span>`;
+          }
+
+          btn.innerHTML = `${starIcon}<span class="truncate max-w-[160px]">${escapeHtml(title)}</span>${cinemaBadgeHtml}`;
 
           btn.addEventListener('click', () => {
             if (selectedPriorityMovies.has(title)) {
               selectedPriorityMovies.delete(title);
             } else {
               selectedPriorityMovies.add(title);
-              // If priority, remove from seen
               selectedSeenMovies.delete(title);
               renderSeenMovies();
+
+              // If movie is not playing in any checked cinema, automatically add its cinema(s) to selectedCinemaIds
+              if (!isPlayingInCheckedCinema && cids.size > 0) {
+                for (const cid of cids) {
+                  selectedCinemaIds.add(cid);
+                }
+                updateSelectedCinemasCount();
+                renderSelectedCinemasChips();
+                renderCinemasList();
+              }
             }
             renderPriorityMovies();
             scheduleRecalculate(0);
@@ -1609,8 +1707,41 @@ END:VCALENDAR`.trim();
           });
         });
 
+        const btnScopeAll = document.getElementById('btn-priority-scope-all');
+        const btnScopeSelected = document.getElementById('btn-priority-scope-selected');
+        if (btnScopeAll && btnScopeSelected) {
+          btnScopeAll.addEventListener('click', () => {
+            priorityMovieScope = 'all_day';
+            renderPriorityMovies();
+          });
+          btnScopeSelected.addEventListener('click', () => {
+            priorityMovieScope = 'selected';
+            renderPriorityMovies();
+          });
+        }
+
         document.getElementById('select-city')!.addEventListener('change', () => {
+          const citySelect = document.getElementById('select-city') as HTMLSelectElement;
+          const selectedCity = citySelect.value;
+          if (selectedCity !== 'Toutes') {
+            // Remove cinemas from other cities
+            for (const cid of Array.from(selectedCinemaIds)) {
+              const cin = allCinemas.find(c => c.id === cid);
+              if (cin && cin.city !== selectedCity) {
+                selectedCinemaIds.delete(cid);
+              }
+            }
+            // If none from this city are selected, select all cinemas in this city
+            const cityCinemas = allCinemas.filter(c => c.city === selectedCity);
+            const hasAnyInCity = cityCinemas.some(c => selectedCinemaIds.has(c.id));
+            if (!hasAnyInCity && cityCinemas.length > 0) {
+              cityCinemas.forEach(c => selectedCinemaIds.add(c.id));
+            }
+          }
+          updateSelectedCinemasCount();
+          renderSelectedCinemasChips();
           renderCinemasList();
+          renderPriorityMovies();
           scheduleRecalculate(0);
         });
 

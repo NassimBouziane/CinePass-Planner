@@ -47,6 +47,9 @@ export interface Translations {
   priorityTitle: string;
   priorityHint: string;
   prioritySearchPlaceholder: string;
+  priorityScopeAll: string;
+  priorityScopeSelected: string;
+  priorityOtherCinemasHint: string;
   clearPriorityBtn: string;
   clearPriorityTitle: string;
   noPriorityFound: string;
@@ -162,6 +165,9 @@ export const translations: Record<Lang, Translations> = {
     priorityTitle: 'films à voir en priorité',
     priorityHint: 'clique sur un film pour le privilégier',
     prioritySearchPlaceholder: 'filtrer par titre de film...',
+    priorityScopeAll: 'tous les films du jour',
+    priorityScopeSelected: 'cinémas cochés',
+    priorityOtherCinemasHint: 'non programmé dans vos cinémas cochés mais disponible ce jour-là :',
     clearPriorityBtn: 'effacer',
     clearPriorityTitle: 'Désélectionner tous les films prioritaires',
     noPriorityFound: 'aucun film trouvé pour ce filtre.',
@@ -275,6 +281,9 @@ export const translations: Record<Lang, Translations> = {
     priorityTitle: 'priority / liked movies',
     priorityHint: 'click a movie to prioritize it in schedules',
     prioritySearchPlaceholder: 'filter by movie title...',
+    priorityScopeAll: 'all movies today',
+    priorityScopeSelected: 'checked cinemas',
+    priorityOtherCinemasHint: 'not in checked theaters but playing today:',
     clearPriorityBtn: 'clear',
     clearPriorityTitle: 'Clear all priority movies',
     noPriorityFound: 'no movie found for this filter.',
