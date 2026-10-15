@@ -169,47 +169,58 @@ export class Scheduler {
     }
 
     // Dedicated 4th marathon for liked/priority movies:
-    // It MUST obligatorily contain ONLY the user's priority movies (100% coups de cœur).
+    // It must maximize the number of priority movies (up to criteria.target_films_count and prioritySet.size).
+    // If prioritySet.size < criteria.target_films_count, other non-priority movies fill the remaining slots
+    // to guarantee a full marathon of target length!
     if (prioritySet.size > 0) {
-      const priorityOnlyCandidates = candidates.filter((st) => prioritySet.has(st.movie_title));
-      if (priorityOnlyCandidates.length > 0) {
-        const maxPriorityTarget = Math.min(criteria.target_films_count, prioritySet.size);
-        let purePriorityPaths: CandidateShowtime[][] = [];
+      const desiredPriorityCount = Math.min(prioritySet.size, criteria.target_films_count);
+      let favoritePaths: CandidateShowtime[][] = [];
 
-        // Search for paths containing exclusively priority movies, from target down to 1
-        for (let count = maxPriorityTarget; count >= 1; count--) {
-          purePriorityPaths = this.findPaths(priorityOnlyCandidates, count, criteria.min_buffer_minutes);
-          if (purePriorityPaths.length > 0) {
+      // Try from full target length, with desiredPriorityCount down to 1
+      for (let reqP = desiredPriorityCount; reqP >= 1; reqP--) {
+        for (let count = criteria.target_films_count; count >= reqP; count--) {
+          favoritePaths = this.findPaths(
+            candidates,
+            count,
+            criteria.min_buffer_minutes,
+            prioritySet,
+            reqP
+          );
+          if (favoritePaths.length > 0) {
             break;
           }
         }
-
-        if (purePriorityPaths.length > 0) {
-          const pureItineraries = purePriorityPaths
-            .map((p) => scorePath(p))
-            .filter((it) => it.showtimes.every((st) => prioritySet.has(st.movie_title)));
-
-          pureItineraries.sort((a, b) => {
-            if (b.showtimes.length !== a.showtimes.length) {
-              return b.showtimes.length - a.showtimes.length;
-            }
-            return b.score - a.score;
-          });
-
-          if (pureItineraries.length > 0) {
-            const distinctPriority = pureItineraries.find((cand) => {
-              const candSig = cand.showtimes.map((s) => `${s.movie_title}@${s.starts_at}`).join('-');
-              return !seenSignatures.has(candSig);
-            });
-
-            const chosenPriority = distinctPriority || pureItineraries[0];
-            uniqueItineraries.push({
-              ...chosenPriority,
-              showtimes: [...chosenPriority.showtimes],
-              is_favorite_pick: true,
-            });
-          }
+        if (favoritePaths.length > 0) {
+          break;
         }
+      }
+
+      if (favoritePaths.length > 0) {
+        const favoriteItineraries = favoritePaths.map((p) => scorePath(p));
+
+        favoriteItineraries.sort((a, b) => {
+          // 1. Most priority matches first
+          const diffP = (b.priority_matches_count || 0) - (a.priority_matches_count || 0);
+          if (diffP !== 0) return diffP;
+          // 2. Longest marathon length (target_films_count)
+          if (b.showtimes.length !== a.showtimes.length) {
+            return b.showtimes.length - a.showtimes.length;
+          }
+          // 3. Highest quality score
+          return b.score - a.score;
+        });
+
+        const distinctPriority = favoriteItineraries.find((cand) => {
+          const candSig = cand.showtimes.map((s) => `${s.movie_title}@${s.starts_at}`).join('-');
+          return !seenSignatures.has(candSig);
+        });
+
+        const chosenPriority = distinctPriority || favoriteItineraries[0];
+        uniqueItineraries.push({
+          ...chosenPriority,
+          showtimes: [...chosenPriority.showtimes],
+          is_favorite_pick: true,
+        });
       }
     }
 
@@ -219,7 +230,9 @@ export class Scheduler {
   private findPaths(
     candidates: CandidateShowtime[],
     targetCount: number,
-    minBufferMinutes: number
+    minBufferMinutes: number,
+    prioritySet?: Set<string>,
+    minPriorityCount: number = 0
   ): CandidateShowtime[][] {
     const results: CandidateShowtime[][] = [];
     const MAX_CANDIDATE_PATHS = 300;
@@ -229,10 +242,21 @@ export class Scheduler {
     const backtrack = (
       currentPath: CandidateShowtime[],
       startIdx: number,
-      seenTitles: Set<string>
+      seenTitles: Set<string>,
+      priorityMatches: number
     ) => {
+      // Early pruning: if remaining slots cannot satisfy minPriorityCount, abort branch
+      if (prioritySet && minPriorityCount > 0) {
+        const remainingSlots = targetCount - currentPath.length;
+        if (priorityMatches + remainingSlots < minPriorityCount) {
+          return;
+        }
+      }
+
       if (currentPath.length === targetCount) {
-        results.push([...currentPath]);
+        if (!prioritySet || minPriorityCount === 0 || priorityMatches >= minPriorityCount) {
+          results.push([...currentPath]);
+        }
         return;
       }
 
@@ -268,17 +292,24 @@ export class Scheduler {
           }
         }
 
+        const isPriority = prioritySet ? prioritySet.has(cand.movie_title) : false;
+
         currentPath.push(cand);
         seenTitles.add(cand.movie_title);
 
-        backtrack(currentPath, i + 1, seenTitles);
+        backtrack(
+          currentPath,
+          i + 1,
+          seenTitles,
+          isPriority ? priorityMatches + 1 : priorityMatches
+        );
 
         seenTitles.delete(cand.movie_title);
         currentPath.pop();
       }
     };
 
-    backtrack([], 0, new Set());
+    backtrack([], 0, new Set(), 0);
     return results;
   }
 }

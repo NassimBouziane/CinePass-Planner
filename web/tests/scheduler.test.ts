@@ -267,8 +267,10 @@ describe('Scheduler', () => {
 
     const fourthPlan = results[3];
     expect(fourthPlan.is_favorite_pick).toBe(true);
+    expect(fourthPlan.showtimes).toHaveLength(2);
     expect(fourthPlan.showtimes.map((s) => s.movie_title)).toContain('My Liked Indie');
-    expect(fourthPlan.showtimes.every((s) => criteria.priority_movies.includes(s.movie_title))).toBe(true);
+    // The other movie in the 2-film marathon is allowed to be non-priority to reach target length
+    expect(fourthPlan.showtimes.some((s) => !criteria.priority_movies.includes(s.movie_title))).toBe(true);
   });
 
   it('guarantees that favorite marathon contains ONLY the user selected priority movies when 3 are chosen', () => {
