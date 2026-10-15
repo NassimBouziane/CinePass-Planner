@@ -981,17 +981,17 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         const clearBtn = document.getElementById('btn-clear-priority')!;
         container.innerHTML = '';
 
-        const titlesToPosterMap = new Map<string, string>();
+        const titlesSet = new Set<string>();
         for (const cid of selectedCinemaIds) {
           const stList = currentShowtimesMap[cid] || [];
           for (const st of stList) {
-            if (st.title && !titlesToPosterMap.has(st.title)) {
-              titlesToPosterMap.set(st.title, st.poster_url || '');
+            if (st.title) {
+              titlesSet.add(st.title);
             }
           }
         }
 
-        const sortedTitles = Array.from(titlesToPosterMap.keys()).sort();
+        const sortedTitles = Array.from(titlesSet).sort();
 
         countSpan.textContent = `${selectedPriorityMovies.size} ${t('selectedCinemasCount', currentLang)}${selectedPriorityMovies.size > 1 && currentLang === 'fr' ? 's' : ''}`;
         if (selectedPriorityMovies.size > 0) {
@@ -1010,23 +1010,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         for (const title of sortedTitles) {
           const isSelected = selectedPriorityMovies.has(title);
           const isSeen = selectedSeenMovies.has(title);
-          const posterUrl = titlesToPosterMap.get(title);
 
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.setAttribute('data-movie-title', title);
           btn.setAttribute('data-clean-title', normalizeText(title));
-          btn.className = `inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border-2 border-[#111111] transition-all cursor-pointer ${
+          btn.className = `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border-2 border-[#111111] transition-all cursor-pointer ${
             isSelected
               ? 'bg-[#FFE566] text-[#111111] shadow-[2px_2px_0px_0px_#111111]'
               : (isSeen ? 'bg-gray-100 text-[#888888] line-through border-gray-400 opacity-60' : 'bg-white text-[#111111] shadow-[1px_1px_0px_0px_#111111] hover:bg-[#FAFADF]')
           }`;
 
-          const miniPoster = posterUrl
-            ? `<img src="${escapeHtml(posterUrl)}" alt="" class="w-4 h-5 rounded-[2px] object-cover border border-[#111111] shrink-0" loading="lazy" />`
-            : '';
           const starIcon = isSelected ? iconStar4('w-3 h-3 text-[#111111] shrink-0') : '';
-          btn.innerHTML = `${miniPoster}${starIcon}<span class="truncate max-w-[170px]">${escapeHtml(title)}</span>`;
+          btn.innerHTML = `${starIcon}<span class="truncate max-w-[170px]">${escapeHtml(title)}</span>`;
 
           btn.addEventListener('click', () => {
             if (selectedPriorityMovies.has(title)) {
