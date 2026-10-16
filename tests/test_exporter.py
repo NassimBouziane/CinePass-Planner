@@ -38,3 +38,53 @@ def test_export_static_data_generates_json_files(tmp_path):
     assert len(showtimes_data["C1"]) == 1
     assert showtimes_data["C1"][0]["title"] == "Film A"
     assert showtimes_data["C1"][0]["format"] == "IMAX"
+
+
+def test_export_static_data_legacy_db_without_ratings_column(tmp_path):
+    """Verify that export_static_data does not crash on a legacy DB without ratings columns."""
+    from scripts.export_static_data import export_static_data
+    import sqlite3
+
+    db_path = tmp_path / "legacy.db"
+    conn = sqlite3.connect(str(db_path))
+    conn.row_factory = sqlite3.Row
+    with conn:
+        conn.executescript("""
+            CREATE TABLE cinemas (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                city TEXT,
+                address TEXT,
+                group_type TEXT DEFAULT 'Les Cinémas Pathé',
+                accepts_gold BOOLEAN DEFAULT 1,
+                accepts_silver BOOLEAN DEFAULT 1,
+                accepts_under26 BOOLEAN DEFAULT 1,
+                is_pathe_network BOOLEAN DEFAULT 1,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE TABLE movies (
+                id TEXT PRIMARY KEY,
+                title TEXT NOT NULL,
+                runtime_minutes INTEGER NOT NULL
+            );
+            CREATE TABLE showtimes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                cinema_id TEXT NOT NULL,
+                movie_title TEXT NOT NULL,
+                starts_at TEXT NOT NULL,
+                ends_at TEXT NOT NULL,
+                date_str TEXT NOT NULL,
+                version TEXT,
+                format TEXT,
+                screen_name TEXT
+            );
+            INSERT INTO cinemas (id, name, city) VALUES ('C1', 'Pathé Test', 'Paris');
+            INSERT INTO movies (id, title, runtime_minutes) VALUES ('M1', 'Legacy Movie', 120);
+        """)
+
+    out_dir = tmp_path / "legacy_out"
+    # Should not throw sqlite3.OperationalError: no such column: user_rating
+    stats = export_static_data(conn, out_dir)
+    assert stats["cinemas_count"] == 1
+    assert (out_dir / "ratings.json").exists()
+

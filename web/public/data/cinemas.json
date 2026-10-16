@@ -237,6 +237,7 @@
     "accepts_under26": true,
     "is_pathe_network": true,
     "formats": [
+      "4DX",
       "Standard"
     ]
   },
@@ -251,6 +252,7 @@
     "accepts_under26": true,
     "is_pathe_network": true,
     "formats": [
+      "4DX",
       "Standard"
     ]
   },
@@ -265,6 +267,7 @@
     "accepts_under26": true,
     "is_pathe_network": true,
     "formats": [
+      "4DX",
       "Standard"
     ]
   },
@@ -293,6 +296,8 @@
     "accepts_under26": true,
     "is_pathe_network": true,
     "formats": [
+      "4DX",
+      "IMAX",
       "Standard"
     ]
   },

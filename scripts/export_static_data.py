@@ -14,6 +14,7 @@ sys.path.insert(0, str(BASE_DIR / "src"))
 from cinepass_planner.config import DEFAULT_DB_PATH
 from cinepass_planner.db.connection import get_db_connection
 from cinepass_planner.db.repositories import CinemaRepository
+from cinepass_planner.db.schema import init_db
 
 def export_static_data(conn: sqlite3.Connection, output_dir: Union[str, Path]) -> dict:
     """
@@ -117,11 +118,13 @@ def export_static_data(conn: sqlite3.Connection, output_dir: Union[str, Path]) -
         dates_exported += 1
 
     # 5. Write ratings.json from SQLite movies table
-    cursor.execute("""
-        SELECT title, user_rating, press_rating
-        FROM movies
-        WHERE user_rating IS NOT NULL OR press_rating IS NOT NULL
-    """)
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='movies'")
+    has_movies = cursor.fetchone() is not None
+    movie_cols = set()
+    if has_movies:
+        cursor.execute("PRAGMA table_info(movies)")
+        movie_cols = {row[1] for row in cursor.fetchall()}
+
     ratings_payload = {}
     ratings_file = out / "ratings.json"
     if ratings_file.exists():
@@ -130,21 +133,27 @@ def export_static_data(conn: sqlite3.Connection, output_dir: Union[str, Path]) -
         except Exception:
             ratings_payload = {}
 
-    for row in cursor.fetchall():
-        title = row["title"]
-        u_r = row["user_rating"]
-        p_r = row["press_rating"]
-        if title not in ratings_payload:
-            ratings_payload[title] = {
-                "user_rating": u_r,
-                "press_rating": p_r,
-                "updated_at": datetime.now(timezone.utc).isoformat(),
-            }
-        else:
-            if u_r is not None:
-                ratings_payload[title]["user_rating"] = u_r
-            if p_r is not None:
-                ratings_payload[title]["press_rating"] = p_r
+    if has_movies and "user_rating" in movie_cols and "press_rating" in movie_cols:
+        cursor.execute("""
+            SELECT title, user_rating, press_rating
+            FROM movies
+            WHERE user_rating IS NOT NULL OR press_rating IS NOT NULL
+        """)
+        for row in cursor.fetchall():
+            title = row["title"]
+            u_r = row["user_rating"]
+            p_r = row["press_rating"]
+            if title not in ratings_payload:
+                ratings_payload[title] = {
+                    "user_rating": u_r,
+                    "press_rating": p_r,
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                }
+            else:
+                if u_r is not None:
+                    ratings_payload[title]["user_rating"] = u_r
+                if p_r is not None:
+                    ratings_payload[title]["press_rating"] = p_r
 
     ratings_file.write_text(
         json.dumps(ratings_payload, ensure_ascii=False, indent=2),
@@ -169,6 +178,7 @@ def main():
 
     logger.info(f"Exporting static data from {args.db} to {args.output}...")
     conn = get_db_connection(args.db)
+    init_db(conn)
     stats = export_static_data(conn, args.output)
     logger.info(f"Export completed: {stats['cinemas_count']} cinemas, {stats['dates_count']} dates, {stats['showtimes_count']} showtimes, {stats['ratings_count']} ratings.")
 
