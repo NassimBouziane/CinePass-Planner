@@ -150,4 +150,29 @@ def test_cli_sync_all_loop_batches():
         mock_sleep.assert_any_call(15.0)
 
 
+def test_cli_refresh_ratings_command(tmp_path):
+    with patch("cinepass_planner.cli.main.refresh_all_ratings", return_value=5) as mock_refresh:
+        dummy_dir = tmp_path / "data"
+        dummy_dir.mkdir()
+        dummy_file = dummy_dir / "ratings.json"
+
+        result = runner.invoke(app, [
+            "refresh-ratings",
+            "--showtimes-dir", str(dummy_dir),
+            "--output-file", str(dummy_file),
+            "--ttl-days", "3",
+            "--force"
+        ])
+
+        assert result.exit_code == 0
+        assert "5 films rafraichis" in result.stdout
+        mock_refresh.assert_called_once_with(
+            showtimes_dir=dummy_dir,
+            output_file=dummy_file,
+            ttl_days=3,
+            force=True
+        )
+
+
+
 

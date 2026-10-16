@@ -9,6 +9,8 @@ import {
   iconSpeaker,
   iconTv,
   iconGlasses,
+  iconStar5,
+  iconNewspaper,
 } from './Icons';
 
 export function escapeHtml(str: string | null | undefined): string {
@@ -77,3 +79,38 @@ export function getFormatBadgeHtml(formatStr: string, passType: PassType): strin
     </span>
   `.trim();
 }
+
+export function renderAllocineRatingsBadge(
+  userRating: number | null | undefined,
+  pressRating: number | null | undefined,
+  compact: boolean = false
+): string {
+  if (userRating == null && pressRating == null) {
+    return '';
+  }
+
+  const parts: string[] = [];
+
+  if (userRating != null && !isNaN(userRating)) {
+    const userLabel = compact ? `${userRating.toFixed(1)}` : `${userRating.toFixed(1)}/5 spec.`;
+    parts.push(`
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-extrabold border-2 border-[#111111] bg-[#FFE566] text-[#111111] shadow-[1px_1px_0px_0px_#111111]" title="Note spectateurs Allociné : ${userRating.toFixed(1)}/5">
+        ${iconStar5('w-3 h-3 text-[#111111]')}
+        <span>${userLabel}</span>
+      </span>
+    `.trim());
+  }
+
+  if (pressRating != null && !isNaN(pressRating)) {
+    const pressLabel = compact ? `${pressRating.toFixed(1)}` : `${pressRating.toFixed(1)}/5 presse`;
+    parts.push(`
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-extrabold border-2 border-[#111111] bg-[#C4B5FD] text-[#111111] shadow-[1px_1px_0px_0px_#111111]" title="Note presse Allociné : ${pressRating.toFixed(1)}/5">
+        ${iconNewspaper('w-3 h-3 text-[#111111]')}
+        <span>${pressLabel}</span>
+      </span>
+    `.trim());
+  }
+
+  return `<div class="inline-flex items-center gap-1.5 flex-wrap">${parts.join('')}</div>`;
+}
+

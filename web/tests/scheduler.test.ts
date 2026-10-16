@@ -319,5 +319,97 @@ describe('Scheduler', () => {
     expect(favTitles).not.toContain('Random B');
     expect(favTitles).not.toContain('Random C');
   });
+
+  it('finds compatible marathons when pinning a showtime at slot 0 (first movie)', () => {
+    const showtimes: Showtime[] = [
+      { cinema_id: 'C1', movie_title: 'Film 1', starts_at: '2026-10-18T14:00:00', ends_at: '2026-10-18T16:00:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Film 2', starts_at: '2026-10-18T16:30:00', ends_at: '2026-10-18T18:30:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Film 3', starts_at: '2026-10-18T19:00:00', ends_at: '2026-10-18T21:00:00', date_str: '2026-10-18' },
+    ];
+
+    const scheduler = new Scheduler();
+    const criteria: PlanCriteria = {
+      cinema_ids: ['C1'],
+      date_str: '2026-10-18',
+      target_films_count: 3,
+      start_time: '10:00',
+      max_end_time: '23:00',
+      priority_movies: [],
+      pass_type: PassType.GOLD,
+      allow_supplements: true,
+      min_buffer_minutes: 15,
+      require_meal_break: false,
+      language: 'ALL',
+      selected_formats: [],
+    };
+
+    const results = scheduler.findMarathonsAroundPinned(showtimes, {
+      pinnedShowtime: showtimes[0],
+      pinnedIndex: 0,
+      targetCount: 3,
+      criteria,
+    });
+
+    expect(results.length).toBeGreaterThan(0);
+    expect(results[0].showtimes[0].movie_title).toBe('Film 1');
+    expect(results[0].showtimes[1].movie_title).toBe('Film 2');
+    expect(results[0].showtimes[2].movie_title).toBe('Film 3');
+  });
+
+  it('finds compatible marathons when pinning a showtime at slot 1 (middle movie)', () => {
+    const early: Showtime = { cinema_id: 'C1', movie_title: 'Matin', starts_at: '2026-10-18T11:00:00', ends_at: '2026-10-18T13:00:00', date_str: '2026-10-18' };
+    const pinned: Showtime = { cinema_id: 'C1', movie_title: 'Pivot', starts_at: '2026-10-18T14:00:00', ends_at: '2026-10-18T16:00:00', date_str: '2026-10-18' };
+    const late: Showtime = { cinema_id: 'C1', movie_title: 'Soir', starts_at: '2026-10-18T16:30:00', ends_at: '2026-10-18T18:30:00', date_str: '2026-10-18' };
+    const showtimes = [early, pinned, late];
+
+    const scheduler = new Scheduler();
+    const criteria: PlanCriteria = {
+      cinema_ids: ['C1'],
+      date_str: '2026-10-18',
+      target_films_count: 3,
+      start_time: '10:00',
+      max_end_time: '23:00',
+      priority_movies: [],
+      pass_type: PassType.GOLD,
+      allow_supplements: true,
+      min_buffer_minutes: 15,
+      require_meal_break: false,
+      language: 'ALL',
+      selected_formats: [],
+    };
+
+    const results = scheduler.findMarathonsAroundPinned(showtimes, {
+      pinnedShowtime: pinned,
+      pinnedIndex: 1,
+      targetCount: 3,
+      criteria,
+    });
+
+    expect(results.length).toBeGreaterThan(0);
+    expect(results[0].showtimes[0].movie_title).toBe('Matin');
+    expect(results[0].showtimes[1].movie_title).toBe('Pivot');
+    expect(results[0].showtimes[2].movie_title).toBe('Soir');
+  });
+
+  it('returns valid candidate showtimes between predecessor and successor', () => {
+    const pred: Showtime = { cinema_id: 'C1', movie_title: 'A', starts_at: '2026-10-18T14:00:00', ends_at: '2026-10-18T16:00:00', date_str: '2026-10-18' };
+    const succ: Showtime = { cinema_id: 'C1', movie_title: 'C', starts_at: '2026-10-18T19:00:00', ends_at: '2026-10-18T21:00:00', date_str: '2026-10-18' };
+    const validMid: Showtime = { cinema_id: 'C1', movie_title: 'B', starts_at: '2026-10-18T16:30:00', ends_at: '2026-10-18T18:30:00', date_str: '2026-10-18' };
+    const tooEarly: Showtime = { cinema_id: 'C1', movie_title: 'X', starts_at: '2026-10-18T15:00:00', ends_at: '2026-10-18T17:00:00', date_str: '2026-10-18' };
+    const tooLate: Showtime = { cinema_id: 'C1', movie_title: 'Y', starts_at: '2026-10-18T18:00:00', ends_at: '2026-10-18T20:00:00', date_str: '2026-10-18' };
+
+    const scheduler = new Scheduler();
+    const candidates = scheduler.getAvailableCandidatesForSlot([validMid, tooEarly, tooLate], {
+      predecessor: pred,
+      successor: succ,
+      minBufferMinutes: 15,
+      selectedCinemas: new Set(['C1']),
+    });
+
+    expect(candidates.map((c) => c.showtime.movie_title)).toEqual(['B']);
+    expect(candidates[0].gapBeforeMinutes).toBe(30);
+    expect(candidates[0].gapAfterMinutes).toBe(30);
+  });
 });
+
 

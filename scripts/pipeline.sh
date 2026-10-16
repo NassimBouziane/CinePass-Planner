@@ -63,6 +63,7 @@ FORCE=false
 SKIP_SEED=false
 SKIP_SYNC=false
 SKIP_EXPORT=false
+SKIP_RATINGS=false
 INSTALL_DEPS=false
 BUILD_WEB=false
 OUTPUT_DIR="web/public/data"
@@ -87,6 +88,7 @@ ${BOLD}Options:${RESET}
   --skip-seed          Passer l'étape d'initialisation du registre des cinémas depuis le PDF
   --skip-sync          Passer l'étape de synchronisation Allociné (utilise la base SQLite locale existante)
   --skip-export        Passer l'étape d'export des fichiers JSON statiques
+  --skip-ratings       Passer l'étape de rafraîchissement des notes Allociné
   -w, --build-web      Construire le site statique Astro après l'export des données
   -i, --install-deps   Installer les dépendances Python (uv sync) et web (npm install)
   -o, --output <dir>   Répertoire de destination pour les JSON exportés (défaut: web/public/data)
@@ -152,6 +154,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --skip-export)
       SKIP_EXPORT=true
+      shift
+      ;;
+    --skip-ratings)
+      SKIP_RATINGS=true
       shift
       ;;
     -w|--build-web)
@@ -232,6 +238,15 @@ else
   log_info "Étape 3/4 : Exportation des données statiques vers $OUTPUT_DIR..."
   uv run python scripts/export_static_data.py --output "$OUTPUT_DIR"
   log_success "Exportation JSON terminée."
+fi
+
+# 3b. Rafraîchissement des notes Allociné
+if [[ "$SKIP_RATINGS" == true ]]; then
+  log_info "Étape 3b : Rafraîchissement des notes Allociné ignoré (--skip-ratings)."
+else
+  log_info "Étape 3b : Rafraîchissement des notes Allociné..."
+  uv run python scripts/refresh_ratings.py --showtimes-dir "$OUTPUT_DIR" --output-file "$OUTPUT_DIR/ratings.json"
+  log_success "Rafraîchissement des notes Allociné terminé."
 fi
 
 # 4. Build du site statique Astro (si demandé)

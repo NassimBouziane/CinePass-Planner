@@ -30,6 +30,8 @@ class Movie:
     director: str = ""
     poster_url: str = ""
     synopsis: str = ""
+    user_rating: Optional[float] = None
+    press_rating: Optional[float] = None
 
 @dataclass
 class Showtime:

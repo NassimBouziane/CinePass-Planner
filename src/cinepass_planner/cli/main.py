@@ -3,6 +3,7 @@ import sys
 import time
 import typer
 from datetime import date, datetime, timedelta
+from pathlib import Path
 from typing import Optional
 from rich.console import Console
 from rich.table import Table
@@ -15,6 +16,7 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
+from cinepass_planner.config import BASE_DIR
 from cinepass_planner.db.connection import get_db_connection
 from cinepass_planner.db.schema import init_db
 from cinepass_planner.db.repositories import CinemaRepository, ShowtimeRepository
@@ -22,6 +24,7 @@ from cinepass_planner.importer.allocine_client import AllocineRateLimitError
 from cinepass_planner.importer.sync_service import SyncService
 from cinepass_planner.core.scheduler import Scheduler, PlanCriteria
 from cinepass_planner.models import PassType
+from cinepass_planner.importer.allocine_client import refresh_all_ratings
 
 app = typer.Typer(
     name="cinepass",
@@ -48,7 +51,7 @@ def cinemas(
         console.print("Astuce : Lancez le script d'initialisation pour importer le réseau : [bold]uv run python scripts/seed_database.py[/bold]")
         return
 
-    table = Table(title="🎬 Cinémas éligibles au Pathé CinéPass", show_header=True, header_style="bold gold1")
+    table = Table(title="Cinémas éligibles au Pathé CinéPass", show_header=True, header_style="bold gold1")
     table.add_column("ID Allociné", style="cyan", width=12)
     table.add_column("Nom du cinéma", style="bold white", no_wrap=True)
     table.add_column("Agglomération", style="green")
@@ -95,7 +98,7 @@ def sync(
     with console.status("[bold green]Téléchargement des séances..."):
         count = service.sync_cinema(target_cinema.id, days_count=days)
 
-    console.print(f"✅ [bold green]Synchronisation terminée ![/bold green] {count} séances enregistrées.")
+    console.print(f"[bold green]Synchronisation terminée ![/bold green] {count} séances enregistrées.")
 
 @app.command()
 def plan(
@@ -167,7 +170,7 @@ def plan(
         return
 
     console.print(Panel.fit(
-        f"[bold gold1]🎟️ CINÉPASS MARATHON PLANNER[/bold gold1]\n"
+        f"[bold gold1]CINÉPASS MARATHON PLANNER[/bold gold1]\n"
         f"Cinéma : [bold white]{target_cinema.name}[/bold white] • Date : [cyan]{target_date}[/cyan]\n"
         f"Pass : [bold yellow]{p_type.value}[/bold yellow] • Créneau : {start} ➔ {end} • Films ciblés : {films}",
         border_style="gold1"
@@ -193,9 +196,9 @@ def plan(
                 next_start = itinerary.showtimes[i + 1].starts_at.split("T")[1][:5]
                 p_min = int((datetime.fromisoformat(itinerary.showtimes[i + 1].starts_at) - datetime.fromisoformat(st.ends_at)).total_seconds() / 60)
                 if p_min >= 45:
-                    pause_label = f"🥗 Pause repas ({p_min} min)"
+                    pause_label = f"Pause repas ({p_min} min)"
                 else:
-                    pause_label = f"⏱️ Transition ({p_min} min)"
+                    pause_label = f"Transition ({p_min} min)"
 
             format_badge = st.format
             if st.format != "Standard" and p_type != PassType.GOLD:
@@ -321,6 +324,35 @@ def sync_all(
     if skipped_independent > 0:
         msg += f" [dim]({skipped_independent} cinémas indépendants sans code Allociné ignorés)[/dim]"
     console.print(msg)
+
+@app.command(name="refresh-ratings")
+def refresh_ratings(
+    showtimes_dir: Path = typer.Option(
+        BASE_DIR / "web" / "public" / "data",
+        "--showtimes-dir",
+        help="Dossier contenant les fichiers showtimes-*.json",
+    ),
+    output_file: Path = typer.Option(
+        BASE_DIR / "web" / "public" / "data" / "ratings.json",
+        "--output-file",
+        help="Fichier de sortie ratings.json",
+    ),
+    ttl_days: int = typer.Option(7, "--ttl-days", help="Duree de validite du cache en jours"),
+    force: bool = typer.Option(False, "--force", help="Forcer la mise a jour de tous les films"),
+):
+    """Rafraichir les notes Allocine des films depuis les donnees de seances."""
+    console.print(f"Demarrage du rafraichissement des notes (force={force}, ttl={ttl_days} jours)...")
+    console.print(f"Dossier seances: {showtimes_dir}")
+    console.print(f"Fichier de sortie: {output_file}")
+    count = refresh_all_ratings(
+        showtimes_dir=showtimes_dir,
+        output_file=output_file,
+        ttl_days=ttl_days,
+        force=force,
+    )
+    console.print(f"Mise a jour terminee : {count} films rafraichis.")
+    console.print(f"Fichier enregistre : {output_file}")
+
 
 if __name__ == "__main__":
     app()

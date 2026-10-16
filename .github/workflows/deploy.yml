@@ -4,6 +4,8 @@ on:
   schedule:
     # Run every 2 hours on Tuesdays (when weekly cinema schedules are published in France)
     - cron: '0 */2 * * 2'
+    # Run daily at 06:00 UTC for ratings refresh and schedule sync
+    - cron: '0 6 * * *'
   push:
     branches:
       - main
@@ -23,6 +25,11 @@ on:
         description: 'Déployer UNIQUEMENT le frontend (sans resynchroniser Allociné)'
         required: false
         default: false
+        type: boolean
+      refresh_ratings:
+        description: 'Rafraichir les notes Allocine des films'
+        required: false
+        default: true
         type: boolean
       batch_pause:
         description: 'Pause en secondes entre chaque lot de 15 cinémas (défaut: 300s = 5min)'
@@ -106,13 +113,20 @@ jobs:
             EXTRA_FLAGS="--full-sync --batch-pause 300"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             if [ "${{ github.event.inputs.frontend_only }}" = "true" ]; then
-              EXTRA_FLAGS="--skip-seed --skip-sync"
-            elif [ "${{ github.event.inputs.full_sync }}" = "true" ]; then
-              IS_SYNC="true"
-              EXTRA_FLAGS="--full-sync --batch-pause ${{ github.event.inputs.batch_pause || '300' }}"
+              EXTRA_FLAGS="--skip-seed --skip-sync --skip-ratings"
+            else
+              if [ "${{ github.event.inputs.full_sync }}" = "true" ]; then
+                IS_SYNC="true"
+                EXTRA_FLAGS="--full-sync --batch-pause ${{ github.event.inputs.batch_pause || '300' }}"
+              else
+                IS_SYNC="true"
+              fi
+              if [ "${{ github.event.inputs.refresh_ratings }}" = "false" ]; then
+                EXTRA_FLAGS="$EXTRA_FLAGS --skip-ratings"
+              fi
             fi
           elif [ "${{ github.event_name }}" = "push" ]; then
-            EXTRA_FLAGS="--skip-seed --skip-sync"
+            EXTRA_FLAGS="--skip-seed --skip-sync --skip-ratings"
           fi
 
           echo "is_sync=$IS_SYNC" >> $GITHUB_OUTPUT
@@ -132,7 +146,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [ -d "web/public/data" ] && [ -n "$(git status --porcelain web/public/data)" ]; then
             git add web/public/data
-            git commit -m "chore(data): synchronisation automatique des seances [skip ci]"
+            git commit -m "chore(data): synchronisation automatique des seances et notes [skip ci]"
             git push origin main
           else
             echo "Aucune modification de donnees a committer."

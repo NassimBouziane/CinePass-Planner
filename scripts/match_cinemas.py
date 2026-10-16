@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import re
 import time
@@ -6,6 +7,7 @@ import unicodedata
 from difflib import SequenceMatcher
 from allocineAPI.allocineAPI import allocineAPI
 
+logger = logging.getLogger("match_cinemas")
 CACHE_FILE = "data/allocine_theaters_cache.json"
 
 def get_all_theaters():
@@ -41,12 +43,12 @@ def get_all_theaters():
     for name, loc_id in locations:
         try:
             items = api.get_cinema(loc_id)
-            print(f"Fetched {len(items)} theaters from {name}")
+            logger.info(f"Fetched {len(items)} theaters from {name}")
             for t in items:
                 theaters_dict[t["id"]] = t
             time.sleep(0.3)
         except Exception as e:
-            print(f"Error fetching {name}: {e}")
+            logger.warning(f"Error fetching {name}: {e}")
 
     theaters = list(theaters_dict.values())
     with open(CACHE_FILE, "w", encoding="utf-8") as f:
@@ -69,15 +71,16 @@ OVERRIDES = {
 }
 
 def main():
+    logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [%(levelname)s] %(message)s")
     theaters = get_all_theaters()
     theaters_by_id = {t["id"]: t for t in theaters}
-    print(f"Total Allocine theaters available: {len(theaters)}")
+    logger.info(f"Total Allocine theaters available: {len(theaters)}")
 
     with open("data/cinemas_mapping.json", "r", encoding="utf-8") as f:
         mapping = json.load(f)
 
     unmapped = {k: v for k, v in mapping.items() if v.get("id", "").startswith("IND_") or not v.get("id")}
-    print(f"Unmapped cinemas to resolve: {len(unmapped)}")
+    logger.info(f"Unmapped cinemas to resolve: {len(unmapped)}")
 
     matches = []
     low_matches = []
@@ -118,15 +121,15 @@ def main():
         else:
             low_matches.append((name, meta, best_t, best_score))
 
-    print(f"\n--- MATCHES FOUND: {len(matches)} ---")
+    logger.info(f"MATCHES FOUND: {len(matches)}")
     for name, meta, t, score in matches:
-        print(f"{name:32} -> {t['name']:32} [{t['id']}] (score: {score:.2f}) | {t['address']}")
+        logger.info(f"{name:32} -> {t['name']:32} [{t['id']}] (score: {score:.2f}) | {t['address']}")
 
-    print(f"\n--- LOW / UNMATCHED: {len(low_matches)} ---")
+    logger.info(f"LOW / UNMATCHED: {len(low_matches)}")
     for name, meta, t, score in low_matches:
         t_name = t["name"] if t else "None"
         t_id = t["id"] if t else "None"
-        print(f"{name:32} (best candidate: {t_name:30} [{t_id}] score: {score:.2f})")
+        logger.info(f"{name:32} (best candidate: {t_name:30} [{t_id}] score: {score:.2f})")
 
 if __name__ == "__main__":
     main()

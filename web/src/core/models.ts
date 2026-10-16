@@ -18,6 +18,14 @@ export interface Cinema {
   formats?: string[];
 }
 
+export interface MovieRating {
+  user_rating: number | null;
+  press_rating: number | null;
+  updated_at?: string;
+}
+
+export type MovieRatingsMap = Record<string, MovieRating>;
+
 export interface Showtime {
   cinema_id: string;
   movie_title: string;
@@ -28,6 +36,8 @@ export interface Showtime {
   format?: string;   // "Standard", "IMAX", "Dolby Cinema", "4DX", etc.
   cinema_name?: string;
   poster_url?: string;
+  user_rating?: number | null;
+  press_rating?: number | null;
 }
 
 export interface Itinerary {

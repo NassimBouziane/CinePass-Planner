@@ -89,8 +89,8 @@ class MovieRepository:
         with self.conn:
             self.conn.execute(
                 """
-                INSERT INTO movies (id, title, original_title, runtime_minutes, genres, director, poster_url, synopsis)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO movies (id, title, original_title, runtime_minutes, genres, director, poster_url, synopsis, user_rating, press_rating)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(id) DO UPDATE SET
                     title=excluded.title,
                     original_title=excluded.original_title,
@@ -99,6 +99,8 @@ class MovieRepository:
                     director=excluded.director,
                     poster_url=excluded.poster_url,
                     synopsis=excluded.synopsis,
+                    user_rating=COALESCE(excluded.user_rating, movies.user_rating),
+                    press_rating=COALESCE(excluded.press_rating, movies.press_rating),
                     updated_at=CURRENT_TIMESTAMP
                 """,
                 (
@@ -110,7 +112,20 @@ class MovieRepository:
                     movie.director,
                     movie.poster_url,
                     movie.synopsis,
+                    movie.user_rating,
+                    movie.press_rating,
                 ),
+            )
+
+    def update_ratings(self, title: str, user_rating: Optional[float], press_rating: Optional[float]) -> None:
+        with self.conn:
+            self.conn.execute(
+                """
+                UPDATE movies
+                SET user_rating = ?, press_rating = ?, updated_at = CURRENT_TIMESTAMP
+                WHERE LOWER(title) = LOWER(?)
+                """,
+                (user_rating, press_rating, title),
             )
 
     def get_by_title(self, title: str) -> Optional[Movie]:
@@ -120,6 +135,9 @@ class MovieRepository:
         if not row:
             return None
         genres = json.loads(row["genres"]) if row["genres"] else []
+        col_names = row.keys()
+        user_r = row["user_rating"] if "user_rating" in col_names else None
+        press_r = row["press_rating"] if "press_rating" in col_names else None
         return Movie(
             id=row["id"],
             title=row["title"],
@@ -129,25 +147,34 @@ class MovieRepository:
             director=row["director"] or "",
             poster_url=row["poster_url"] or "",
             synopsis=row["synopsis"] or "",
+            user_rating=user_r,
+            press_rating=press_r,
         )
 
     def list_all(self) -> list[Movie]:
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM movies ORDER BY title")
         rows = cursor.fetchall()
-        return [
-            Movie(
-                id=r["id"],
-                title=r["title"],
-                original_title=r["original_title"] or "",
-                runtime_minutes=r["runtime_minutes"],
-                genres=json.loads(r["genres"]) if r["genres"] else [],
-                director=r["director"] or "",
-                poster_url=r["poster_url"] or "",
-                synopsis=r["synopsis"] or "",
+        result: list[Movie] = []
+        for r in rows:
+            col_names = r.keys()
+            user_r = r["user_rating"] if "user_rating" in col_names else None
+            press_r = r["press_rating"] if "press_rating" in col_names else None
+            result.append(
+                Movie(
+                    id=r["id"],
+                    title=r["title"],
+                    original_title=r["original_title"] or "",
+                    runtime_minutes=r["runtime_minutes"],
+                    genres=json.loads(r["genres"]) if r["genres"] else [],
+                    director=r["director"] or "",
+                    poster_url=r["poster_url"] or "",
+                    synopsis=r["synopsis"] or "",
+                    user_rating=user_r,
+                    press_rating=press_r,
+                )
             )
-            for r in rows
-        ]
+        return result
 
 
 class ShowtimeRepository:

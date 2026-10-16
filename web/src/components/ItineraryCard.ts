@@ -1,5 +1,5 @@
 import { PassType, type Itinerary } from '../core/models';
-import { getFormatBadgeHtml, escapeHtml } from './Badge';
+import { getFormatBadgeHtml, escapeHtml, renderAllocineRatingsBadge } from './Badge';
 import { t, type Lang } from '../core/i18n';
 import {
   iconStar4,
@@ -12,6 +12,7 @@ import {
   iconCalendar,
   iconFilm,
   iconSearch,
+  iconWrench,
 } from './Icons';
 
 function addMinutes(isoStr: string, minutes: number): string {
@@ -177,10 +178,22 @@ export function formatItineraryCardHtml(
             <div class="space-y-1 min-w-0">
               <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-sm sm:text-base font-extrabold text-[#111111] truncate" title="${escapeHtml(st.movie_title)}">${escapeHtml(st.movie_title)}</span>
+                ${renderAllocineRatingsBadge(st.user_rating, st.press_rating, true)}
                 ${cinemaLabel}
               </div>
               <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
                 ${badges.join(' ')}
+                <button
+                  type="button"
+                  class="btn-build-around inline-flex items-center gap-1 text-[0.68rem] font-bold bg-[#FFE566] text-[#111111] border border-[#111111] px-2 py-0.5 rounded shadow-[1px_1px_0px_0px_#111111] hover:bg-[#ffe043] cursor-pointer transition-all ml-1"
+                  data-movie-title="${escapeHtml(st.movie_title)}"
+                  data-cinema-id="${escapeHtml(st.cinema_id)}"
+                  data-starts-at="${escapeHtml(st.starts_at)}"
+                  title="Bâtir un marathon autour de cette séance"
+                >
+                  ${iconWrench('w-3 h-3 text-[#111111]')}
+                  <span>Bâtir</span>
+                </button>
                 <button
                   type="button"
                   class="btn-mark-seen text-[0.68rem] font-bold text-[#777777] hover:text-[#E8635A] underline ml-1 cursor-pointer transition-colors"

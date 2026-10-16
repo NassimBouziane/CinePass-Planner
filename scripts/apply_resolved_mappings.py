@@ -1,8 +1,11 @@
 import json
+import logging
 import os
 import re
 import unicodedata
 from difflib import SequenceMatcher
+
+logger = logging.getLogger("apply_resolved_mappings")
 
 OVERRIDES = {
     "Centre Départemental de Promotion du Cinéma-Salle La Turbine": {
@@ -37,6 +40,8 @@ def clean_text(s: str) -> str:
     return s
 
 def main():
+    logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [%(levelname)s] %(message)s")
+
     with open("data/allocine_theaters_cache.json", "r", encoding="utf-8") as f:
         theaters = json.load(f)
 
@@ -52,7 +57,7 @@ def main():
                 meta["id"] = OVERRIDES[name]["id"]
                 meta["address"] = OVERRIDES[name]["address"]
                 resolved_count += 1
-                print(f"[OVERRIDE] {name} -> {meta['id']} ({meta['address']})")
+                logger.info(f"[OVERRIDE] {name} -> {meta['id']} ({meta['address']})")
                 continue
 
             c_clean = clean_text(name)
@@ -85,20 +90,20 @@ def main():
                 meta["id"] = best_t["id"]
                 meta["address"] = best_t.get("address", "").replace("\r\n", " ").strip()
                 resolved_count += 1
-                print(f"[RESOLVED] {name:32} -> {meta['id']} ({best_t['name']}) | {meta['address']}")
+                logger.info(f"[RESOLVED] {name:32} -> {meta['id']} ({best_t['name']}) | {meta['address']}")
             else:
-                print(f"[FAILED] Could not resolve: {name}")
+                logger.warning(f"[FAILED] Could not resolve: {name}")
 
-    print(f"\nTotal cinemas updated: {resolved_count}")
+    logger.info(f"Total cinemas updated: {resolved_count}")
 
     with open("data/cinemas_mapping.json", "w", encoding="utf-8") as f:
         json.dump(mapping, f, ensure_ascii=False, indent=2)
 
     # Check for any remaining IND_ in mapping
     still_unmapped = [k for k, v in mapping.items() if v.get("id", "").startswith("IND_") or not v.get("id")]
-    print(f"Remaining IND_ or empty IDs: {len(still_unmapped)}")
+    logger.info(f"Remaining IND_ or empty IDs: {len(still_unmapped)}")
     if still_unmapped:
-        print("Unresolved list:", still_unmapped)
+        logger.info(f"Unresolved list: {still_unmapped}")
 
 if __name__ == "__main__":
     main()

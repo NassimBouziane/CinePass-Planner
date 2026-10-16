@@ -1,3 +1,4 @@
+import logging
 import sys
 from pathlib import Path
 
@@ -12,14 +13,17 @@ from cinepass_planner.db.repositories import CinemaRepository
 from cinepass_planner.importer.pdf_parser import load_or_build_cinema_registry
 
 def main():
-    print("🎬 Initialisation de la base de données CinéPass Planner...")
+    logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [%(levelname)s] %(message)s")
+    logger = logging.getLogger("seed_database")
+
+    logger.info("Initialisation de la base de données CinéPass Planner...")
     conn = get_db_connection(DEFAULT_DB_PATH)
     init_db(conn)
     repo = CinemaRepository(conn)
 
-    print(f"📄 Lecture du document officiel : {DEFAULT_PDF_PATH}")
+    logger.info(f"Lecture du document officiel : {DEFAULT_PDF_PATH}")
     registry = load_or_build_cinema_registry(DEFAULT_PDF_PATH, DEFAULT_MAPPING_PATH)
-    print(f"Extraction de {len(registry)} cinémas du réseau CinéPass.")
+    logger.info(f"Extraction de {len(registry)} cinémas du réseau CinéPass.")
 
     with conn:
         conn.execute("DELETE FROM cinemas WHERE id LIKE 'IND_%'")
@@ -28,7 +32,7 @@ def main():
         repo.save(cinema)
 
     total = len(repo.list_all())
-    print(f"✅ Base de données initialisée avec succès dans {DEFAULT_DB_PATH} ({total} cinémas enregistrés) !")
+    logger.info(f"Base de données initialisée avec succès dans {DEFAULT_DB_PATH} ({total} cinémas enregistrés).")
 
 if __name__ == "__main__":
     main()

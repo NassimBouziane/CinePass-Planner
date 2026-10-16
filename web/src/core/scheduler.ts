@@ -312,4 +312,263 @@ export class Scheduler {
     backtrack([], 0, new Set(), 0);
     return results;
   }
+
+  findMarathonsAroundPinned(
+    showtimes: Showtime[],
+    options: {
+      pinnedShowtime: Showtime;
+      pinnedIndex: number;
+      targetCount: number;
+      criteria: PlanCriteria;
+    }
+  ): Itinerary[] {
+    const { pinnedShowtime, pinnedIndex, targetCount, criteria } = options;
+    const minBufferMinutes = criteria.min_buffer_minutes || 15;
+    const minBufferMs = minBufferMinutes * 60 * 1000;
+    const interCinemaBufferMs = Math.max(minBufferMinutes, 30) * 60 * 1000;
+
+    const toCandidate = (st: Showtime): CandidateShowtime => {
+      const startMs = new Date(st.starts_at).getTime();
+      const endMs = new Date(st.ends_at).getTime();
+      return {
+        ...st,
+        start_ms: startMs,
+        end_ms: endMs,
+        runtime_min: Math.round((endMs - startMs) / 60000),
+      };
+    };
+
+    const pinnedCand = toCandidate(pinnedShowtime);
+
+    // Filter candidate pool
+    const candidates: CandidateShowtime[] = [];
+    const seenSet = new Set(criteria.seen_movies || []);
+    const formatSet =
+      criteria.selected_formats && criteria.selected_formats.length > 0
+        ? new Set(criteria.selected_formats)
+        : null;
+
+    for (const st of showtimes) {
+      if (st.movie_title === pinnedShowtime.movie_title) {
+        continue; // Cannot repeat pinned movie
+      }
+      if (seenSet.has(st.movie_title)) {
+        continue;
+      }
+
+      // Cinema filter
+      if (criteria.cinema_ids && criteria.cinema_ids.length > 0) {
+        if (!criteria.cinema_ids.includes(st.cinema_id)) {
+          continue;
+        }
+      }
+
+      // Premium supplements check
+      const fmtUpper = (st.format || '').toUpperCase();
+      const isPremium = PREMIUM_KEYWORDS.some((kw) => fmtUpper.includes(kw));
+      if (isPremium && criteria.pass_type !== PassType.GOLD && !criteria.allow_supplements) {
+        continue;
+      }
+
+      // Language filter
+      if (criteria.language === 'VOST') {
+        const vUpper = (st.version || '').toUpperCase();
+        if (!vUpper.includes('VOST') && vUpper !== 'ORIGINAL') {
+          continue;
+        }
+      } else if (criteria.language === 'VF') {
+        const vUpper = (st.version || '').toUpperCase();
+        if (!vUpper.includes('VF') && vUpper !== 'DUBBED') {
+          continue;
+        }
+      }
+
+      // Technology format filter
+      if (formatSet) {
+        const stFormat = st.format || 'Standard';
+        if (!formatSet.has(stFormat)) {
+          continue;
+        }
+      }
+
+      candidates.push(toCandidate(st));
+    }
+
+    candidates.sort((a, b) => a.start_ms - b.start_ms);
+
+    // Search prefixes (slots before pinnedIndex)
+    const prefixCount = pinnedIndex;
+    const suffixCount = targetCount - 1 - pinnedIndex;
+
+    const findChainsBefore = (): CandidateShowtime[][] => {
+      if (prefixCount === 0) return [[]];
+      const res: CandidateShowtime[][] = [];
+      const bt = (current: CandidateShowtime[], startI: number, seenTitles: Set<string>) => {
+        if (current.length === prefixCount) {
+          // Check buffer between last prefix item and pinnedCand
+          const last = current[current.length - 1];
+          const reqBuf = last.cinema_id !== pinnedCand.cinema_id ? interCinemaBufferMs : minBufferMs;
+          if (pinnedCand.start_ms - last.end_ms >= reqBuf) {
+            res.push([...current]);
+          }
+          return;
+        }
+        for (let i = startI; i < candidates.length; i++) {
+          const c = candidates[i];
+          if (c.end_ms > pinnedCand.start_ms - minBufferMs) break;
+          if (seenTitles.has(c.movie_title)) continue;
+          if (current.length > 0) {
+            const prev = current[current.length - 1];
+            const reqBuf = prev.cinema_id !== c.cinema_id ? interCinemaBufferMs : minBufferMs;
+            if (c.start_ms - prev.end_ms < reqBuf) continue;
+          }
+          current.push(c);
+          seenTitles.add(c.movie_title);
+          bt(current, i + 1, seenTitles);
+          seenTitles.delete(c.movie_title);
+          current.pop();
+        }
+      };
+      bt([], 0, new Set());
+      return res;
+    };
+
+    const findChainsAfter = (): CandidateShowtime[][] => {
+      if (suffixCount === 0) return [[]];
+      const res: CandidateShowtime[][] = [];
+      const bt = (current: CandidateShowtime[], startI: number, seenTitles: Set<string>) => {
+        if (current.length === suffixCount) {
+          res.push([...current]);
+          return;
+        }
+        for (let i = startI; i < candidates.length; i++) {
+          const c = candidates[i];
+          if (current.length === 0) {
+            const reqBuf = pinnedCand.cinema_id !== c.cinema_id ? interCinemaBufferMs : minBufferMs;
+            if (c.start_ms - pinnedCand.end_ms < reqBuf) continue;
+          } else {
+            const prev = current[current.length - 1];
+            const reqBuf = prev.cinema_id !== c.cinema_id ? interCinemaBufferMs : minBufferMs;
+            if (c.start_ms - prev.end_ms < reqBuf) continue;
+          }
+          if (seenTitles.has(c.movie_title)) continue;
+          current.push(c);
+          seenTitles.add(c.movie_title);
+          bt(current, i + 1, seenTitles);
+          seenTitles.delete(c.movie_title);
+          current.pop();
+        }
+      };
+      bt([], 0, new Set());
+      return res;
+    };
+
+    const prefixes = findChainsBefore();
+    const suffixes = findChainsAfter();
+
+    const completePaths: CandidateShowtime[][] = [];
+    for (const pre of prefixes) {
+      for (const suf of suffixes) {
+        // Check title uniqueness between pre and suf
+        const preTitles = new Set(pre.map((p) => p.movie_title));
+        const conflict = suf.some((s) => preTitles.has(s.movie_title));
+        if (!conflict) {
+          completePaths.push([...pre, pinnedCand, ...suf]);
+        }
+      }
+    }
+
+    if (completePaths.length === 0) {
+      return [];
+    }
+
+    // Score paths using consistent logic
+    const itineraries: Itinerary[] = completePaths.map((path) => {
+      let totalMovieMin = 0;
+      let totalPauseMin = 0;
+      let score = path.length * 1000;
+      for (const st of path) {
+        totalMovieMin += st.runtime_min;
+      }
+      for (let i = 0; i < path.length - 1; i++) {
+        const gap = Math.round((path[i + 1].start_ms - path[i].end_ms) / 60000);
+        totalPauseMin += gap;
+        score -= gap * 1.5;
+        if (gap > 60) score -= (gap - 60) * 3.0;
+        if (path[i].cinema_id && path[i + 1].cinema_id && path[i].cinema_id !== path[i + 1].cinema_id) {
+          score -= 100;
+        }
+      }
+      return {
+        showtimes: path,
+        total_movie_minutes: totalMovieMin,
+        total_pause_minutes: totalPauseMin,
+        score,
+        has_meal_break: false,
+      };
+    });
+
+    itineraries.sort((a, b) => b.score - a.score);
+    return itineraries.slice(0, 10);
+  }
+
+  getAvailableCandidatesForSlot(
+    showtimes: Showtime[],
+    options: {
+      predecessor: Showtime | null;
+      successor: Showtime | null;
+      minBufferMinutes?: number;
+      selectedCinemas?: Set<string>;
+    }
+  ): Array<{ showtime: Showtime; gapBeforeMinutes: number; gapAfterMinutes: number }> {
+    const minBuffer = options.minBufferMinutes || 15;
+    const minBufferMs = minBuffer * 60 * 1000;
+    const interCinemaBufferMs = Math.max(minBuffer, 30) * 60 * 1000;
+
+    const predEndMs = options.predecessor ? new Date(options.predecessor.ends_at).getTime() : null;
+    const succStartMs = options.successor ? new Date(options.successor.starts_at).getTime() : null;
+
+    const results: Array<{ showtime: Showtime; gapBeforeMinutes: number; gapAfterMinutes: number }> = [];
+
+    for (const st of showtimes) {
+      if (options.selectedCinemas && !options.selectedCinemas.has(st.cinema_id)) {
+        continue;
+      }
+
+      const stStartMs = new Date(st.starts_at).getTime();
+      const stEndMs = new Date(st.ends_at).getTime();
+
+      let gapBefore = 0;
+      if (options.predecessor && predEndMs !== null) {
+        const reqBuf =
+          options.predecessor.cinema_id !== st.cinema_id ? interCinemaBufferMs : minBufferMs;
+        if (stStartMs - predEndMs < reqBuf) {
+          continue;
+        }
+        gapBefore = Math.round((stStartMs - predEndMs) / 60000);
+      }
+
+      let gapAfter = 0;
+      if (options.successor && succStartMs !== null) {
+        const reqBuf =
+          st.cinema_id !== options.successor.cinema_id ? interCinemaBufferMs : minBufferMs;
+        if (succStartMs - stEndMs < reqBuf) {
+          continue;
+        }
+        gapAfter = Math.round((succStartMs - stEndMs) / 60000);
+      }
+
+      results.push({
+        showtime: st,
+        gapBeforeMinutes: gapBefore,
+        gapAfterMinutes: gapAfter,
+      });
+    }
+
+    results.sort(
+      (a, b) => new Date(a.showtime.starts_at).getTime() - new Date(b.showtime.starts_at).getTime()
+    );
+    return results;
+  }
 }
+

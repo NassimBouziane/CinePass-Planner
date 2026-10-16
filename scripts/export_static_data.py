@@ -1,5 +1,7 @@
 import argparse
+from datetime import datetime, timezone
 import json
+import logging
 import sqlite3
 import sys
 from pathlib import Path
@@ -114,22 +116,61 @@ def export_static_data(conn: sqlite3.Connection, output_dir: Union[str, Path]) -
         )
         dates_exported += 1
 
+    # 5. Write ratings.json from SQLite movies table
+    cursor.execute("""
+        SELECT title, user_rating, press_rating
+        FROM movies
+        WHERE user_rating IS NOT NULL OR press_rating IS NOT NULL
+    """)
+    ratings_payload = {}
+    ratings_file = out / "ratings.json"
+    if ratings_file.exists():
+        try:
+            ratings_payload = json.loads(ratings_file.read_text(encoding="utf-8"))
+        except Exception:
+            ratings_payload = {}
+
+    for row in cursor.fetchall():
+        title = row["title"]
+        u_r = row["user_rating"]
+        p_r = row["press_rating"]
+        if title not in ratings_payload:
+            ratings_payload[title] = {
+                "user_rating": u_r,
+                "press_rating": p_r,
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+            }
+        else:
+            if u_r is not None:
+                ratings_payload[title]["user_rating"] = u_r
+            if p_r is not None:
+                ratings_payload[title]["press_rating"] = p_r
+
+    ratings_file.write_text(
+        json.dumps(ratings_payload, ensure_ascii=False, indent=2),
+        encoding="utf-8"
+    )
+
     return {
         "cinemas_count": len(cinemas_payload),
         "dates_count": len(dates),
-        "showtimes_count": total_showtimes
+        "showtimes_count": total_showtimes,
+        "ratings_count": len(ratings_payload),
     }
 
 def main():
+    logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [%(levelname)s] %(message)s")
+    logger = logging.getLogger("export_static_data")
+
     parser = argparse.ArgumentParser(description="Export CinéPass database to static JSON files for Astro web app")
     parser.add_argument("--db", type=Path, default=DEFAULT_DB_PATH, help="Path to SQLite database")
     parser.add_argument("--output", "-o", type=Path, default=BASE_DIR / "web" / "public" / "data", help="Output directory")
     args = parser.parse_args()
 
-    print(f"📦 Exporting static data from {args.db} to {args.output}...")
+    logger.info(f"Exporting static data from {args.db} to {args.output}...")
     conn = get_db_connection(args.db)
     stats = export_static_data(conn, args.output)
-    print(f"✅ Export completed: {stats['cinemas_count']} cinemas, {stats['dates_count']} dates, {stats['showtimes_count']} showtimes.")
+    logger.info(f"Export completed: {stats['cinemas_count']} cinemas, {stats['dates_count']} dates, {stats['showtimes_count']} showtimes, {stats['ratings_count']} ratings.")
 
 if __name__ == "__main__":
     main()

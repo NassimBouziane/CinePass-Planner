@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS movies (
     director TEXT,
     poster_url TEXT,
     synopsis TEXT,
+    user_rating REAL,
+    press_rating REAL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -53,6 +55,12 @@ CREATE TABLE IF NOT EXISTS sync_history (
 """
 
 def init_db(conn: sqlite3.Connection) -> None:
-    """Initialize database tables and indexes."""
+    """Initialize database tables and indexes, applying lightweight migrations if needed."""
     with conn:
         conn.executescript(SCHEMA_SQL)
+        cursor = conn.execute("PRAGMA table_info(movies)")
+        existing_cols = {row[1] for row in cursor.fetchall()}
+        if "user_rating" not in existing_cols:
+            conn.execute("ALTER TABLE movies ADD COLUMN user_rating REAL")
+        if "press_rating" not in existing_cols:
+            conn.execute("ALTER TABLE movies ADD COLUMN press_rating REAL")
