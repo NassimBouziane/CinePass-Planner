@@ -64,3 +64,13 @@ def init_db(conn: sqlite3.Connection) -> None:
             conn.execute("ALTER TABLE movies ADD COLUMN user_rating REAL")
         if "press_rating" not in existing_cols:
             conn.execute("ALTER TABLE movies ADD COLUMN press_rating REAL")
+
+        # Clean up any duplicate movies and enforce unique title index
+        conn.execute("""
+            DELETE FROM movies 
+            WHERE rowid NOT IN (
+                SELECT MIN(rowid) FROM movies GROUP BY LOWER(title)
+            )
+        """)
+        conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_movies_unique_title ON movies(title)")
+

@@ -88,3 +88,40 @@ def test_export_static_data_legacy_db_without_ratings_column(tmp_path):
     assert stats["cinemas_count"] == 1
     assert (out_dir / "ratings.json").exists()
 
+
+def test_export_static_data_deduplicates_showtimes_and_handles_duplicate_movies(tmp_path):
+    """Verify that duplicate rows in movies or showtimes do NOT duplicate output in static JSON."""
+    from scripts.export_static_data import export_static_data
+    from cinepass_planner.models import Movie
+
+    conn = get_db_connection(tmp_path / "test_dedup.db")
+    init_db(conn)
+    cin_repo = CinemaRepository(conn)
+    sht_repo = ShowtimeRepository(conn)
+
+    cin = Cinema("C1", "Pathé Test", "Paris")
+    cin_repo.save(cin)
+
+    # Simulate legacy DB with duplicate movies by temporarily dropping unique index
+    with conn:
+        conn.execute("DROP INDEX IF EXISTS idx_movies_unique_title")
+        conn.execute("INSERT INTO movies (id, title, runtime_minutes, poster_url) VALUES ('M1', 'Dune', 160, 'poster1.jpg')")
+        conn.execute("INSERT INTO movies (id, title, runtime_minutes, poster_url) VALUES ('M2', 'Dune', 160, 'poster2.jpg')")
+
+    # Insert a single showtime
+    st1 = Showtime("C1", "Dune", "2026-10-18T14:00:00", "2026-10-18T16:40:00", "2026-10-18", "VOST", "IMAX")
+    sht_repo.save(st1)
+
+    # Insert duplicate showtime
+    st2 = Showtime("C1", "Dune", "2026-10-18T14:00:00", "2026-10-18T16:40:00", "2026-10-18", "VOST", "IMAX")
+    sht_repo.save(st2)
+
+    out_dir = tmp_path / "static_data"
+    export_static_data(conn, out_dir)
+
+    showtimes_data = json.loads((out_dir / "showtimes-2026-10-18.json").read_text(encoding="utf-8"))
+    assert len(showtimes_data["C1"]) == 1, f"Expected 1 showtime but got {len(showtimes_data['C1'])}"
+    assert showtimes_data["C1"][0]["title"] == "Dune"
+    assert showtimes_data["C1"][0]["starts_at"] == "2026-10-18T14:00:00"
+
+

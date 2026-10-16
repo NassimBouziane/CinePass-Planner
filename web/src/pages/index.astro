@@ -1844,6 +1844,7 @@ END:VCALENDAR`.trim();
         const selectedDate = dateSelect?.value || '';
         const candidateShowtimes: Showtime[] = [];
         const cinemasById = new Map(allCinemas.map(c => [c.id, c.name]));
+        const seenShowtimes = new Set<string>();
 
         for (const cid of selectedCinemaIds) {
           const rawList = currentShowtimesMap[cid] || [];
@@ -1855,6 +1856,10 @@ END:VCALENDAR`.trim();
             if (fmt === 'Standard' && isKnownPremium) {
               fmt = 'Premium';
             }
+            const dedupKey = `${cid}|${raw.title}|${raw.starts_at}|${raw.version || 'ORIGINAL'}|${fmt}`;
+            if (seenShowtimes.has(dedupKey)) continue;
+            seenShowtimes.add(dedupKey);
+
             candidateShowtimes.push({
               cinema_id: cid,
               movie_title: raw.title,
@@ -2100,11 +2105,16 @@ END:VCALENDAR`.trim();
 
         const sourceCinemas = selectedCinemaIds.size > 0 ? Array.from(selectedCinemaIds) : Object.keys(currentShowtimesMap);
         const moviesMap = new Map<string, { movie_title: string; showtimes: Showtime[]; poster_url?: string }>();
+        const seenInStartDrawer = new Set<string>();
 
         for (const cid of sourceCinemas) {
           const rawList = currentShowtimesMap[cid] || [];
           const cinName = cinemasById.get(cid) || cid;
           for (const raw of rawList) {
+            const dedupKey = `${cid}|${raw.title}|${raw.starts_at}|${raw.version || 'ORIGINAL'}|${raw.format || 'Standard'}`;
+            if (seenInStartDrawer.has(dedupKey)) continue;
+            seenInStartDrawer.add(dedupKey);
+
             if (!moviesMap.has(raw.title)) {
               moviesMap.set(raw.title, { movie_title: raw.title, showtimes: [], poster_url: raw.poster_url });
             }

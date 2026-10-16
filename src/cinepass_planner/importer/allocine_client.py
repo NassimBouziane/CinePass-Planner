@@ -1,3 +1,4 @@
+import hashlib
 import json
 import logging
 import re
@@ -18,6 +19,12 @@ from cinepass_planner.core.parser_utils import (
 from cinepass_planner.models import Movie, Showtime
 
 logger = logging.getLogger(__name__)
+
+
+def generate_movie_id(title: str) -> str:
+    """Generate a deterministic movie ID from title across all Python runs."""
+    norm = title.strip().lower().encode("utf-8")
+    return f"MOV_{hashlib.md5(norm).hexdigest()[:10]}"
 
 
 class AllocineRateLimitError(Exception):
@@ -204,7 +211,7 @@ class AllocineClient:
                             pass
 
                     movie = Movie(
-                        id=f"MOV_{abs(hash(title)) % 10000000}",
+                        id=generate_movie_id(title),
                         title=title,
                         original_title=original_title,
                         runtime_minutes=runtime_min,
@@ -301,7 +308,7 @@ class AllocineClient:
                     pass
 
             movie = Movie(
-                id=f"MOV_{abs(hash(title)) % 10000000}",
+                id=generate_movie_id(title),
                 title=title,
                 original_title=m.get("originalTitle") or "",
                 runtime_minutes=runtime_min,
@@ -321,7 +328,7 @@ class AllocineClient:
             movie = movies_by_title.get(norm_title)
             if not movie:
                 movie = Movie(
-                    id=f"MOV_{abs(hash(movie_title)) % 10000000}",
+                    id=generate_movie_id(movie_title),
                     title=movie_title,
                     runtime_minutes=120
                 )

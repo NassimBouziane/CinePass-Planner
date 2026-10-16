@@ -86,6 +86,8 @@ class MovieRepository:
 
     def save(self, movie: Movie) -> None:
         genres_json = json.dumps(movie.genres, ensure_ascii=False)
+        existing = self.get_by_title(movie.title)
+        actual_id = existing.id if existing else movie.id
         with self.conn:
             self.conn.execute(
                 """
@@ -104,7 +106,7 @@ class MovieRepository:
                     updated_at=CURRENT_TIMESTAMP
                 """,
                 (
-                    movie.id,
+                    actual_id,
                     movie.title,
                     movie.original_title,
                     movie.runtime_minutes,

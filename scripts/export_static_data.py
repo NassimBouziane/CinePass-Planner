@@ -88,27 +88,41 @@ def export_static_data(conn: sqlite3.Connection, output_dir: Union[str, Path]) -
     for d in dates:
         cursor.execute("""
             SELECT showtimes.cinema_id, showtimes.movie_title, showtimes.starts_at, showtimes.ends_at,
-                   showtimes.version, showtimes.format, movies.poster_url
+                   showtimes.version, showtimes.format, m.poster_url
             FROM showtimes
-            LEFT JOIN movies ON showtimes.movie_title = movies.title
+            LEFT JOIN (
+                SELECT title, MAX(poster_url) AS poster_url
+                FROM movies
+                GROUP BY title
+            ) AS m ON showtimes.movie_title = m.title
             WHERE showtimes.date_str = ?
             ORDER BY showtimes.starts_at ASC
         """, (d,))
         rows = cursor.fetchall()
 
         by_cinema: dict[str, list[dict]] = {}
+        seen_showtimes: dict[str, set[tuple]] = {}
         for r in rows:
             cid = r["cinema_id"]
             if cid not in by_cinema:
                 by_cinema[cid] = []
+                seen_showtimes[cid] = set()
+
             fmt = r["format"] or "Standard"
             if fmt == "Standard" and cid in ("G02BG", "C0158"):
                 fmt = "Premium"
+
+            version = r["version"] or "ORIGINAL"
+            dedup_key = (r["movie_title"], r["starts_at"], version, fmt)
+            if dedup_key in seen_showtimes[cid]:
+                continue
+            seen_showtimes[cid].add(dedup_key)
+
             by_cinema[cid].append({
                 "title": r["movie_title"],
                 "starts_at": r["starts_at"],
                 "ends_at": r["ends_at"],
-                "version": r["version"] or "ORIGINAL",
+                "version": version,
                 "format": fmt,
                 "poster_url": r["poster_url"] or ""
             })
