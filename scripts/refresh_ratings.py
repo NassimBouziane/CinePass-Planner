@@ -54,6 +54,48 @@ def main() -> None:
         default=7,
         help="Cache TTL in days (default: 7)",
     )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=30,
+        help="Number of movies to refresh per batch (default: 30)",
+    )
+    parser.add_argument(
+        "--batch-pause",
+        type=float,
+        default=60.0,
+        help="Pause in seconds between batches (default: 60s)",
+    )
+    parser.add_argument(
+        "--loop-batches",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Chain all batches with pauses until completion (default: True)",
+    )
+    parser.add_argument(
+        "--min-delay",
+        type=float,
+        default=0.8,
+        help="Minimum random delay in seconds between movie requests (default: 0.8)",
+    )
+    parser.add_argument(
+        "--max-delay",
+        type=float,
+        default=2.0,
+        help="Maximum random delay in seconds between movie requests (default: 2.0)",
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit number of movies to refresh (ideal for testing)",
+    )
+    parser.add_argument(
+        "--days",
+        type=int,
+        default=8,
+        help="Number of days ahead to scan for upcoming showtimes (default: 8)",
+    )
 
     args = parser.parse_args()
 
@@ -62,6 +104,8 @@ def main() -> None:
     logger.info(f"Showtimes directory: {args.showtimes_dir}")
     logger.info(f"Output file: {args.output_file}")
     logger.info(f"TTL days: {args.ttl_days} (force: {args.force})")
+    logger.info(f"Batching: size={args.batch_size}, pause={args.batch_pause}s, loop={args.loop_batches}")
+    logger.info(f"Delays: min={args.min_delay}s, max={args.max_delay}s | Days ahead: {args.days}")
 
     conn = None
     if args.db and args.db.exists():
@@ -80,6 +124,13 @@ def main() -> None:
         ttl_days=args.ttl_days,
         force=args.force,
         conn=conn,
+        limit=args.limit,
+        batch_size=args.batch_size,
+        loop_batches=args.loop_batches,
+        batch_pause=args.batch_pause,
+        min_delay=args.min_delay,
+        max_delay=args.max_delay,
+        days_ahead=args.days,
     )
     elapsed = time.time() - t0
 

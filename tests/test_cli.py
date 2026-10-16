@@ -166,11 +166,20 @@ def test_cli_refresh_ratings_command(tmp_path):
 
         assert result.exit_code == 0
         assert "5 films rafraichis" in result.stdout
+        from unittest.mock import ANY
         mock_refresh.assert_called_once_with(
             showtimes_dir=dummy_dir,
             output_file=dummy_file,
             ttl_days=3,
-            force=True
+            force=True,
+            conn=ANY,
+            limit=None,
+            batch_size=30,
+            loop_batches=True,
+            batch_pause=60.0,
+            min_delay=0.8,
+            max_delay=2.0,
+            days_ahead=8,
         )
 
 

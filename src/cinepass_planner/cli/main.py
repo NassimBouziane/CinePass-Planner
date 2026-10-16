@@ -339,16 +339,32 @@ def refresh_ratings(
     ),
     ttl_days: int = typer.Option(7, "--ttl-days", help="Duree de validite du cache en jours"),
     force: bool = typer.Option(False, "--force", help="Forcer la mise a jour de tous les films"),
+    limit: Optional[int] = typer.Option(None, "--limit", help="Limiter le nombre de films a rafraichir"),
+    batch_size: Optional[int] = typer.Option(30, "--batch-size", "-b", help="Nombre de films par lot"),
+    loop_batches: bool = typer.Option(True, "--loop-batches", help="Enchainer les lots avec pause jusqu'a la fin"),
+    batch_pause: float = typer.Option(60.0, "--batch-pause", help="Pause en secondes entre chaque lot (defaut: 60s)"),
+    min_delay: float = typer.Option(0.8, "--min-delay", help="Delai minimal aleatoire en secondes entre requetes"),
+    max_delay: float = typer.Option(2.0, "--max-delay", help="Delai maximal aleatoire en secondes entre requetes"),
+    days: int = typer.Option(8, "--days", "-d", help="Nombre de jours de seances a scanner a partir d'aujourd'hui"),
 ):
     """Rafraichir les notes Allocine des films depuis les donnees de seances."""
-    console.print(f"Demarrage du rafraichissement des notes (force={force}, ttl={ttl_days} jours)...")
+    console.print(f"Demarrage du rafraichissement des notes (force={force}, ttl={ttl_days} jours, lot={batch_size}, pause={batch_pause}s)...")
     console.print(f"Dossier seances: {showtimes_dir}")
     console.print(f"Fichier de sortie: {output_file}")
+    conn = ensure_initialized()
     count = refresh_all_ratings(
         showtimes_dir=showtimes_dir,
         output_file=output_file,
         ttl_days=ttl_days,
         force=force,
+        conn=conn,
+        limit=limit,
+        batch_size=batch_size,
+        loop_batches=loop_batches,
+        batch_pause=batch_pause,
+        min_delay=min_delay,
+        max_delay=max_delay,
+        days_ahead=days,
     )
     console.print(f"Mise a jour terminee : {count} films rafraichis.")
     console.print(f"Fichier enregistre : {output_file}")

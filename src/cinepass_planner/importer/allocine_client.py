@@ -3,9 +3,10 @@ import json
 import logging
 import re
 import sqlite3
+import random
 import time
 import urllib.parse
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Optional
 from bs4 import BeautifulSoup
@@ -89,10 +90,35 @@ def parse_ratings_from_html(html: str, target_title: str) -> dict[str, Optional[
     }
 
 
-def extract_movie_titles_from_json_files(data_dir: Path) -> list[str]:
-    """Extracts all unique movie titles from showtimes-*.json in data_dir."""
+def extract_movie_titles_from_json_files(data_dir: Path, days_ahead: Optional[int] = 8) -> list[str]:
+    """
+    Extracts all unique movie titles from showtimes-*.json in data_dir.
+    If days_ahead is provided, restricts to showtimes between today and today + days_ahead.
+    Falls back to all files if no files match the date filter (e.g. in test fixtures).
+    """
+    p_dir = Path(data_dir)
+    all_files = sorted(list(p_dir.glob("showtimes-*.json")))
+    if not all_files:
+        return []
+
+    files_to_read = all_files
+    if days_ahead is not None and days_ahead > 0:
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        max_date_str = (datetime.now() + timedelta(days=days_ahead)).strftime("%Y-%m-%d")
+        matching = []
+        for f in all_files:
+            m = re.search(r"(\d{4}-\d{2}-\d{2})", f.name)
+            if m:
+                d = m.group(1)
+                if today_str <= d <= max_date_str:
+                    matching.append(f)
+            else:
+                matching.append(f)
+        if matching:
+            files_to_read = matching
+
     titles = set()
-    for showtime_file in Path(data_dir).glob("showtimes-*.json"):
+    for showtime_file in files_to_read:
         try:
             data = json.loads(showtime_file.read_text(encoding="utf-8"))
             for cid, s_list in data.items():
@@ -394,11 +420,18 @@ class AllocineClient:
         ttl_days: int = 7,
         force: bool = False,
         conn: Optional[sqlite3.Connection] = None,
+        limit: Optional[int] = None,
+        batch_size: Optional[int] = 30,
+        loop_batches: bool = True,
+        batch_pause: float = 60.0,
+        min_delay: float = 0.8,
+        max_delay: float = 2.0,
+        days_ahead: int = 8,
     ) -> int:
         """
         Refresh ratings for all movies found in showtimes-*.json files or SQLite database.
         Saves updated ratings to output_file (ratings.json) and SQLite if connection provided.
-        Respects TTL and protects against Allociné rate limits.
+        Respects TTL, uses batches with polite pauses, and protects against Allocine rate limits.
         """
         out_p = Path(output_file)
         out_p.parent.mkdir(parents=True, exist_ok=True)
@@ -410,7 +443,7 @@ class AllocineClient:
             except Exception as e:
                 logger.warning(f"Unable to read existing ratings file {out_p}: {e}")
 
-        json_titles = set(extract_movie_titles_from_json_files(Path(showtimes_dir)))
+        json_titles = set(extract_movie_titles_from_json_files(Path(showtimes_dir), days_ahead=days_ahead))
 
         movie_repo = None
         if conn:
@@ -426,12 +459,13 @@ class AllocineClient:
         else:
             movie_titles = set()
 
-        logger.info(f"Checking Allociné ratings for {len(movie_titles)} movies (force={force}, ttl={ttl_days}d)...")
-
-        refreshed_count = 0
+        all_sorted_titles = sorted(list(movie_titles))
         now = datetime.now(timezone.utc)
 
-        for title in sorted(list(movie_titles)):
+        fresh_titles: set[str] = set()
+        stale_titles: list[str] = []
+
+        for title in all_sorted_titles:
             cached_data = existing_cache.get(title)
             is_stale = True
 
@@ -445,10 +479,31 @@ class AllocineClient:
                     except Exception:
                         pass
 
-            if not is_stale:
-                continue
+            if is_stale:
+                stale_titles.append(title)
+            else:
+                fresh_titles.add(title)
 
-            if movie_repo:
+        if limit is not None and limit > 0:
+            stale_titles = stale_titles[:limit]
+
+        logger.info(
+            f"Allocine ratings: {len(movie_titles)} movies in upcoming showtimes. "
+            f"{len(fresh_titles)} valid in cache (TTL < {ttl_days}d), {len(stale_titles)} to refresh "
+            f"(batch_size={batch_size or 'illimite'}, loop={loop_batches}, pause={batch_pause}s)..."
+        )
+
+        if not stale_titles:
+            logger.info("All movie ratings are fresh and up to date.")
+            self._save_cache_to_disk(existing_cache, out_p)
+            return 0
+
+        refreshed_count = 0
+        synced_in_batch = 0
+        rate_limited = False
+
+        for idx, title in enumerate(stale_titles, start=1):
+            if movie_repo and not force:
                 db_movie = movie_repo.get_by_title(title)
                 if db_movie and (db_movie.user_rating is not None or db_movie.press_rating is not None):
                     existing_cache[title] = {
@@ -457,37 +512,87 @@ class AllocineClient:
                         "updated_at": now.isoformat(),
                     }
                     refreshed_count += 1
+                    logger.info(f"[{idx}/{len(stale_titles)}] '{title}' : deja en base locale ({db_movie.user_rating}/5, {db_movie.press_rating}/5)")
                     continue
 
-            try:
-                ratings = self.fetch_movie_ratings(title)
-                existing_cache[title] = {
-                    "user_rating": ratings.get("user_rating"),
-                    "press_rating": ratings.get("press_rating"),
-                    "updated_at": now.isoformat(),
-                }
-                refreshed_count += 1
+            for attempt in range(2):
+                try:
+                    t0 = time.time()
+                    ratings = self.fetch_movie_ratings(title)
+                    dur = time.time() - t0
 
-                if movie_repo:
-                    movie_repo.update_ratings(
-                        title,
-                        ratings.get("user_rating"),
-                        ratings.get("press_rating"),
-                    )
+                    existing_cache[title] = {
+                        "user_rating": ratings.get("user_rating"),
+                        "press_rating": ratings.get("press_rating"),
+                        "updated_at": now.isoformat(),
+                    }
+                    refreshed_count += 1
+                    synced_in_batch += 1
 
-                time.sleep(0.4)
-            except AllocineRateLimitError as e:
-                logger.warning(f"Allociné rate limit (HTTP 429) encountered while fetching ratings: {e}. Preserving existing cache.")
+                    u_str = f"{ratings.get('user_rating')}/5" if ratings.get('user_rating') is not None else "-"
+                    p_str = f"{ratings.get('press_rating')}/5" if ratings.get('press_rating') is not None else "-"
+                    logger.info(f"[{idx}/{len(stale_titles)}] '{title}' : Spectateurs {u_str}, Presse {p_str} ({dur:.1f}s)")
+
+                    if movie_repo:
+                        movie_repo.update_ratings(
+                            title,
+                            ratings.get("user_rating"),
+                            ratings.get("press_rating"),
+                        )
+
+                    # Polite random delay
+                    low = min(min_delay, max_delay)
+                    high = max(min_delay, max_delay)
+                    sleep_time = random.uniform(low, high) if high > 0 else 0
+                    if sleep_time > 0:
+                        time.sleep(sleep_time)
+                    break
+
+                except AllocineRateLimitError as e:
+                    if attempt == 0:
+                        logger.warning(f"[{idx}/{len(stale_titles)}] Rate limit Allocine (HTTP 429) pour '{title}'. Pause de securite de 30s avant nouvelle tentative...")
+                        time.sleep(30)
+                    else:
+                        logger.warning(f"[{idx}/{len(stale_titles)}] Echec apres nouvelle tentative (HTTP 429) pour '{title}' : {e}")
+                        logger.warning("Arret gracieux du rafraichissement pour proteger le quota Allocine. Sauvegarde des donnees acquises.")
+                        rate_limited = True
+                        break
+                except Exception as e:
+                    logger.warning(f"[{idx}/{len(stale_titles)}] Erreur lors de la recuperation des notes pour '{title}' : {e}")
+                    break
+
+            if rate_limited:
                 break
-            except Exception as e:
-                logger.warning(f"Failed to fetch ratings for '{title}': {e}")
 
-        tmp_file = out_p.with_suffix(".tmp")
-        tmp_file.write_text(json.dumps(existing_cache, ensure_ascii=False, indent=2), encoding="utf-8")
-        tmp_file.replace(out_p)
+            # Handle batch pause
+            if batch_size and synced_in_batch >= batch_size and idx < len(stale_titles):
+                self._save_cache_to_disk(existing_cache, out_p)
+                if loop_batches:
+                    logger.info(f"Lot de {synced_in_batch} films termine ({idx}/{len(stale_titles)} traites). Debut de la pause de securite de {int(batch_pause)}s...")
+                    step = 15
+                    elapsed = 0.0
+                    while elapsed < batch_pause:
+                        sleep_duration = min(float(step), batch_pause - elapsed)
+                        time.sleep(sleep_duration)
+                        elapsed += sleep_duration
+                        remaining = int(batch_pause - elapsed)
+                        if remaining > 0:
+                            logger.info(f"Pause inter-lots en cours : reprise dans {remaining}s...")
+                    logger.info("Fin de pause : reprise du rafraichissement des notes.")
+                    synced_in_batch = 0
+                else:
+                    logger.info(f"Lot de {synced_in_batch} films termine. Fin du run actuel.")
+                    break
 
+        self._save_cache_to_disk(existing_cache, out_p)
         logger.info(f"Ratings refresh complete: {refreshed_count} movies updated. Saved to {out_p}")
         return refreshed_count
+
+    def _save_cache_to_disk(self, cache: dict[str, dict], out_p: Path) -> None:
+        """Atomic write of ratings cache to disk."""
+        tmp_file = out_p.with_suffix(".tmp")
+        tmp_file.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
+        tmp_file.replace(out_p)
 
 
 def refresh_all_ratings(
@@ -496,6 +601,13 @@ def refresh_all_ratings(
     ttl_days: int = 7,
     force: bool = False,
     conn: Optional[sqlite3.Connection] = None,
+    limit: Optional[int] = None,
+    batch_size: Optional[int] = 30,
+    loop_batches: bool = True,
+    batch_pause: float = 60.0,
+    min_delay: float = 0.8,
+    max_delay: float = 2.0,
+    days_ahead: int = 8,
 ) -> int:
     """Convenience function delegating to AllocineClient().refresh_all_ratings()."""
     client = AllocineClient()
@@ -505,5 +617,12 @@ def refresh_all_ratings(
         ttl_days=ttl_days,
         force=force,
         conn=conn,
+        limit=limit,
+        batch_size=batch_size,
+        loop_batches=loop_batches,
+        batch_pause=batch_pause,
+        min_delay=min_delay,
+        max_delay=max_delay,
+        days_ahead=days_ahead,
     )
 

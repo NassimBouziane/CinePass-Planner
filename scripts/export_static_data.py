@@ -2,6 +2,7 @@ import argparse
 from datetime import datetime, timezone
 import json
 import logging
+import re
 import sqlite3
 import sys
 from pathlib import Path
@@ -15,6 +16,8 @@ from cinepass_planner.config import DEFAULT_DB_PATH
 from cinepass_planner.db.connection import get_db_connection
 from cinepass_planner.db.repositories import CinemaRepository
 from cinepass_planner.db.schema import init_db
+
+logger = logging.getLogger("export_static_data")
 
 def export_static_data(conn: sqlite3.Connection, output_dir: Union[str, Path]) -> dict:
     """
@@ -68,18 +71,35 @@ def export_static_data(conn: sqlite3.Connection, output_dir: Union[str, Path]) -
         encoding="utf-8"
     )
 
-    # 3. Write dates.json
+    # 3. Write dates.json (upcoming and current dates)
+    today_str = datetime.now().strftime("%Y-%m-%d")
     cursor.execute("""
         SELECT DISTINCT date_str
         FROM showtimes
+        WHERE date_str >= ?
         ORDER BY date_str ASC
-    """)
+    """, (today_str,))
     dates = [row["date_str"] for row in cursor.fetchall()]
+    if not dates:
+        # Fallback if DB only contains test fixtures with fixed dates
+        cursor.execute("SELECT DISTINCT date_str FROM showtimes ORDER BY date_str ASC")
+        dates = [row["date_str"] for row in cursor.fetchall()]
 
     (out / "dates.json").write_text(
         json.dumps(dates, ensure_ascii=False, indent=2),
         encoding="utf-8"
     )
+
+    # Clean up obsolete showtimes-*.json files from past days
+    active_date_set = set(dates)
+    for existing_file in out.glob("showtimes-*.json"):
+        m = re.search(r"(\d{4}-\d{2}-\d{2})", existing_file.name)
+        if m and m.group(1) not in active_date_set and m.group(1) < today_str:
+            try:
+                existing_file.unlink()
+                logger.info(f"Deleted expired showtime file: {existing_file.name}")
+            except Exception as e:
+                logger.warning(f"Unable to delete expired {existing_file}: {e}")
 
     # 4. Write showtimes-<date>.json
     dates_exported = 0
