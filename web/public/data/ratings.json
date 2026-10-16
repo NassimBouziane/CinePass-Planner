@@ -1,1 +1,2407 @@
-{}
+{
+  " L’Être Aimé": {
+    "user_rating": 3.9,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "12 hommes en colère": {
+    "user_rating": 4.6,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "15/18": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "2001 : l'odyssée de l'espace": {
+    "user_rating": 4.1,
+    "press_rating": 4.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "7 ans de réflexion": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "A Scene at the Sea": {
+    "user_rating": 4.0,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "A Swedish Love Story": {
+    "user_rating": 3.6,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "ASAKO I&II": {
+    "user_rating": 3.9,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Adieu monde cruel": {
+    "user_rating": 3.9,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Aftersun": {
+    "user_rating": 3.7,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ailleurs": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Akira": {
+    "user_rating": 4.1,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Alice comedies 2": {
+    "user_rating": 3.2,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "All That Glitters": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Always Lalisa": {
+    "user_rating": 3.6,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Anbil Avan": {
+    "user_rating": 2.5,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Anesthesia": {
+    "user_rating": 3.7,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Aprile": {
+    "user_rating": 3.5,
+    "press_rating": 4.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Artou": {
+    "user_rating": 3.0,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Assurance sur la mort": {
+    "user_rating": 4.3,
+    "press_rating": 4.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Astérix et Obélix : Mission Cléopâtre": {
+    "user_rating": 4.1,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Atout coeur à Tokyo pour OSS 117": {
+    "user_rating": 3.2,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Au hasard Balthazar": {
+    "user_rating": 3.7,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Au-delà des grilles": {
+    "user_rating": 3.7,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Avengers : Endgame Extended": {
+    "user_rating": 4.3,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Babe, le cochon devenu berger": {
+    "user_rating": 2.6,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Backrooms": {
+    "user_rating": 3.1,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Bait": {
+    "user_rating": 3.7,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Bande à Part": {
+    "user_rating": 3.5,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Barry Lyndon": {
+    "user_rating": 4.4,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Battle Royale": {
+    "user_rating": 3.7,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Beetlejuice": {
+    "user_rating": 3.8,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Bienvenue Parmi Nous": {
+    "user_rating": 2.9,
+    "press_rating": 1.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Billy Elliot": {
+    "user_rating": 4.0,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Biutiful": {
+    "user_rating": 3.7,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Blade Runner": {
+    "user_rating": 4.2,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Blow Out": {
+    "user_rating": 3.9,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Blow Up": {
+    "user_rating": 3.7,
+    "press_rating": 4.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Blue Velvet": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Boro in the Box": {
+    "user_rating": 3.6,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Bouchra": {
+    "user_rating": 3.7,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Boule de feu": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Boulevard du crépuscule": {
+    "user_rating": 4.3,
+    "press_rating": 4.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Breaking the Waves": {
+    "user_rating": 3.6,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Brigitte's Planet B": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Broken English": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Broken Voices": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Butterfly Jam": {
+    "user_rating": 3.1,
+    "press_rating": 3.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Capharnaüm": {
+    "user_rating": 4.3,
+    "press_rating": 3.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Caramel": {
+    "user_rating": 3.5,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Carlo Acutis, un saint pour notre temps": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Carmen, l’oiseau rebelle": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Cars": {
+    "user_rating": 3.9,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Casablanca": {
+    "user_rating": 4.3,
+    "press_rating": 4.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Casino": {
+    "user_rating": 4.0,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Certains l'aiment chaud": {
+    "user_rating": 4.3,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ceux qui tiennent la laisse": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Chantons sous la pluie": {
+    "user_rating": 4.3,
+    "press_rating": 4.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Chien Pourri, la vie à Paris !": {
+    "user_rating": 3.6,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Chien bleu et autres belles histoires de l'école des loisirs": {
+    "user_rating": 2.8,
+    "press_rating": 2.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Chinatown": {
+    "user_rating": 4.1,
+    "press_rating": 4.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Chungking Express": {
+    "user_rating": 4.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Cinema Paradiso": {
+    "user_rating": 4.2,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Cinema dei Piccoli": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Citizen Kane": {
+    "user_rating": 4.3,
+    "press_rating": 4.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Clayface": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Clôture FFLF 6e édition": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Collatéral": {
+    "user_rating": 4.0,
+    "press_rating": 4.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Congo Boy": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Conversation secrète": {
+    "user_rating": 3.7,
+    "press_rating": 4.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Coraline": {
+    "user_rating": 3.9,
+    "press_rating": 4.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Cowboy Bebop": {
+    "user_rating": 3.7,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Criature": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Cris et chuchotements": {
+    "user_rating": 3.9,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Cuba & Alaska": {
+    "user_rating": 3.7,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Cutter's way (la blessure)": {
+    "user_rating": 3.1,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "De Gaulle": {
+    "user_rating": 4.4,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "De la Comédie-Française": {
+    "user_rating": 4.0,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Dead Language": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Decorado": {
+    "user_rating": 3.8,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Deep Sky": {
+    "user_rating": 2.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Dernière nuit à Milan": {
+    "user_rating": 3.9,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Derrière le paravent": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Des Minions et des monstres": {
+    "user_rating": 3.1,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Des filles disparaissent": {
+    "user_rating": 2.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Des jours et des nuits dans la forêt": {
+    "user_rating": 4.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Deux ou trois choses que je sais d'elle": {
+    "user_rating": 2.7,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Devenir celle que je voudrais être": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Digger": {
+    "user_rating": 3.8,
+    "press_rating": 3.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Divorce à l'Italienne": {
+    "user_rating": 4.2,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Do the Right Thing": {
+    "user_rating": 3.7,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Docteur Folamour": {
+    "user_rating": 4.1,
+    "press_rating": 4.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Doraemon et le Château sous-marin": {
+    "user_rating": 3.1,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Dounia et la princesse d’Alep": {
+    "user_rating": 3.7,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Dreaming Walls": {
+    "user_rating": 3.6,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Du fioul dans les artères": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ducobu et le fantôme de Saint-Potache": {
+    "user_rating": 2.6,
+    "press_rating": 2.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Dégel": {
+    "user_rating": 3.5,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Détective Conan : L'Ange déchu de l'asphalte": {
+    "user_rating": 3.2,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Elena": {
+    "user_rating": 3.6,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Emergency Exit": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "En promenade...": {
+    "user_rating": 2.7,
+    "press_rating": 2.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "En quatrième vitesse": {
+    "user_rating": 4.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Enfants de Palestine – Deux histoires de Cisjordanie": {
+    "user_rating": 3.9,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Englouti": {
+    "user_rating": 3.1,
+    "press_rating": 2.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Entre ciel et terre": {
+    "user_rating": 3.5,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Entre les guerres": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Et maintenant on va où ?": {
+    "user_rating": 4.0,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Et pour quelques dollars de plus": {
+    "user_rating": 4.3,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Eternal Sunshine of the Spotless Mind": {
+    "user_rating": 4.2,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Everybody Digs Bill Evans": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Eyes Wide Shut": {
+    "user_rating": 3.7,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Face à la mer": {
+    "user_rating": 3.5,
+    "press_rating": 2.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Fais-moi un signe": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Fausse note": {
+    "user_rating": 2.9,
+    "press_rating": 2.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Faute d'amour": {
+    "user_rating": 3.9,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Fenêtre sur cour": {
+    "user_rating": 4.4,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Festival du film libanais de France - Courts métrages #1": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Festival du film libanais de France - Courts métrages #2": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Festival du film libanais de France - Courts métrages #3": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Festival du film libanais de France - Courts métrages #4": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Fini de rire ! L'humour politique au garde-à-vous ?": {
+    "user_rating": 4.2,
+    "press_rating": 2.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Fjord": {
+    "user_rating": 4.0,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Flush": {
+    "user_rating": 3.6,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Freaks": {
+    "user_rating": 3.9,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Full Metal Jacket": {
+    "user_rating": 4.4,
+    "press_rating": 4.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Funny People": {
+    "user_rating": 2.4,
+    "press_rating": 3.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Garance": {
+    "user_rating": 4.0,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Gervaise": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ghost Elephants": {
+    "user_rating": 3.7,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ghost in the Shell": {
+    "user_rating": 4.1,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Gloria Mundi": {
+    "user_rating": 3.5,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Goodbye, Dragon Inn": {
+    "user_rating": 3.3,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Hair, Paper, Water...": {
+    "user_rating": 4.0,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Happiness Therapy": {
+    "user_rating": 3.8,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Haute solitude, Jean Zay prisonnier politique": {
+    "user_rating": 3.2,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Heart Of The Beast": {
+    "user_rating": 3.8,
+    "press_rating": 2.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Heat": {
+    "user_rating": 4.3,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Her Private Hell": {
+    "user_rating": 1.6,
+    "press_rating": 2.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Highlander": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Histoires De La Nuit": {
+    "user_rating": 3.3,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Holding Liat": {
+    "user_rating": 3.5,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Hunger Games - L'embrasement": {
+    "user_rating": 3.9,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Hunger Games - La Révolte : Partie 1": {
+    "user_rating": 3.4,
+    "press_rating": 3.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Hérédité": {
+    "user_rating": 3.6,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "I Want Your Sex": {
+    "user_rating": 2.8,
+    "press_rating": 3.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "I Was a Teenage Sex Pistol": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Il Divo": {
+    "user_rating": 3.3,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Il Maestro": {
+    "user_rating": 3.6,
+    "press_rating": 2.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Il faut brûler Maman": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Il était une fois dans l'Ouest": {
+    "user_rating": 4.5,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "In This Darkness I See You": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "In Waves": {
+    "user_rating": 4.2,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "In the Mood for Love": {
+    "user_rating": 4.1,
+    "press_rating": 4.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Insidious : l'invasion du lointain": {
+    "user_rating": 2.6,
+    "press_rating": 2.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Intouchables": {
+    "user_rating": 4.4,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Irish Travellers": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "J'ai le droit de vivre": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "J'ai rencontré le Diable": {
+    "user_rating": 4.3,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Jacquot de Nantes": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Jailer 2": {
+    "user_rating": 3.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "James et la pêche géante": {
+    "user_rating": 3.2,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Je te tiens, tu me tiens par la barbichette": {
+    "user_rating": 2.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Je veux bien": {
+    "user_rating": 2.9,
+    "press_rating": 2.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Jeux d'été": {
+    "user_rating": 4.0,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Jim Queen": {
+    "user_rating": 4.3,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Jours d'amour": {
+    "user_rating": 2.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Joyeuse Jungle !": {
+    "user_rating": 2.9,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Jubilee": {
+    "user_rating": 3.1,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Justin le Juste": {
+    "user_rating": 3.8,
+    "press_rating": 3.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Kaboom": {
+    "user_rating": 3.0,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Karma": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Kayara, Princesse inca": {
+    "user_rating": 3.1,
+    "press_rating": 2.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Kiki la petite sorcière": {
+    "user_rating": 4.0,
+    "press_rating": 4.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Klara et le soleil": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Kraken": {
+    "user_rating": 3.1,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Kubo et l'armure magique": {
+    "user_rating": 4.2,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Amour flou": {
+    "user_rating": 3.6,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Arriviste": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Aventure rêvée": {
+    "user_rating": 3.0,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Avventura": {
+    "user_rating": 3.9,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Eclipse": {
+    "user_rating": 3.7,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Emprise du crime": {
+    "user_rating": 3.9,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Enfer de la corruption": {
+    "user_rating": 3.8,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Espèce explosive": {
+    "user_rating": 3.4,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Extraordinaire Voyage de Marona": {
+    "user_rating": 3.6,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Impasse": {
+    "user_rating": 4.3,
+    "press_rating": 4.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Impossible Monsieur Bébé": {
+    "user_rating": 3.8,
+    "press_rating": 4.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Inconnu du Nord-Express": {
+    "user_rating": 4.0,
+    "press_rating": 4.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Inconnue": {
+    "user_rating": 2.7,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Invitation": {
+    "user_rating": 3.3,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Odyssée": {
+    "user_rating": 4.3,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Oeuf de l'ange": {
+    "user_rating": 3.6,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Oiseau au plumage de cristal": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'Étrange pouvoir de Norman": {
+    "user_rating": 3.7,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L'île des souvenirs": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Bachata de Bionico": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Baleine et l'escargote": {
+    "user_rating": 3.8,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Bataille de Gaulle - Partie 2 : J’écris ton nom": {
+    "user_rating": 4.5,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Bataille de Gaulle - partie 1 : L'Âge de Fer": {
+    "user_rating": 4.4,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Bataille du Rail": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Belle et la bête": {
+    "user_rating": 4.1,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Bonne étoile": {
+    "user_rating": 3.1,
+    "press_rating": 2.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Chevauchée fantastique": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Chienne": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Chinoise": {
+    "user_rating": 3.2,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Cité des dangers": {
+    "user_rating": 3.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Cordillère des songes": {
+    "user_rating": 3.7,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Course du lièvre à travers les champs": {
+    "user_rating": 2.5,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Dame du vendredi": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Dernière patiente": {
+    "user_rating": 3.1,
+    "press_rating": 2.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Dolce Vita": {
+    "user_rating": 4.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Fameuse invasion des ours en Sicile": {
+    "user_rating": 3.9,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Femme du docteur Hanaoka": {
+    "user_rating": 3.5,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Femme infidèle": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Fille dans les nuages": {
+    "user_rating": 3.8,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Fille à la valise": {
+    "user_rating": 4.1,
+    "press_rating": 4.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Flèche bleue": {
+    "user_rating": 3.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Frappe": {
+    "user_rating": 3.6,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Gradiva": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Grande Aventure Lego": {
+    "user_rating": 4.0,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Grande Bellezza": {
+    "user_rating": 4.0,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Horde sauvage": {
+    "user_rating": 4.0,
+    "press_rating": 4.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Jetée": {
+    "user_rating": 3.8,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Ligne bleue": {
+    "user_rating": 3.4,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Ligne rouge": {
+    "user_rating": 4.1,
+    "press_rating": 4.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Longue Nuit de l'exorcisme": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Maison de nos rêves": {
+    "user_rating": 2.4,
+    "press_rating": 2.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Marque du tueur": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Mort aux trousses": {
+    "user_rating": 4.3,
+    "press_rating": 4.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Nuit du chasseur": {
+    "user_rating": 4.3,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Pat' Patrouille : Le film mission Dino": {
+    "user_rating": 3.1,
+    "press_rating": 3.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Petite taupe aime la nature": {
+    "user_rating": 2.8,
+    "press_rating": 4.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Porte des dieux ": {
+    "user_rating": 3.5,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Rivière": {
+    "user_rating": 3.5,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Rivière à l’envers": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Sorcière dans les airs": {
+    "user_rating": 4.0,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Terre de mon grand-père (Partie 1 : L’Héritage)": {
+    "user_rating": 3.2,
+    "press_rating": 1.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Valeur de la parole": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Vie d'Adèle - Chapitres 1 et 2": {
+    "user_rating": 3.5,
+    "press_rating": 4.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Vie d'une femme": {
+    "user_rating": 3.7,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La Vie en relief - Jacques Henri Lartigue": {
+    "user_rating": 4.0,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La libertad doble": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "La petite Venise": {
+    "user_rating": 3.8,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Lacombe Lucien": {
+    "user_rating": 3.9,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Lawrence d'Arabie": {
+    "user_rating": 4.3,
+    "press_rating": 4.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Bon, la brute et le truand": {
+    "user_rating": 4.5,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Bonheur": {
+    "user_rating": 3.9,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Bossu de Notre-Dame": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Cercle des poètes disparus": {
+    "user_rating": 4.3,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Chant de la Mer": {
+    "user_rating": 4.3,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Chant des forêts": {
+    "user_rating": 4.2,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Chant des oliviers": {
+    "user_rating": 3.7,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Chantier": {
+    "user_rating": 3.1,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Chat à neuf queues": {
+    "user_rating": 3.6,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Corniaud": {
+    "user_rating": 3.7,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Corset": {
+    "user_rating": 4.4,
+    "press_rating": 4.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Cuirassé Potemkine": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Cygne et l'enfant": {
+    "user_rating": 2.8,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Fils de Saul": {
+    "user_rating": 3.7,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Garçon qui faisait danser les collines ": {
+    "user_rating": 3.9,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Gilet cible": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Goût des autres": {
+    "user_rating": 3.8,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Grand Méchant Renard et autres contes": {
+    "user_rating": 4.2,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Grand dessin des anges- Les plus belles histoires de Quentin Blake": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Héros de Berlin": {
+    "user_rating": 3.4,
+    "press_rating": 3.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Jardin de Madame Hu": {
+    "user_rating": 3.2,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Jardin des Finzi-Contini": {
+    "user_rating": 4.0,
+    "press_rating": 4.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Jour de la colère : Contes de Tripoli": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Jour de son retour": {
+    "user_rating": 3.2,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Kid": {
+    "user_rating": 4.4,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Livre de la jungle": {
+    "user_rating": 4.0,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Manoir hanté": {
+    "user_rating": 2.9,
+    "press_rating": 2.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Ministère de la peur": {
+    "user_rating": 4.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Monde à l'endroit": {
+    "user_rating": 4.1,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Monde à l'envers": {
+    "user_rating": 2.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Mystère Lucy Lost": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Mécano de la Générale": {
+    "user_rating": 4.2,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Mépris": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Parrain": {
+    "user_rating": 4.5,
+    "press_rating": 4.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Petit monde de Leo: 5 contes de Lionni": {
+    "user_rating": 3.0,
+    "press_rating": 4.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Peuple Loup": {
+    "user_rating": 4.3,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Plongeon": {
+    "user_rating": 4.1,
+    "press_rating": 4.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Point de non-retour": {
+    "user_rating": 3.9,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Retour": {
+    "user_rating": 2.5,
+    "press_rating": 1.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Robot Sauvage": {
+    "user_rating": 4.4,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Roi Lion": {
+    "user_rating": 4.5,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Royaume des requins": {
+    "user_rating": 3.3,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Septième Sceau": {
+    "user_rating": 3.9,
+    "press_rating": 4.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Silence des agneaux": {
+    "user_rating": 4.4,
+    "press_rating": 4.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Tigre qui s'invita pour le thé": {
+    "user_rating": 2.7,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Le Tombeau des lucioles": {
+    "user_rating": 4.4,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Affranchis": {
+    "user_rating": 4.5,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Anges déchus": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Autres": {
+    "user_rating": 4.0,
+    "press_rating": 4.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Aventures de Rabbi Jacob": {
+    "user_rating": 4.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Combattants": {
+    "user_rating": 3.8,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Demoiselles de Rochefort": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Folles inventions de M. Bricolo": {
+    "user_rating": 3.0,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Frissons de l'angoisse": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Héros du Louvre": {
+    "user_rating": 3.2,
+    "press_rating": 2.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Lumières de la ville": {
+    "user_rating": 4.4,
+    "press_rating": 4.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Magnétiques": {
+    "user_rating": 3.3,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Malheurs de Sophie": {
+    "user_rating": 2.7,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Misérables": {
+    "user_rating": 4.0,
+    "press_rating": 4.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Parapluies de Cherbourg": {
+    "user_rating": 3.6,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Rebelles du dieu neon": {
+    "user_rating": 4.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Recommencements": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Roches Rouges": {
+    "user_rating": 2.7,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Sentiers de la gloire": {
+    "user_rating": 4.4,
+    "press_rating": 4.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Survivants du Che": {
+    "user_rating": 4.1,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les baleines bleues : le retour des géants": {
+    "user_rating": 3.7,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Les Éléphants dans la brume": {
+    "user_rating": 3.9,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Lettres d'amour de ma grand-mère": {
+    "user_rating": 4.0,
+    "press_rating": 2.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Leviticus": {
+    "user_rating": 3.2,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Linda veut du poulet !": {
+    "user_rating": 3.8,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Little Miss Sunshine": {
+    "user_rating": 4.1,
+    "press_rating": 4.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Lost in Translation": {
+    "user_rating": 3.9,
+    "press_rating": 4.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Loups tendres et loufoques": {
+    "user_rating": 3.4,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Louve, une vie dans les Alpes": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Low Expectations": {
+    "user_rating": 3.2,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Léviathan": {
+    "user_rating": 4.0,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L’Abandon": {
+    "user_rating": 4.3,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L’Epreuve du feu": {
+    "user_rating": 4.0,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L’abri": {
+    "user_rating": 3.7,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "L’inconnu du ciné club": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ma famille de samouraïs": {
+    "user_rating": 3.0,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ma langue au chat": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ma sorcière bien-aimée": {
+    "user_rating": 3.3,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Macbeth (Metropolitan Opera)": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Madame la Présidente": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Maharaja": {
+    "user_rating": 3.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Maison de poupée": {
+    "user_rating": 3.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Malfaisante": {
+    "user_rating": 1.8,
+    "press_rating": 1.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Malika": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Marie Madeleine": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Marius et le Royaume des mers": {
+    "user_rating": 3.1,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mark Dixon, détective": {
+    "user_rating": 4.1,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mary Anning": {
+    "user_rating": 3.6,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mayrig": {
+    "user_rating": 4.1,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Meesaya Murukku 2": {
+    "user_rating": 2.7,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Melancholia": {
+    "user_rating": 3.5,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Memories of Murder": {
+    "user_rating": 4.3,
+    "press_rating": 4.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Meurtres en cascade": {
+    "user_rating": 2.6,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mikusu Modan": {
+    "user_rating": 3.2,
+    "press_rating": 2.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Millenium : Les hommes qui n’aimaient pas les femmes": {
+    "user_rating": 4.0,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Minotaure": {
+    "user_rating": 4.0,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Miquette et sa mère": {
+    "user_rating": 2.7,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mochy": {
+    "user_rating": 3.1,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mon petit Halloween": {
+    "user_rating": 2.3,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Monika": {
+    "user_rating": 4.2,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mouchette": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Moulin": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Moulin Rouge": {
+    "user_rating": 3.8,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mr Chat et les Shammies": {
+    "user_rating": 2.6,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mulan": {
+    "user_rating": 4.1,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mulholland Drive": {
+    "user_rating": 4.0,
+    "press_rating": 4.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "My Beautiful Boy": {
+    "user_rating": 4.0,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "My Own Private Idaho": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Méli-Mélo": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mélodie en sous-sol": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Mémoire de fille": {
+    "user_rating": 3.3,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "NAZA": {
+    "user_rating": 4.3,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Nayyi Navelli": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "New Group": {
+    "user_rating": 3.4,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ni vue, ni connue": {
+    "user_rating": 3.6,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Niagara": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Nnuba": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Nostalghia": {
+    "user_rating": 4.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Nostalgie de la lumière": {
+    "user_rating": 3.9,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Notre salut": {
+    "user_rating": 3.7,
+    "press_rating": 4.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Nous l'Orchestre": {
+    "user_rating": 4.1,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Nous voilà grands !": {
+    "user_rating": 3.1,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Nouveaux copains à Puffin Rock": {
+    "user_rating": 3.2,
+    "press_rating": 3.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Nowhere": {
+    "user_rating": 3.8,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Obsession": {
+    "user_rating": 3.9,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Octobre à Paris": {
+    "user_rating": 3.6,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Old Boy": {
+    "user_rating": 4.2,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "On est fait pour s’entendre": {
+    "user_rating": 3.5,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Once Upon a Time… in Hollywood": {
+    "user_rating": 3.9,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Opéra": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Orange mécanique": {
+    "user_rating": 4.2,
+    "press_rating": 4.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Où vont les âmes": {
+    "user_rating": 3.0,
+    "press_rating": 2.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Paddington": {
+    "user_rating": 3.8,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Papa où t'es ?": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Paprika": {
+    "user_rating": 3.8,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Pat et Mat : un dernier tour de vis": {
+    "user_rating": 3.1,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Pat et Mat déménagent !": {
+    "user_rating": 3.3,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Pauline s'arrache": {
+    "user_rating": 3.5,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Peau d'âne": {
+    "user_rating": 3.7,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Perdrix": {
+    "user_rating": 3.3,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Persona": {
+    "user_rating": 4.2,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Petite Casbah": {
+    "user_rating": 3.5,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Petites aventures": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Phenomena": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Pierrot le Fou": {
+    "user_rating": 3.5,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Playtime": {
+    "user_rating": 3.8,
+    "press_rating": 4.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Poison": {
+    "user_rating": 3.5,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Porco Rosso": {
+    "user_rating": 4.2,
+    "press_rating": 4.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Possible Love": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Poulet aux Prunes": {
+    "user_rating": 3.2,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Poupi": {
+    "user_rating": 3.2,
+    "press_rating": 3.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Prahaar: The Untold Story of Ujjwal Nikam": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Predator": {
+    "user_rating": 1.9,
+    "press_rating": 2.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Pressure": {
+    "user_rating": 4.1,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Primetime": {
+    "user_rating": 3.2,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Princes et princesses": {
+    "user_rating": 4.1,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Psychose": {
+    "user_rating": 4.4,
+    "press_rating": 4.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Quand passent les cigognes": {
+    "user_rating": 4.3,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Quatre nuits d'un rêveur": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Que la fête commence": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Queens Of The Dead": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Quelle joie de vivre": {
+    "user_rating": 3.2,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Quelques mots d'amour": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Qui vit encore": {
+    "user_rating": 3.2,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Raging Bull": {
+    "user_rating": 4.3,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Raison et sentiments": {
+    "user_rating": 3.7,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ready Player One": {
+    "user_rating": 4.2,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Recherche Susan désespérément": {
+    "user_rating": 2.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Relicto": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Rendez-vous de juillet": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Requiem for a Dream": {
+    "user_rating": 4.2,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Resident Evil": {
+    "user_rating": 3.8,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Retour au collège": {
+    "user_rating": 4.1,
+    "press_rating": 3.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Retour avant 15 heures": {
+    "user_rating": 3.4,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Retour vers le futur": {
+    "user_rating": 4.5,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Rio Bravo": {
+    "user_rating": 4.1,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Rocketman": {
+    "user_rating": 4.0,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Rose": {
+    "user_rating": 3.9,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Récits de la terre blessée": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Rétrospective Emmanuel Marre": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Safe": {
+    "user_rating": 3.4,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sailor et Lula": {
+    "user_rating": 3.7,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sainte-Marie-aux-Mines": {
+    "user_rating": 2.8,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Salvation": {
+    "user_rating": 3.5,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sam le pompier - nouvelle caserne, grandes aventures !": {
+    "user_rating": 2.6,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sanguine": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Scarface": {
+    "user_rating": 4.3,
+    "press_rating": 3.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Secrets et mensonges": {
+    "user_rating": 3.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sept promenades avec Mark Brown": {
+    "user_rating": 3.5,
+    "press_rating": 4.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Serengeti : un voyage au coeur de l'Afrique": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Seuls les anges ont des ailes": {
+    "user_rating": 4.0,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Seven": {
+    "user_rating": 4.5,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sham": {
+    "user_rating": 4.0,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Shanghai Express": {
+    "user_rating": 4.0,
+    "press_rating": 5.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Shaun le Mouton : La Bêêête d'Halloween": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Shining": {
+    "user_rating": 4.3,
+    "press_rating": 4.0,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Shrek": {
+    "user_rating": 4.2,
+    "press_rating": 4.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Shrek 2": {
+    "user_rating": 4.2,
+    "press_rating": 4.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Shrek le troisième": {
+    "user_rating": 3.1,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Si tu penses bien": {
+    "user_rating": 3.8,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sigma": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sonate d'automne": {
+    "user_rating": 4.2,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Soudain": {
+    "user_rating": 4.0,
+    "press_rating": 4.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Soulèvements": {
+    "user_rating": 3.8,
+    "press_rating": 3.5,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Soundtrack to a Coup d'État": {
+    "user_rating": 4.3,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Souraya Mon Amour": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Souvenirs perdus": {
+    "user_rating": 3.2,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Soyez sympas, rembobinez": {
+    "user_rating": 3.6,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Soyons Fous": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Spider-Man: Brand New Day": {
+    "user_rating": 4.1,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Splendor": {
+    "user_rating": 3.8,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Street Fighter": {
+    "user_rating": 2.9,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sueurs froides": {
+    "user_rating": 4.3,
+    "press_rating": 3.8,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Super Mario Galaxy Le Film": {
+    "user_rating": 3.5,
+    "press_rating": 2.9,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sur le départ": {
+    "user_rating": 2.9,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Sur les quais": {
+    "user_rating": 4.2,
+    "press_rating": 4.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Tad l'explorateur et la lampe magique": {
+    "user_rating": 3.1,
+    "press_rating": 3.2,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Tangerine": {
+    "user_rating": 3.7,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "The Brutalist": {
+    "user_rating": 3.9,
+    "press_rating": 4.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "The Good Sister": {
+    "user_rating": 2.9,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "The King of New York": {
+    "user_rating": 3.5,
+    "press_rating": 4.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "The Last Viking": {
+    "user_rating": 3.9,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "The Neon Demon": {
+    "user_rating": 3.1,
+    "press_rating": 3.4,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "The Social Reckoning": {
+    "user_rating": 3.7,
+    "press_rating": 3.1,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "The Sweet East": {
+    "user_rating": 3.5,
+    "press_rating": 3.7,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "The Truman Show": {
+    "user_rating": 4.3,
+    "press_rating": 3.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Thelma et Louise": {
+    "user_rating": 4.2,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Titre inconnu": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Tombé du ciel": {
+    "user_rating": 3.2,
+    "press_rating": 2.6,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  },
+  "Ton animal maternel": {
+    "user_rating": 2.7,
+    "press_rating": 3.3,
+    "updated_at": "2026-10-16T15:07:17.636810+00:00"
+  }
+}
