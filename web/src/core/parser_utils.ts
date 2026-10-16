@@ -150,6 +150,11 @@ export function determineShowtimeFormat(
     return 'Laser';
   }
 
+  if (has('PREMIUM') || has('PLF') || has('VIP')) {
+    if (has('3D')) return 'Premium 3D';
+    return 'Premium';
+  }
+
   return 'Standard';
 }
 

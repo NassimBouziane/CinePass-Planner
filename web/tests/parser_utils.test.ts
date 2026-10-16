@@ -112,6 +112,9 @@ describe('parser_utils', () => {
     expect(determineShowtimeFormat(['4DX'])).toBe('4DX');
     expect(determineShowtimeFormat(['SCREENX'])).toBe('ScreenX');
     expect(determineShowtimeFormat(undefined, ['3D'])).toBe('3D');
+    expect(determineShowtimeFormat(['PLF'])).toBe('Premium');
+    expect(determineShowtimeFormat(['PREMIUM'])).toBe('Premium');
+    expect(determineShowtimeFormat(undefined, undefined, ['Auditorium.Experience.PLF'])).toBe('Premium');
     expect(determineShowtimeFormat()).toBe('Standard');
   });
 

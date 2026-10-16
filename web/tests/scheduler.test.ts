@@ -472,6 +472,42 @@ describe('Scheduler', () => {
     expect(results[0].showtimes[0].movie_title).toBe('Film 1');
     expect(results[0].showtimes[1].movie_title).toBe('Film 2');
   });
+
+  it('does not abort search before pinned when an early candidate has long runtime', () => {
+    // Candidate 0: starts early but ends late (after pinned movie starts)
+    const longEarly: Showtime = { cinema_id: 'C1', movie_title: 'Long Film', starts_at: '2026-10-18T10:00:00', ends_at: '2026-10-18T15:00:00', date_str: '2026-10-18' };
+    // Candidate 1: starts slightly later but ends well in time
+    const shortEarly: Showtime = { cinema_id: 'C1', movie_title: 'Short Film', starts_at: '2026-10-18T10:30:00', ends_at: '2026-10-18T12:00:00', date_str: '2026-10-18' };
+    // Pinned movie at slot 1 (starts 13:00)
+    const pinned: Showtime = { cinema_id: 'C1', movie_title: 'Pinned Pivot', starts_at: '2026-10-18T13:00:00', ends_at: '2026-10-18T15:00:00', date_str: '2026-10-18' };
+
+    const scheduler = new Scheduler();
+    const criteria: PlanCriteria = {
+      cinema_ids: ['C1'],
+      date_str: '2026-10-18',
+      target_films_count: 2,
+      start_time: '10:00',
+      max_end_time: '23:00',
+      priority_movies: [],
+      pass_type: PassType.GOLD,
+      allow_supplements: true,
+      min_buffer_minutes: 15,
+      require_meal_break: false,
+      language: 'ALL',
+      selected_formats: [],
+    };
+
+    const results = scheduler.findMarathonsAroundPinned([longEarly, shortEarly, pinned], {
+      pinnedShowtime: pinned,
+      pinnedIndex: 1,
+      targetCount: 2,
+      criteria,
+    });
+
+    expect(results.length).toBeGreaterThan(0);
+    expect(results[0].showtimes[0].movie_title).toBe('Short Film');
+    expect(results[0].showtimes[1].movie_title).toBe('Pinned Pivot');
+  });
 });
 
 

@@ -69,6 +69,9 @@ export function getFormatBadgeHtml(formatStr: string, passType: PassType): strin
   } else if (fmtUpper.includes('LASER')) {
     badgeColor = 'bg-white text-[#111111]';
     iconHtml = iconZap('w-3 h-3 text-[#111111]');
+  } else if (fmtUpper.includes('PREMIUM') || fmtUpper.includes('PLF')) {
+    badgeColor = 'bg-[#FFE566] text-[#111111]';
+    iconHtml = iconSparkles('w-3 h-3 text-[#111111]');
   }
 
   return `

@@ -1,7 +1,7 @@
 import { PassType, type Showtime, type Itinerary, type PlanCriteria } from './models';
 import { coversMealBreak } from './parser_utils';
 
-export const PREMIUM_KEYWORDS = ['IMAX', '4DX', 'DOLBY', 'SCREENX', '3D', 'ONYX'];
+export const PREMIUM_KEYWORDS = ['IMAX', '4DX', 'DOLBY', 'SCREENX', '3D', 'ONYX', 'PREMIUM', 'PLF'];
 
 interface CandidateShowtime extends Showtime {
   start_ms: number;
@@ -415,7 +415,8 @@ export class Scheduler {
         }
         for (let i = startI; i < candidates.length; i++) {
           const c = candidates[i];
-          if (c.end_ms > pinnedCand.start_ms - minBufferMs) break;
+          if (c.start_ms > pinnedCand.start_ms - minBufferMs) break;
+          if (c.end_ms > pinnedCand.start_ms - minBufferMs) continue;
           if (seenTitles.has(c.movie_title)) continue;
           if (current.length > 0) {
             const prev = current[current.length - 1];
@@ -483,12 +484,21 @@ export class Scheduler {
     }
 
     // Score paths using consistent logic
+    const prioritySet = new Set(criteria.priority_movies || []);
     const itineraries: Itinerary[] = completePaths.map((path) => {
       let totalMovieMin = 0;
       let totalPauseMin = 0;
       let score = path.length * 1000;
+      let priorityMatches = 0;
       for (const st of path) {
         totalMovieMin += st.runtime_min;
+        if (prioritySet.has(st.movie_title)) {
+          score += 2000;
+          priorityMatches++;
+        }
+        if (st.user_rating) {
+          score += (st.user_rating - 3) * 100;
+        }
       }
       for (let i = 0; i < path.length - 1; i++) {
         const gap = Math.round((path[i + 1].start_ms - path[i].end_ms) / 60000);
@@ -505,11 +515,25 @@ export class Scheduler {
         total_pause_minutes: totalPauseMin,
         score,
         has_meal_break: false,
+        priority_matches_count: priorityMatches,
       };
     });
 
     itineraries.sort((a, b) => b.score - a.score);
-    return itineraries.slice(0, 10);
+
+    // Deduplicate unique proposals by signature
+    const uniqueItineraries: Itinerary[] = [];
+    const seenSignatures = new Set<string>();
+    for (const it of itineraries) {
+      const sig = it.showtimes.map((s) => `${s.movie_title}@${s.starts_at}`).join('|');
+      if (!seenSignatures.has(sig)) {
+        seenSignatures.add(sig);
+        uniqueItineraries.push(it);
+      }
+      if (uniqueItineraries.length >= 10) break;
+    }
+
+    return uniqueItineraries;
   }
 
   getAvailableCandidatesForSlot(

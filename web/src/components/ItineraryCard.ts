@@ -33,6 +33,8 @@ export function calculateEstimatedSupplements(itinerary: Itinerary, passType: Pa
       totalFee += 6;
     } else if (fmt.includes('DOLBY')) {
       totalFee += 5;
+    } else if (fmt.includes('PREMIUM') || fmt.includes('PLF')) {
+      totalFee += 5;
     } else if (fmt.includes('SCREENX')) {
       totalFee += 4;
     } else if (fmt.includes('3D')) {
@@ -62,8 +64,19 @@ export function formatItineraryCardHtml(
   isSelected: boolean = false,
   lang: Lang = 'fr'
 ): string {
-  const hFilm = Math.floor(itinerary.total_movie_minutes / 60);
-  const mFilm = itinerary.total_movie_minutes % 60;
+  let totalMovieMin = itinerary.total_movie_minutes;
+  if (typeof totalMovieMin !== 'number' || isNaN(totalMovieMin)) {
+    totalMovieMin = 0;
+    for (const st of itinerary.showtimes || []) {
+      const startMs = new Date(st.starts_at).getTime();
+      const endMs = new Date(st.ends_at).getTime();
+      if (!isNaN(startMs) && !isNaN(endMs)) {
+        totalMovieMin += Math.max(0, Math.round((endMs - startMs) / 60000));
+      }
+    }
+  }
+  const hFilm = Math.floor(totalMovieMin / 60);
+  const mFilm = totalMovieMin % 60;
   const count = itinerary.showtimes.length;
 
   const firstShow = itinerary.showtimes[0];
@@ -190,10 +203,10 @@ export function formatItineraryCardHtml(
                   data-movie-title="${escapeHtml(st.movie_title)}"
                   data-cinema-id="${escapeHtml(st.cinema_id)}"
                   data-starts-at="${escapeHtml(st.starts_at)}"
-                  title="Composer un marathon autour de cette séance"
+                  title="${t('buildAroundTitle', lang)}"
                 >
                   ${iconComposer('w-3 h-3 text-[#111111]')}
-                  <span>Composer</span>
+                  <span>${t('buildAroundBtn', lang)}</span>
                 </button>
                 <button
                   type="button"
@@ -286,8 +299,19 @@ export function formatThermalReceiptHtml(
   }
 
   const count = itinerary.showtimes.length;
-  const hFilm = Math.floor(itinerary.total_movie_minutes / 60);
-  const mFilm = itinerary.total_movie_minutes % 60;
+  let totalMovieMin = itinerary.total_movie_minutes;
+  if (typeof totalMovieMin !== 'number' || isNaN(totalMovieMin)) {
+    totalMovieMin = 0;
+    for (const st of itinerary.showtimes || []) {
+      const startMs = new Date(st.starts_at).getTime();
+      const endMs = new Date(st.ends_at).getTime();
+      if (!isNaN(startMs) && !isNaN(endMs)) {
+        totalMovieMin += Math.max(0, Math.round((endMs - startMs) / 60000));
+      }
+    }
+  }
+  const hFilm = Math.floor(totalMovieMin / 60);
+  const mFilm = totalMovieMin % 60;
   const supplements = calculateEstimatedSupplements(itinerary, passType);
   const firstShow = itinerary.showtimes[0];
   const lastShow = itinerary.showtimes[count - 1];

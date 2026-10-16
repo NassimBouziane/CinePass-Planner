@@ -138,6 +138,14 @@ def determine_showtime_format(
     is_dolby_cinema = "DOLBY_CINEMA" in exp_set or "auditorium.experience.dolbycinema" in tags_str or "dolby cinema" in title_lower
     is_dolby_atmos = "DOLBY_ATMOS" in exp_set or "auditorium.experience.dolbyatmos" in tags_str or "dolby atmos" in title_lower
     is_onyx = "ONYX_LED" in exp_set or "auditorium.experience.onyxled" in tags_str or "onyx" in title_lower
+    is_premium = (
+        "PLF" in exp_set
+        or "PREMIUM" in exp_set
+        or "auditorium.experience.plf" in tags_str
+        or "premium" in tags_str
+        or "plf" in tags_str
+        or "premium" in title_lower
+    )
 
     if is_4dx and is_screenx:
         base = "4DX ScreenX"
@@ -155,6 +163,8 @@ def determine_showtime_format(
         base = "Onyx LED"
     elif is_laser:
         base = "Laser"
+    elif is_premium:
+        base = "Premium"
     else:
         base = "Standard"
 

@@ -101,12 +101,15 @@ def export_static_data(conn: sqlite3.Connection, output_dir: Union[str, Path]) -
             cid = r["cinema_id"]
             if cid not in by_cinema:
                 by_cinema[cid] = []
+            fmt = r["format"] or "Standard"
+            if fmt == "Standard" and cid in ("G02BG", "C0158"):
+                fmt = "Premium"
             by_cinema[cid].append({
                 "title": r["movie_title"],
                 "starts_at": r["starts_at"],
                 "ends_at": r["ends_at"],
                 "version": r["version"] or "ORIGINAL",
-                "format": r["format"] or "Standard",
+                "format": fmt,
                 "poster_url": r["poster_url"] or ""
             })
             total_showtimes += 1

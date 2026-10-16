@@ -126,3 +126,54 @@ def test_allocine_client_extracts_movie_ratings():
     assert movie.user_rating == 4.4
     assert movie.press_rating == 4.1
 
+
+def test_allocine_client_fetch_movie_ratings_mocked():
+    from unittest.mock import MagicMock
+    mock_session = MagicMock()
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.text = """
+    <div class="entity-card">
+        <a class="meta-title-link">Challengers</a>
+        <div class="rating-item-content">Presse \n3,7</div>
+        <div class="rating-item-content">Spectateurs \n4,0</div>
+    </div>
+    """
+    mock_session.get.return_value = mock_response
+
+    client = AllocineClient(session=mock_session)
+    ratings = client.fetch_movie_ratings("Challengers")
+    assert ratings == {"user_rating": 4.0, "press_rating": 3.7}
+    mock_session.get.assert_called_once()
+
+
+def test_allocine_client_refresh_all_ratings_offline(tmp_path):
+    from unittest.mock import MagicMock
+    mock_session = MagicMock()
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.text = """
+    <div class="entity-card">
+        <a class="meta-title-link">Film Test</a>
+        <div class="rating-item-content">Spectateurs \n4,2</div>
+    </div>
+    """
+    mock_session.get.return_value = mock_response
+
+    showtimes_dir = tmp_path / "data"
+    showtimes_dir.mkdir()
+    (showtimes_dir / "showtimes-2026-10-18.json").write_text(
+        '{"P0084": [{"title": "Film Test"}]}', encoding="utf-8"
+    )
+    output_file = showtimes_dir / "ratings.json"
+
+    client = AllocineClient(session=mock_session)
+    count = client.refresh_all_ratings(showtimes_dir=showtimes_dir, output_file=output_file, force=True)
+    assert count == 1
+    assert output_file.exists()
+    import json
+    data = json.loads(output_file.read_text(encoding="utf-8"))
+    assert "Film Test" in data
+    assert data["Film Test"]["user_rating"] == 4.2
+
+

@@ -231,6 +231,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
                 <input type="checkbox" class="format-check accent-[#FFE566]" value="3D" checked /> 3D
               </label>
               <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
+                <input type="checkbox" class="format-check accent-[#FFE566]" value="Premium" checked /> Premium
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium hover:text-[#E8635A]">
                 <input type="checkbox" class="format-check accent-[#111111]" value="Standard" checked /> Standard
               </label>
             </div>
@@ -378,10 +381,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
               </span>
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-sm sm:text-base font-black text-[#111111] lowercase font-sans">
+                  <h3 id="builder-panel-title" class="text-sm sm:text-base font-black text-[#111111] lowercase font-sans">
                     mon marathon sur-mesure
                   </h3>
-                  <span class="bg-[#FFE566] text-[#111111] text-[0.65rem] font-bold px-2 py-0.5 rounded-full border border-[#111111]">
+                  <span id="builder-panel-badge" class="bg-[#FFE566] text-[#111111] text-[0.65rem] font-bold px-2 py-0.5 rounded-full border border-[#111111]">
                     sur-mesure
                   </span>
                 </div>
@@ -394,10 +397,16 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
               <button
                 id="btn-builder-recompute"
                 type="button"
-                class="neo-btn text-xs bg-white text-[#111111] border-2 border-[#111111] rounded-[6px] px-2.5 py-1 font-bold cursor-pointer hover:bg-[#FAFADF]"
+                class="neo-btn text-xs bg-white text-[#111111] border-2 border-[#111111] rounded-[6px] px-2.5 py-1 font-bold cursor-pointer hover:bg-[#FAFADF] flex items-center gap-1.5 shadow-[1px_1px_0px_0px_#111111] transition-all"
                 title="Recalculer les propositions autour du film verrouillé"
               >
-                recalculer
+                <svg class="w-3.5 h-3.5 text-[#111111]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                  <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+                  <path d="M16 16h5v5"/>
+                </svg>
+                <span id="btn-builder-recompute-label">recalculer</span>
               </button>
               <button
                 id="btn-close-builder"
@@ -405,7 +414,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
                 class="neo-btn text-xs bg-[#FAFADF] hover:bg-[#E8635A] hover:text-white border-2 border-[#111111] rounded-[6px] px-2.5 py-1 font-bold cursor-pointer transition-colors"
                 title="Quitter la composition et revenir aux suggestions auto"
               >
-                quitter la composition
+                <span id="btn-close-builder-label">quitter la composition</span>
               </button>
             </div>
           </div>
@@ -570,7 +579,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       import { loadPreferences, savePreferences, clearPreferences } from '../core/storage';
       import { normalizeText, formatCityShort } from '../core/parser_utils';
       import { escapeHtml, renderAllocineRatingsBadge } from '../components/Badge';
-      import { getStoredLanguage, setStoredLanguage, t, formatDateLocalized, type Lang } from '../core/i18n';
+      import { getStoredLanguage, setStoredLanguage, t, formatDateLocalized, formatOrdinal, type Lang } from '../core/i18n';
       import {
         iconAlert,
         iconBuilding,
@@ -586,6 +595,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         iconFilm,
         iconPin,
         iconCheck,
+        iconRefresh,
       } from '../components/Icons';
 
       const BASE_PATH = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -615,6 +625,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       let drawerCandidates: Array<{ showtime: Showtime; gapBeforeMinutes: number; gapAfterMinutes: number }> = [];
       let drawerFilterText = '';
       let draggedSlotIndex: number | null = null;
+      let builderProposalCycleIndex: number = 0;
+      let cachedBuilderProposals: Itinerary[] = [];
+      let lastBuilderPinnedSignature: string = '';
 
       function getTargetCount(): number {
         const countInput = document.getElementById('range-count') as HTMLInputElement;
@@ -925,12 +938,51 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         const elFooterMeta = document.getElementById('footer-meta');
         if (elFooterMeta) elFooterMeta.textContent = t('footerMeta', lang);
 
+        // Builder Mode Panel & Controls
+        const toggleBtn = document.getElementById('btn-toggle-builder');
+        if (toggleBtn) toggleBtn.title = t('builderToggleTitle', lang);
+        const toggleLabel = document.getElementById('btn-builder-label');
+        if (toggleLabel) {
+          toggleLabel.textContent = builderModeActive
+            ? t('builderToggleBtnActive', lang)
+            : t('builderToggleBtn', lang);
+        }
+
+        const elBuilderTitle = document.getElementById('builder-panel-title');
+        if (elBuilderTitle) elBuilderTitle.textContent = t('builderTitle', lang);
+        const elBuilderBadge = document.getElementById('builder-panel-badge');
+        if (elBuilderBadge) elBuilderBadge.textContent = t('builderBadge', lang);
+        const elBuilderSubtitle = document.getElementById('builder-panel-subtitle');
+        if (elBuilderSubtitle && !cachedBuilderProposals.length) {
+          elBuilderSubtitle.textContent = t('builderSubtitleDefault', lang);
+        }
+        const elRecomputeBtn = document.getElementById('btn-builder-recompute');
+        if (elRecomputeBtn) elRecomputeBtn.title = t('builderRecomputeTitle', lang);
+        const elRecomputeLabel = document.getElementById('btn-builder-recompute-label');
+        if (elRecomputeLabel) elRecomputeLabel.textContent = t('builderRecomputeBtn', lang);
+        const elCloseBuilderBtn = document.getElementById('btn-close-builder');
+        if (elCloseBuilderBtn) elCloseBuilderBtn.title = t('builderCloseTitle', lang);
+        const elCloseBuilderLabel = document.getElementById('btn-close-builder-label');
+        if (elCloseBuilderLabel) elCloseBuilderLabel.textContent = t('builderCloseBtn', lang);
+
+        const elDrawerFilter = document.getElementById('input-drawer-filter') as HTMLInputElement;
+        if (elDrawerFilter) elDrawerFilter.placeholder = t('builderDrawerSearchPlaceholder', lang);
+        const elCloseDrawer = document.getElementById('btn-close-drawer');
+        if (elCloseDrawer) elCloseDrawer.title = t('builderDrawerCloseTitle', lang);
+
         updateScenarioTabsUI();
         renderCinemasList();
         renderSelectedCinemasChips();
         renderSeenMovies();
         renderPriorityMovies();
-        recalculate();
+
+        if (builderModeActive) {
+          recomputeBuilderProposals(false);
+          renderBuilderPanel();
+          renderBuilderThermalReceipt();
+        } else {
+          recalculate();
+        }
       }
 
       function updateDateOptionsLabels() {
@@ -1796,8 +1848,13 @@ END:VCALENDAR`.trim();
         for (const cid of selectedCinemaIds) {
           const rawList = currentShowtimesMap[cid] || [];
           const cinName = cinemasById.get(cid) || cid;
+          const isKnownPremium = cid === 'G02BG' || cid === 'C0158' || cinName.toLowerCase().includes('palace') || cinName.toLowerCase().includes('parnasse');
           for (const raw of rawList) {
             const ratings = movieRatingsMap[raw.title];
+            let fmt = raw.format || 'Standard';
+            if (fmt === 'Standard' && isKnownPremium) {
+              fmt = 'Premium';
+            }
             candidateShowtimes.push({
               cinema_id: cid,
               movie_title: raw.title,
@@ -1805,7 +1862,7 @@ END:VCALENDAR`.trim();
               ends_at: raw.ends_at,
               date_str: selectedDate,
               version: raw.version || 'ORIGINAL',
-              format: raw.format || 'Standard',
+              format: fmt,
               cinema_name: cinName,
               poster_url: raw.poster_url || '',
               user_rating: ratings ? ratings.user_rating : null,
@@ -1844,6 +1901,12 @@ END:VCALENDAR`.trim();
                 updateSelectedCinemasCount();
                 renderSelectedCinemasChips();
                 renderCinemasList();
+                const cinName = cinemasById.get(cid) || cid;
+                const isKnownPremium = cid === 'G02BG' || cid === 'C0158' || cinName.toLowerCase().includes('palace') || cinName.toLowerCase().includes('parnasse');
+                let fmt = raw.format || 'Standard';
+                if (fmt === 'Standard' && isKnownPremium) {
+                  fmt = 'Premium';
+                }
                 const ratings = movieRatingsMap[raw.title];
                 chosenShowtime = {
                   cinema_id: cid,
@@ -1852,8 +1915,8 @@ END:VCALENDAR`.trim();
                   ends_at: raw.ends_at,
                   date_str: selectedDate,
                   version: raw.version || 'ORIGINAL',
-                  format: raw.format || 'Standard',
-                  cinema_name: cinemasById.get(cid) || cid,
+                  format: fmt,
+                  cinema_name: cinName,
                   poster_url: raw.poster_url || '',
                   user_rating: ratings ? ratings.user_rating : null,
                   press_rating: ratings ? ratings.press_rating : null,
@@ -1875,8 +1938,11 @@ END:VCALENDAR`.trim();
         builderSlots[0] = chosenShowtime;
         builderPinnedIndex = 0;
         builderModeActive = true;
+        lastBuilderPinnedSignature = '';
+        builderProposalCycleIndex = 0;
+        cachedBuilderProposals = [];
 
-        recomputeBuilderProposals();
+        recomputeBuilderProposals(false);
         renderBuilderPanel();
         renderBuilderThermalReceipt();
 
@@ -1886,31 +1952,106 @@ END:VCALENDAR`.trim();
         }
       }
 
-      function recomputeBuilderProposals() {
+      function recomputeBuilderProposals(cycle: boolean = false) {
         syncBuilderSlotsLength();
-        const pinnedShowtime = builderSlots[builderPinnedIndex];
-        if (!pinnedShowtime) return;
+
+        let pinnedShowtime = builderSlots[builderPinnedIndex];
+        if (!pinnedShowtime) {
+          const firstFilled = builderSlots.findIndex(s => s !== null);
+          if (firstFilled !== -1) {
+            builderPinnedIndex = firstFilled;
+            pinnedShowtime = builderSlots[builderPinnedIndex];
+          } else {
+            openStartMovieDrawer();
+            return;
+          }
+        }
 
         const candidateShowtimes = getAllAvailableShowtimes();
         const criteria = getCurrentCriteria();
+        const pinnedSig = `${pinnedShowtime.movie_title}@${pinnedShowtime.cinema_id}@${pinnedShowtime.starts_at}#pos=${builderPinnedIndex}#len=${builderSlots.length}`;
 
-        const results = scheduler.findMarathonsAroundPinned(
-          candidateShowtimes,
-          {
-            pinnedShowtime,
-            pinnedIndex: builderPinnedIndex,
-            targetCount: builderSlots.length,
-            criteria,
+        if (pinnedSig !== lastBuilderPinnedSignature || cachedBuilderProposals.length === 0) {
+          lastBuilderPinnedSignature = pinnedSig;
+          cachedBuilderProposals = scheduler.findMarathonsAroundPinned(
+            candidateShowtimes,
+            {
+              pinnedShowtime,
+              pinnedIndex: builderPinnedIndex,
+              targetCount: builderSlots.length,
+              criteria,
+            }
+          );
+          builderProposalCycleIndex = 0;
+        } else if (cycle) {
+          if (cachedBuilderProposals.length > 1) {
+            builderProposalCycleIndex = (builderProposalCycleIndex + 1) % cachedBuilderProposals.length;
           }
-        );
+        }
 
-        if (results && results.length > 0) {
-          const topPlan = results[0];
+        const subtitleEl = document.getElementById('builder-panel-subtitle');
+
+        if (cachedBuilderProposals.length > 0) {
+          const chosenPlan = cachedBuilderProposals[builderProposalCycleIndex];
           for (let i = 0; i < builderSlots.length; i++) {
             if (i === builderPinnedIndex) {
               builderSlots[i] = pinnedShowtime;
             } else {
-              builderSlots[i] = topPlan.showtimes[i] || null;
+              builderSlots[i] = chosenPlan.showtimes[i] || null;
+            }
+          }
+
+          if (subtitleEl) {
+            if (cachedBuilderProposals.length === 1) {
+              subtitleEl.textContent = t('builderSubOneProposal', currentLang);
+            } else {
+              subtitleEl.textContent = t('builderSubProposalCycle', currentLang, {
+                idx: builderProposalCycleIndex + 1,
+                total: cachedBuilderProposals.length,
+              });
+            }
+          }
+        } else {
+          // Fallback: Greedy filling of empty slots if no complete chain exists
+          let filledAny = false;
+          const minBuffer = criteria.min_buffer_minutes || 15;
+          const selectedCinemasSet = new Set(criteria.cinema_ids);
+
+          for (let i = 0; i < builderSlots.length; i++) {
+            if (builderSlots[i] === null) {
+              const predecessor = i > 0 ? builderSlots[i - 1] : null;
+              const successor = i < builderSlots.length - 1 ? builderSlots[i + 1] : null;
+              const usedTitles = new Set(
+                builderSlots
+                  .filter((s): s is Showtime => s !== null)
+                  .map(s => s.movie_title)
+              );
+
+              const available = scheduler.getAvailableCandidatesForSlot(candidateShowtimes, {
+                predecessor,
+                successor,
+                minBufferMinutes: minBuffer,
+                selectedCinemas: selectedCinemasSet,
+                excludedTitles: usedTitles,
+              });
+
+              if (available.length > 0) {
+                available.sort((a, b) => {
+                  const ratingA = (a.showtime.user_rating || 0) + (a.showtime.press_rating || 0);
+                  const ratingB = (b.showtime.user_rating || 0) + (b.showtime.press_rating || 0);
+                  return ratingB - ratingA;
+                });
+                builderSlots[i] = available[0].showtime;
+                filledAny = true;
+              }
+            }
+          }
+
+          if (subtitleEl) {
+            if (filledAny) {
+              subtitleEl.textContent = t('builderSubGreedyFilled', currentLang);
+            } else {
+              subtitleEl.textContent = t('builderSubNoProposals', currentLang);
             }
           }
         }
@@ -1924,39 +2065,8 @@ END:VCALENDAR`.trim();
         if (!currentPinned) return;
 
         builderPinnedIndex = newIndex;
-
-        const candidateShowtimes = getAllAvailableShowtimes();
-        const criteria = getCurrentCriteria();
-
-        const results = scheduler.findMarathonsAroundPinned(
-          candidateShowtimes,
-          {
-            pinnedShowtime: currentPinned,
-            pinnedIndex: newIndex,
-            targetCount: builderSlots.length,
-            criteria,
-          }
-        );
-
-        if (results && results.length > 0) {
-          const chosenPlan = results[0];
-          for (let i = 0; i < builderSlots.length; i++) {
-            if (i === newIndex) {
-              builderSlots[i] = currentPinned;
-            } else {
-              builderSlots[i] = chosenPlan.showtimes[i] || null;
-            }
-          }
-        } else {
-          for (let i = 0; i < builderSlots.length; i++) {
-            if (i === newIndex) {
-              builderSlots[i] = currentPinned;
-            } else {
-              builderSlots[i] = null;
-            }
-          }
-        }
-
+        lastBuilderPinnedSignature = '';
+        recomputeBuilderProposals(false);
         renderBuilderPanel();
         renderBuilderThermalReceipt();
       }
@@ -1971,8 +2081,8 @@ END:VCALENDAR`.trim();
         const filterInput = document.getElementById('input-drawer-filter') as HTMLInputElement;
         const backdrop = document.getElementById('builder-drawer-backdrop');
 
-        if (titleEl) titleEl.textContent = 'choisir le film de départ';
-        if (subtitleEl) subtitleEl.textContent = 'sélectionne un film pour démarrer ton marathon';
+        if (titleEl) titleEl.textContent = t('builderDrawerStartTitle', currentLang);
+        if (subtitleEl) subtitleEl.textContent = t('builderDrawerStartSubtitle', currentLang);
         if (filterInput) filterInput.value = '';
 
         renderStartMovieDrawerList();
@@ -2033,7 +2143,7 @@ END:VCALENDAR`.trim();
         if (sortedTitles.length === 0) {
           container.innerHTML = `
             <div class="neo-card p-6 text-center text-xs text-[#555555]">
-              aucun film ne correspond à votre recherche.
+              ${t('builderDrawerNoMovies', currentLang)}
             </div>
           `;
           return;
@@ -2063,6 +2173,11 @@ END:VCALENDAR`.trim();
             `;
           }).join('');
 
+          const showtimeCountLabel = t('builderDrawerAvailableShowtimes', currentLang, {
+            n: entry.showtimes.length,
+            s: entry.showtimes.length > 1 ? 's' : '',
+          });
+
           html += `
             <div class="neo-card p-3 bg-white border-2 border-[#111111] rounded-[10px] shadow-[2px_2px_0px_0px_#111111] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div class="min-w-0 flex items-center gap-2.5">
@@ -2073,7 +2188,7 @@ END:VCALENDAR`.trim();
                     ${ratingBadge}
                   </div>
                   <p class="text-[0.68rem] text-[#666666] mt-0.5 font-mono">
-                    ${entry.showtimes.length} séance${entry.showtimes.length > 1 ? 's' : ''} disponible${entry.showtimes.length > 1 ? 's' : ''}
+                    ${showtimeCountLabel}
                   </p>
                 </div>
               </div>
@@ -2109,7 +2224,7 @@ END:VCALENDAR`.trim();
         const backdrop = document.getElementById('builder-drawer-backdrop');
 
         const slotNumber = slotIndex + 1;
-        if (titleEl) titleEl.textContent = `choisir la séance 0${slotNumber}`;
+        if (titleEl) titleEl.textContent = t('builderDrawerSlotTitle', currentLang, { slotNumber });
         if (filterInput) filterInput.value = '';
 
         const candidateShowtimes = getAllAvailableShowtimes();
@@ -2136,7 +2251,10 @@ END:VCALENDAR`.trim();
         );
 
         if (subtitleEl) {
-          subtitleEl.textContent = `${drawerCandidates.length} séance${drawerCandidates.length > 1 ? 's' : ''} compatible${drawerCandidates.length > 1 ? 's' : ''} triée${drawerCandidates.length > 1 ? 's' : ''} par heure`;
+          subtitleEl.textContent = t('builderDrawerSlotSubtitle', currentLang, {
+            n: drawerCandidates.length,
+            s: drawerCandidates.length > 1 ? 's' : '',
+          });
         }
 
         renderBuilderDrawerCandidates();
@@ -2160,8 +2278,8 @@ END:VCALENDAR`.trim();
         if (list.length === 0) {
           container.innerHTML = `
             <div class="neo-card p-6 text-center text-xs text-[#555555] space-y-1">
-              <p class="font-bold text-[#111111]">aucune séance compatible trouvée.</p>
-              <p class="text-[0.7rem] text-[#666666]">essaie d'élargir tes cinémas sélectionnés ou vérifie les créneaux précédents et suivants.</p>
+              <p class="font-bold text-[#111111]">${t('builderDrawerNoShowtimesTitle', currentLang)}</p>
+              <p class="text-[0.7rem] text-[#666666]">${t('builderDrawerNoShowtimesHint', currentLang)}</p>
             </div>
           `;
           return;
@@ -2212,7 +2330,7 @@ END:VCALENDAR`.trim();
 
             let gapText = '';
             if (item.gapBeforeMinutes > 0 && drawerTargetSlot !== null && drawerTargetSlot > 0) {
-              gapText = `pause: ${item.gapBeforeMinutes}m`;
+              gapText = t('builderDrawerBreakChip', currentLang, { gap: item.gapBeforeMinutes });
             }
 
             return `
@@ -2225,11 +2343,16 @@ END:VCALENDAR`.trim();
                 <span class="font-black text-xs bg-[#FFE566] px-1 py-0.5 rounded border border-[#111111]">${sStart}</span>
                 <span class="text-[0.68rem] text-[#555555] font-sans truncate max-w-[130px]">${escapeHtml(cinShort)}</span>
                 <span class="text-[0.62rem] font-mono px-1 py-0.5 rounded border border-[#111111] ${isVost ? 'bg-[#C4B5FD]' : 'bg-[#FAFADF]'}">${langLabel}</span>
-                ${fmt ? `<span class="text-[0.62rem] font-bold text-[#E8635A]">${escapeHtml(fmt)}</span>` : ''}
+                ${fmt ? `<span class="text-[0.62rem] font-bold ${fmt.toUpperCase().includes('PREMIUM') ? 'bg-[#FFE566] text-[#111111] px-1 py-0.5 rounded border border-[#111111]' : 'text-[#E8635A]'}">${escapeHtml(fmt)}</span>` : ''}
                 ${gapText ? `<span class="text-[0.6rem] font-mono text-[#555555]">${gapText}</span>` : ''}
               </button>
             `;
           }).join('');
+
+          const compatibleCountLabel = t('builderDrawerCompatibleShowtimes', currentLang, {
+            n: group.candidates.length,
+            s: group.candidates.length > 1 ? 's' : '',
+          });
 
           html += `
             <div class="neo-card p-3 sm:p-4 bg-white border-2 border-[#111111] rounded-[10px] shadow-[2px_2px_0px_0px_#111111] space-y-2">
@@ -2240,7 +2363,7 @@ END:VCALENDAR`.trim();
                   ${ratingBadge}
                 </div>
                 <span class="text-[0.68rem] font-mono text-[#666666]">
-                  ${group.candidates.length} séance${group.candidates.length > 1 ? 's' : ''} compatible${group.candidates.length > 1 ? 's' : ''}
+                  ${compatibleCountLabel}
                 </span>
               </div>
               <div class="flex items-center gap-2 flex-wrap pt-0.5">
@@ -2259,6 +2382,7 @@ END:VCALENDAR`.trim();
             const chosen = list[cIdx];
             if (chosen && drawerTargetSlot !== null) {
               builderSlots[drawerTargetSlot] = chosen.showtime;
+              lastBuilderPinnedSignature = '';
               closeBuilderDrawer();
               renderBuilderPanel();
               renderBuilderThermalReceipt();
@@ -2290,7 +2414,7 @@ END:VCALENDAR`.trim();
           if (toggleBtn) {
             toggleBtn.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFE566] hover:bg-[#ffe043] border-2 border-[#111111] text-xs font-black shadow-[2px_2px_0px_0px_#111111] transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_#111111] cursor-pointer text-[#111111]';
           }
-          if (toggleLabel) toggleLabel.textContent = 'composer';
+          if (toggleLabel) toggleLabel.textContent = t('builderToggleBtn', currentLang);
           return;
         }
 
@@ -2304,7 +2428,7 @@ END:VCALENDAR`.trim();
         if (toggleBtn) {
           toggleBtn.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#111111] text-[#FFE566] border-2 border-[#111111] text-xs font-black shadow-[2px_2px_0px_0px_#111111] transition-all cursor-pointer ring-2 ring-[#FFE566]';
         }
-        if (toggleLabel) toggleLabel.textContent = 'quitter composition';
+        if (toggleLabel) toggleLabel.textContent = t('builderToggleBtnActive', currentLang);
 
         if (!slotsContainer) return;
 
@@ -2322,20 +2446,20 @@ END:VCALENDAR`.trim();
             const ratingBadge = renderAllocineRatingsBadge(ratings?.user_rating, ratings?.press_rating, false);
 
             const statusBadge = isPinned
-              ? `<span class="bg-[#FFE566] text-[#111111] text-[0.65rem] font-black uppercase px-2 py-0.5 rounded border border-[#111111] shadow-[1px_1px_0px_0px_#111111] tracking-wider">film verrouillé</span>`
-              : `<span class="bg-[#A7F3D0] text-[#111111] text-[0.65rem] font-black uppercase px-2 py-0.5 rounded border border-[#111111] shadow-[1px_1px_0px_0px_#111111] tracking-wider">proposition auto</span>`;
+              ? `<span class="bg-[#FFE566] text-[#111111] text-[0.65rem] font-black uppercase px-2 py-0.5 rounded border border-[#111111] shadow-[1px_1px_0px_0px_#111111] tracking-wider">${t('builderPinnedBadge', currentLang)}</span>`
+              : `<span class="bg-[#A7F3D0] text-[#111111] text-[0.65rem] font-black uppercase px-2 py-0.5 rounded border border-[#111111] shadow-[1px_1px_0px_0px_#111111] tracking-wider">${t('builderAutoBadge', currentLang)}</span>`;
 
             let positionSwitcherHtml = '';
             if (isPinned) {
               const posButtons = [];
               for (let p = 0; p < builderSlots.length; p++) {
-                const label = p === 0 ? '1er' : `${p + 1}e`;
+                const label = formatOrdinal(p + 1, currentLang);
                 const activeCls = i === p ? 'bg-[#FFE566] border-[#111111]' : 'bg-white border-transparent text-[#555555]';
                 posButtons.push(`<button type="button" class="btn-shift-pos px-1.5 py-0.5 text-[0.65rem] font-black rounded border cursor-pointer ${activeCls}" data-pos="${p}">${label}</button>`);
               }
               positionSwitcherHtml = `
                 <div class="flex items-center gap-1 bg-[#FAFADF] border border-[#111111] rounded-[6px] p-0.5 shadow-[1px_1px_0px_0px_#111111]">
-                  <span class="text-[0.65rem] font-bold text-[#555555] px-1 font-mono">pos:</span>
+                  <span class="text-[0.65rem] font-bold text-[#555555] px-1 font-mono">${t('builderSlotPosPrefix', currentLang)}</span>
                   ${posButtons.join('')}
                 </div>
               `;
@@ -2343,10 +2467,10 @@ END:VCALENDAR`.trim();
               positionSwitcherHtml = `
                 <div class="flex items-center gap-1.5">
                   <button type="button" class="btn-open-slot-drawer neo-btn text-[0.7rem] font-bold bg-white hover:bg-[#FAFADF] text-[#111111] border border-[#111111] rounded-[4px] px-2 py-1 cursor-pointer shadow-[1px_1px_0px_0px_#111111]" data-slot-index="${i}">
-                    changer séance
+                    ${t('builderChangeScreeningBtn', currentLang)}
                   </button>
-                  <button type="button" class="btn-pin-slot neo-btn text-[0.7rem] font-bold bg-[#FAFADF] hover:bg-[#FFE566] text-[#111111] border border-[#111111] rounded-[4px] px-2 py-1 cursor-pointer shadow-[1px_1px_0px_0px_#111111]" data-slot-index="${i}" title="Verrouiller ce film à cette position">
-                    verrouiller
+                  <button type="button" class="btn-pin-slot neo-btn text-[0.7rem] font-bold bg-[#FAFADF] hover:bg-[#FFE566] text-[#111111] border border-[#111111] rounded-[4px] px-2 py-1 cursor-pointer shadow-[1px_1px_0px_0px_#111111]" data-slot-index="${i}" title="${t('builderLockSlotTitle', currentLang)}">
+                    ${t('builderLockSlotBtn', currentLang)}
                   </button>
                 </div>
               `;
@@ -2364,18 +2488,18 @@ END:VCALENDAR`.trim();
               >
                 <div class="flex items-center justify-between border-b border-[#E5E5E5] pb-2 mb-2.5">
                   <div class="flex items-center gap-2">
-                    <span class="drag-handle cursor-grab active:cursor-grabbing p-0.5 text-[#777777] hover:text-[#111111] shrink-0" title="Glisser-déposer pour déplacer ce créneau">
+                    <span class="drag-handle cursor-grab active:cursor-grabbing p-0.5 text-[#777777] hover:text-[#111111] shrink-0" title="${t('builderSlotDragTitle', currentLang)}">
                       ${iconGrip('w-3.5 h-3.5')}
                     </span>
                     <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#111111] text-[#FFE566] font-mono font-black text-xs">
                       0${i + 1}
                     </span>
-                    <span class="text-xs font-black text-[#111111] font-sans">créneau 0${i + 1}</span>
+                    <span class="text-xs font-black text-[#111111] font-sans">${t('builderSlotName', currentLang, { n: i + 1 })}</span>
                     ${statusBadge}
                   </div>
                   <div class="flex items-center gap-2">
                     ${positionSwitcherHtml}
-                    <button type="button" class="btn-clear-slot w-6 h-6 rounded-full bg-[#FAFADF] hover:bg-[#E8635A] hover:text-white border border-[#111111] flex items-center justify-center text-xs font-black cursor-pointer transition-colors" data-slot-index="${i}" title="Vider ce créneau">
+                    <button type="button" class="btn-clear-slot w-6 h-6 rounded-full bg-[#FAFADF] hover:bg-[#E8635A] hover:text-white border border-[#111111] flex items-center justify-center text-xs font-black cursor-pointer transition-colors" data-slot-index="${i}" title="${t('builderClearSlotTitle', currentLang)}">
                       ✕
                     </button>
                   </div>
@@ -2391,7 +2515,7 @@ END:VCALENDAR`.trim();
                       <span class="font-mono bg-[#FFE566] px-1.5 py-0.5 rounded border border-[#111111]">${sStart} - ${sEnd}</span>
                       <span class="bg-[#FAFADF] px-1.5 py-0.5 rounded border border-[#111111] truncate max-w-[180px]">${escapeHtml(st.cinema_name || '')}</span>
                       <span class="bg-white px-1.5 py-0.5 rounded border border-[#111111]">${escapeHtml(st.version || 'VF')}</span>
-                      ${st.format && st.format !== 'Standard' ? `<span class="bg-[#C4B5FD] px-1.5 py-0.5 rounded border border-[#111111]">${escapeHtml(st.format)}</span>` : ''}
+                      ${st.format && st.format !== 'Standard' ? `<span class="${st.format.toUpperCase().includes('PREMIUM') ? 'bg-[#FFE566] text-[#111111]' : 'bg-[#C4B5FD] text-[#111111]'} font-bold px-1.5 py-0.5 rounded border border-[#111111]">${escapeHtml(st.format)}</span>` : ''}
                     </div>
                   </div>
                 </div>
@@ -2405,19 +2529,19 @@ END:VCALENDAR`.trim();
                 data-slot-index="${i}"
               >
                 <div class="flex items-center gap-3">
-                  <span class="drag-handle cursor-grab active:cursor-grabbing p-0.5 text-[#777777] hover:text-[#111111] shrink-0" title="Glisser-déposer pour déplacer ce créneau">
+                  <span class="drag-handle cursor-grab active:cursor-grabbing p-0.5 text-[#777777] hover:text-[#111111] shrink-0" title="${t('builderSlotDragTitle', currentLang)}">
                     ${iconGrip('w-3.5 h-3.5')}
                   </span>
                   <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white border border-[#111111] font-mono font-bold text-xs text-[#777777]">
                     0${i + 1}
                   </span>
                   <div>
-                    <p class="font-black text-xs sm:text-sm text-[#111111] font-sans">+ choisir une séance pour le créneau 0${i + 1}</p>
-                    <p class="text-[0.68rem] text-[#666666]">clique pour voir les séances compatibles</p>
+                    <p class="font-black text-xs sm:text-sm text-[#111111] font-sans">${t('builderEmptySlotTitle', currentLang, { n: i + 1 })}</p>
+                    <p class="text-[0.68rem] text-[#666666]">${t('builderEmptySlotHint', currentLang)}</p>
                   </div>
                 </div>
                 <span class="neo-btn px-2.5 py-1 rounded-[6px] bg-white border border-[#111111] text-xs font-bold text-[#111111] shadow-[1px_1px_0px_0px_#111111]">
-                  parcourir
+                  ${t('builderBrowseBtn', currentLang)}
                 </span>
               </div>
             `;
@@ -2432,8 +2556,8 @@ END:VCALENDAR`.trim();
 
               const connectorColor = isShort ? 'bg-[#F9A8B8]' : 'bg-[#FAFADF]';
               const labelText = isSameCin
-                ? `pause de ${gapMin} min sur place`
-                : `trajet + pause de ${gapMin} min vers un autre cinéma`;
+                ? t('builderBreakSameCinema', currentLang, { gapMin })
+                : t('builderBreakTransitCinema', currentLang, { gapMin });
 
               html += `
                 <div class="flex items-center justify-center my-1.5">
@@ -2441,7 +2565,7 @@ END:VCALENDAR`.trim();
                     <span class="font-mono">${gapMin}m</span>
                     <span>&bull;</span>
                     <span>${labelText}</span>
-                    ${isShort ? `<span class="bg-[#E8635A] text-white px-1 rounded text-[0.6rem] font-black">trop court</span>` : ''}
+                    ${isShort ? `<span class="bg-[#E8635A] text-white px-1 rounded text-[0.6rem] font-black">${t('builderBreakTooShort', currentLang)}</span>` : ''}
                   </div>
                 </div>
               `;
@@ -2483,7 +2607,10 @@ END:VCALENDAR`.trim();
             ev.stopPropagation();
             const slotIdx = parseInt(btn.getAttribute('data-slot-index') || '0', 10);
             builderPinnedIndex = slotIdx;
+            lastBuilderPinnedSignature = '';
+            recomputeBuilderProposals(false);
             renderBuilderPanel();
+            renderBuilderThermalReceipt();
           });
         });
 
@@ -2493,6 +2620,7 @@ END:VCALENDAR`.trim();
             ev.stopPropagation();
             const slotIdx = parseInt(btn.getAttribute('data-slot-index') || '0', 10);
             builderSlots[slotIdx] = null;
+            lastBuilderPinnedSignature = '';
             renderBuilderPanel();
             renderBuilderThermalReceipt();
           });
@@ -2551,6 +2679,7 @@ END:VCALENDAR`.trim();
                 builderPinnedIndex = srcIdx;
               }
 
+              lastBuilderPinnedSignature = '';
               renderBuilderPanel();
               renderBuilderThermalReceipt();
             }
@@ -2585,8 +2714,18 @@ END:VCALENDAR`.trim();
           totalPause += Math.max(0, Math.round(gap));
         }
 
+        let totalMovieMinutes = 0;
+        for (const st of filledSlots) {
+          const startMs = new Date(st.starts_at).getTime();
+          const endMs = new Date(st.ends_at).getTime();
+          if (!isNaN(startMs) && !isNaN(endMs)) {
+            totalMovieMinutes += Math.max(0, Math.round((endMs - startMs) / 60000));
+          }
+        }
+
         const builderItinerary: Itinerary = {
           showtimes: filledSlots,
+          total_movie_minutes: totalMovieMinutes,
           total_pause_minutes: totalPause,
           total_transit_minutes: 0,
           score: 100,
@@ -2666,8 +2805,13 @@ END:VCALENDAR`.trim();
           renderBuilderThermalReceipt();
         });
 
-        document.getElementById('btn-builder-recompute')?.addEventListener('click', () => {
-          recomputeBuilderProposals();
+        const btnRecompute = document.getElementById('btn-builder-recompute');
+        btnRecompute?.addEventListener('click', () => {
+          btnRecompute.classList.add('scale-95', 'bg-[#FFE566]');
+          setTimeout(() => {
+            btnRecompute.classList.remove('scale-95', 'bg-[#FFE566]');
+          }, 150);
+          recomputeBuilderProposals(true);
           renderBuilderPanel();
           renderBuilderThermalReceipt();
         });
@@ -2861,6 +3005,8 @@ END:VCALENDAR`.trim();
           rangeDebounceTimer = setTimeout(() => {
             syncBuilderSlotsLength();
             if (builderModeActive) {
+              lastBuilderPinnedSignature = '';
+              recomputeBuilderProposals(false);
               renderBuilderPanel();
               renderBuilderThermalReceipt();
             }

@@ -115,6 +115,51 @@ export interface Translations {
   loadingShowtimes: string;
   syncErrorMessage: string;
   modalCloseTitle: string;
+
+  // Builder / Custom Composition Mode
+  builderToggleBtn: string;
+  builderToggleBtnActive: string;
+  builderToggleTitle: string;
+  buildAroundBtn: string;
+  buildAroundTitle: string;
+  builderTitle: string;
+  builderBadge: string;
+  builderSubtitleDefault: string;
+  builderRecomputeBtn: string;
+  builderRecomputeTitle: string;
+  builderCloseBtn: string;
+  builderCloseTitle: string;
+  builderPinnedBadge: string;
+  builderAutoBadge: string;
+  builderSlotDragTitle: string;
+  builderSlotName: string;
+  builderSlotPosPrefix: string;
+  builderChangeScreeningBtn: string;
+  builderLockSlotBtn: string;
+  builderLockSlotTitle: string;
+  builderClearSlotTitle: string;
+  builderEmptySlotTitle: string;
+  builderEmptySlotHint: string;
+  builderBrowseBtn: string;
+  builderBreakSameCinema: string;
+  builderBreakTransitCinema: string;
+  builderBreakTooShort: string;
+  builderDrawerStartTitle: string;
+  builderDrawerStartSubtitle: string;
+  builderDrawerSlotTitle: string;
+  builderDrawerSlotSubtitle: string;
+  builderDrawerSearchPlaceholder: string;
+  builderDrawerCloseTitle: string;
+  builderDrawerNoMovies: string;
+  builderDrawerNoShowtimesTitle: string;
+  builderDrawerNoShowtimesHint: string;
+  builderDrawerAvailableShowtimes: string;
+  builderDrawerCompatibleShowtimes: string;
+  builderDrawerBreakChip: string;
+  builderSubOneProposal: string;
+  builderSubProposalCycle: string;
+  builderSubGreedyFilled: string;
+  builderSubNoProposals: string;
 }
 
 export const translations: Record<Lang, Translations> = {
@@ -233,6 +278,51 @@ export const translations: Record<Lang, Translations> = {
     loadingShowtimes: 'chargement des séances...',
     syncErrorMessage: 'Impossible de charger les séances pour le moment. Veuillez vérifier votre connexion ou réessayer plus tard.',
     modalCloseTitle: 'Fermer l\'affiche',
+
+    // Builder / Custom Composition Mode
+    builderToggleBtn: 'composer',
+    builderToggleBtnActive: 'quitter composition',
+    builderToggleTitle: 'Composer votre marathon sur-mesure',
+    buildAroundBtn: 'Composer',
+    buildAroundTitle: 'Composer un marathon autour de cette séance',
+    builderTitle: 'mon marathon sur-mesure',
+    builderBadge: 'sur-mesure',
+    builderSubtitleDefault: 'personnalise chaque séance ou glisse-dépose pour réordonner tes créneaux',
+    builderRecomputeBtn: 'recalculer',
+    builderRecomputeTitle: 'Recalculer les propositions autour du film verrouillé',
+    builderCloseBtn: 'quitter la composition',
+    builderCloseTitle: 'Quitter la composition et revenir aux suggestions auto',
+    builderPinnedBadge: 'film verrouillé',
+    builderAutoBadge: 'proposition auto',
+    builderSlotDragTitle: 'Glisser-déposer pour déplacer ce créneau',
+    builderSlotName: 'créneau 0{n}',
+    builderSlotPosPrefix: 'pos:',
+    builderChangeScreeningBtn: 'changer séance',
+    builderLockSlotBtn: 'verrouiller',
+    builderLockSlotTitle: 'Verrouiller ce film à cette position',
+    builderClearSlotTitle: 'Vider ce créneau',
+    builderEmptySlotTitle: '+ choisir une séance pour le créneau 0{n}',
+    builderEmptySlotHint: 'clique pour voir les séances compatibles',
+    builderBrowseBtn: 'parcourir',
+    builderBreakSameCinema: 'pause de {gapMin} min sur place',
+    builderBreakTransitCinema: 'trajet + pause de {gapMin} min vers un autre cinéma',
+    builderBreakTooShort: 'trop court',
+    builderDrawerStartTitle: 'choisir le film de départ',
+    builderDrawerStartSubtitle: 'sélectionne un film pour démarrer ton marathon',
+    builderDrawerSlotTitle: 'choisir la séance 0{slotNumber}',
+    builderDrawerSlotSubtitle: '{n} séance{s} compatible{s} triée{s} par heure',
+    builderDrawerSearchPlaceholder: 'filtrer par titre de film...',
+    builderDrawerCloseTitle: 'Fermer le tiroir',
+    builderDrawerNoMovies: 'aucun film ne correspond à votre recherche.',
+    builderDrawerNoShowtimesTitle: 'aucune séance compatible trouvée.',
+    builderDrawerNoShowtimesHint: 'essaie d\'élargir tes cinémas sélectionnés ou vérifie les créneaux précédents et suivants.',
+    builderDrawerAvailableShowtimes: '{n} séance{s} disponible{s}',
+    builderDrawerCompatibleShowtimes: '{n} séance{s} compatible{s}',
+    builderDrawerBreakChip: 'pause : {gap}m',
+    builderSubOneProposal: '1 seule proposition optimale trouvée autour du film verrouillé',
+    builderSubProposalCycle: 'proposition auto {idx} / {total} appliquée (clique sur recalculer pour défiler)',
+    builderSubGreedyFilled: 'séances compatibles insérées pour compléter ton marathon',
+    builderSubNoProposals: 'aucune proposition trouvée : élargis les filtres ou coche d\'autres cinémas',
   },
   en: {
     // Header
@@ -349,6 +439,51 @@ export const translations: Record<Lang, Translations> = {
     loadingShowtimes: 'loading showtimes...',
     syncErrorMessage: 'Unable to load showtimes at this moment. Please check your connection or retry later.',
     modalCloseTitle: 'Close poster view',
+
+    // Builder / Custom Composition Mode
+    builderToggleBtn: 'build',
+    builderToggleBtnActive: 'exit builder',
+    builderToggleTitle: 'Build your custom marathon',
+    buildAroundBtn: 'Build',
+    buildAroundTitle: 'Build a marathon around this screening',
+    builderTitle: 'my custom marathon',
+    builderBadge: 'custom',
+    builderSubtitleDefault: 'customize each screening or drag & drop to reorder your slots',
+    builderRecomputeBtn: 'recompute',
+    builderRecomputeTitle: 'Recompute proposals around the locked movie',
+    builderCloseBtn: 'exit builder',
+    builderCloseTitle: 'Exit builder and return to auto suggestions',
+    builderPinnedBadge: 'locked movie',
+    builderAutoBadge: 'auto suggestion',
+    builderSlotDragTitle: 'Drag and drop to move this slot',
+    builderSlotName: 'slot 0{n}',
+    builderSlotPosPrefix: 'pos:',
+    builderChangeScreeningBtn: 'change screening',
+    builderLockSlotBtn: 'lock',
+    builderLockSlotTitle: 'Lock this movie at this position',
+    builderClearSlotTitle: 'Clear this slot',
+    builderEmptySlotTitle: '+ pick a screening for slot 0{n}',
+    builderEmptySlotHint: 'click to see compatible screenings',
+    builderBrowseBtn: 'browse',
+    builderBreakSameCinema: 'break of {gapMin} min on site',
+    builderBreakTransitCinema: 'travel + break of {gapMin} min to another theater',
+    builderBreakTooShort: 'too short',
+    builderDrawerStartTitle: 'pick a starting movie',
+    builderDrawerStartSubtitle: 'select a movie to start your marathon',
+    builderDrawerSlotTitle: 'pick screening 0{slotNumber}',
+    builderDrawerSlotSubtitle: '{n} compatible screening{s} sorted by time',
+    builderDrawerSearchPlaceholder: 'filter by movie title...',
+    builderDrawerCloseTitle: 'Close drawer',
+    builderDrawerNoMovies: 'no movie matches your search.',
+    builderDrawerNoShowtimesTitle: 'no compatible screening found.',
+    builderDrawerNoShowtimesHint: 'try selecting more cinemas or adjust previous and next slots.',
+    builderDrawerAvailableShowtimes: '{n} available showtime{s}',
+    builderDrawerCompatibleShowtimes: '{n} compatible screening{s}',
+    builderDrawerBreakChip: 'break: {gap}m',
+    builderSubOneProposal: '1 optimal proposal found around the locked movie',
+    builderSubProposalCycle: 'auto proposal {idx} / {total} applied (click recompute to cycle)',
+    builderSubGreedyFilled: 'compatible showtimes inserted to complete your marathon',
+    builderSubNoProposals: 'no proposal found: widen filters or select more theaters',
   },
 };
 
@@ -398,3 +533,14 @@ export function formatDateLocalized(dateIso: string, lang: Lang): string {
     return dateIso;
   }
 }
+
+export function formatOrdinal(n: number, lang: Lang): string {
+  if (lang === 'fr') {
+    return n === 1 ? '1er' : `${n}e`;
+  }
+  if (n === 1) return '1st';
+  if (n === 2) return '2nd';
+  if (n === 3) return '3rd';
+  return `${n}th`;
+}
+

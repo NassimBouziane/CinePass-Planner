@@ -87,6 +87,11 @@ def test_determine_showtime_format():
     assert determine_showtime_format(projection=["DIGITAL"]) == "Standard"
     assert determine_showtime_format() == "Standard"
 
+    # Premium / PLF
+    assert determine_showtime_format(experience=["PLF"]) == "Premium"
+    assert determine_showtime_format(tags=["Auditorium.Experience.PLF"]) == "Premium"
+    assert determine_showtime_format(title="Film Salle Premium") == "Premium"
+
     # Title fallback
     assert determine_showtime_format(title="Avengers Endgame IMAX 3D") == "IMAX 3D"
 
