@@ -13,6 +13,7 @@ import {
   iconFilm,
   iconSearch,
   iconWrench,
+  iconComposer,
 } from './Icons';
 
 function addMinutes(isoStr: string, minutes: number): string {
@@ -189,10 +190,10 @@ export function formatItineraryCardHtml(
                   data-movie-title="${escapeHtml(st.movie_title)}"
                   data-cinema-id="${escapeHtml(st.cinema_id)}"
                   data-starts-at="${escapeHtml(st.starts_at)}"
-                  title="Bâtir un marathon autour de cette séance"
+                  title="Composer un marathon autour de cette séance"
                 >
-                  ${iconWrench('w-3 h-3 text-[#111111]')}
-                  <span>Bâtir</span>
+                  ${iconComposer('w-3 h-3 text-[#111111]')}
+                  <span>Composer</span>
                 </button>
                 <button
                   type="button"

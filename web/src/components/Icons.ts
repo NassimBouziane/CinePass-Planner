@@ -182,3 +182,18 @@ export function iconWrench(className: string = 'w-4 h-4'): string {
   </svg>`;
 }
 
+export function iconComposer(className: string = 'w-4 h-4'): string {
+  return `<svg class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20h9"/>
+    <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+  </svg>`;
+}
+
+export function iconGrip(className: string = 'w-4 h-4'): string {
+  return `<svg class="${className}" viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/>
+    <circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/>
+    <circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/>
+  </svg>`;
+}
+

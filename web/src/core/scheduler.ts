@@ -519,6 +519,7 @@ export class Scheduler {
       successor: Showtime | null;
       minBufferMinutes?: number;
       selectedCinemas?: Set<string>;
+      excludedTitles?: Set<string>;
     }
   ): Array<{ showtime: Showtime; gapBeforeMinutes: number; gapAfterMinutes: number }> {
     const minBuffer = options.minBufferMinutes || 15;
@@ -532,6 +533,10 @@ export class Scheduler {
 
     for (const st of showtimes) {
       if (options.selectedCinemas && !options.selectedCinemas.has(st.cinema_id)) {
+        continue;
+      }
+
+      if (options.excludedTitles && options.excludedTitles.has(st.movie_title)) {
         continue;
       }
 

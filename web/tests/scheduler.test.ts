@@ -410,6 +410,68 @@ describe('Scheduler', () => {
     expect(candidates[0].gapBeforeMinutes).toBe(30);
     expect(candidates[0].gapAfterMinutes).toBe(30);
   });
+
+  it('filters out showtimes before predecessor (such as 00h midnight) and excludes specified movie titles', () => {
+    const pred: Showtime = { cinema_id: 'C1', movie_title: 'Matin 11h', starts_at: '2026-10-18T11:00:00', ends_at: '2026-10-18T13:00:00', date_str: '2026-10-18' };
+    const midnight: Showtime = { cinema_id: 'C1', movie_title: 'Minuit', starts_at: '2026-10-18T00:15:00', ends_at: '2026-10-18T02:00:00', date_str: '2026-10-18' };
+    const earlyMorning: Showtime = { cinema_id: 'C1', movie_title: 'Aurore', starts_at: '2026-10-18T09:00:00', ends_at: '2026-10-18T10:30:00', date_str: '2026-10-18' };
+    const validAfter: Showtime = { cinema_id: 'C1', movie_title: 'Apres-midi', starts_at: '2026-10-18T13:30:00', ends_at: '2026-10-18T15:30:00', date_str: '2026-10-18' };
+    const sameMovieLater: Showtime = { cinema_id: 'C1', movie_title: 'Matin 11h', starts_at: '2026-10-18T16:00:00', ends_at: '2026-10-18T18:00:00', date_str: '2026-10-18' };
+
+    const scheduler = new Scheduler();
+    const candidates = scheduler.getAvailableCandidatesForSlot(
+      [midnight, earlyMorning, validAfter, sameMovieLater],
+      {
+        predecessor: pred,
+        successor: null,
+        minBufferMinutes: 15,
+        selectedCinemas: new Set(['C1']),
+        excludedTitles: new Set(['Matin 11h']),
+      }
+    );
+
+    // Midnight (00:15) and Aurore (09:00) are BEFORE pred ends (13:00) so they must be excluded!
+    // Matin 11h is in excludedTitles so it must be excluded!
+    // Only Apres-midi (13:30) must remain!
+    expect(candidates.map((c) => c.showtime.movie_title)).toEqual(['Apres-midi']);
+    expect(candidates[0].gapBeforeMinutes).toBe(30);
+  });
+
+  it('supports targetCount: 2 when pinning a showtime in builder mode', () => {
+    const showtimes: Showtime[] = [
+      { cinema_id: 'C1', movie_title: 'Film 1', starts_at: '2026-10-18T11:00:00', ends_at: '2026-10-18T13:00:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Film 2', starts_at: '2026-10-18T13:30:00', ends_at: '2026-10-18T15:30:00', date_str: '2026-10-18' },
+      { cinema_id: 'C1', movie_title: 'Film 3', starts_at: '2026-10-18T16:00:00', ends_at: '2026-10-18T18:00:00', date_str: '2026-10-18' },
+    ];
+
+    const scheduler = new Scheduler();
+    const criteria: PlanCriteria = {
+      cinema_ids: ['C1'],
+      date_str: '2026-10-18',
+      target_films_count: 2,
+      start_time: '10:00',
+      max_end_time: '23:00',
+      priority_movies: [],
+      pass_type: PassType.GOLD,
+      allow_supplements: true,
+      min_buffer_minutes: 15,
+      require_meal_break: false,
+      language: 'ALL',
+      selected_formats: [],
+    };
+
+    const results = scheduler.findMarathonsAroundPinned(showtimes, {
+      pinnedShowtime: showtimes[0],
+      pinnedIndex: 0,
+      targetCount: 2,
+      criteria,
+    });
+
+    expect(results.length).toBeGreaterThan(0);
+    expect(results[0].showtimes).toHaveLength(2);
+    expect(results[0].showtimes[0].movie_title).toBe('Film 1');
+    expect(results[0].showtimes[1].movie_title).toBe('Film 2');
+  });
 });
 
 

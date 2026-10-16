@@ -366,26 +366,27 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           </div>
         </div>
 
-        <!-- Mode Builder Dedicated Panel (Visible when builderModeActive is true) -->
+        <!-- Mode Composition Sur-Mesure Dedicated Panel (Visible when builderModeActive is true) -->
         <div id="builder-panel" class="hidden neo-card p-4 sm:p-5 space-y-4 bg-white border-2 border-[#111111] shadow-[4px_4px_0px_0px_#111111]">
           <div class="flex items-center justify-between border-b-2 border-[#111111] pb-3 gap-2 flex-wrap">
             <div class="flex items-center gap-2">
               <span class="p-1.5 rounded-[6px] bg-[#FFE566] border border-[#111111] flex items-center justify-center">
                 <svg class="w-4 h-4 text-[#111111]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                  <path d="M12 20h9"/>
+                  <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
                 </svg>
               </span>
               <div>
                 <div class="flex items-center gap-2">
                   <h3 class="text-sm sm:text-base font-black text-[#111111] lowercase font-sans">
-                    mon builder de marathon
+                    mon marathon sur-mesure
                   </h3>
                   <span class="bg-[#FFE566] text-[#111111] text-[0.65rem] font-bold px-2 py-0.5 rounded-full border border-[#111111]">
                     sur-mesure
                   </span>
                 </div>
                 <p id="builder-panel-subtitle" class="text-[0.7rem] text-[#555555]">
-                  verrouille un film et personnalise chaque créneau
+                  personnalise chaque séance ou glisse-dépose pour réordonner tes créneaux
                 </p>
               </div>
             </div>
@@ -402,9 +403,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
                 id="btn-close-builder"
                 type="button"
                 class="neo-btn text-xs bg-[#FAFADF] hover:bg-[#E8635A] hover:text-white border-2 border-[#111111] rounded-[6px] px-2.5 py-1 font-bold cursor-pointer transition-colors"
-                title="Quitter le mode builder et revenir aux suggestions auto"
+                title="Quitter la composition et revenir aux suggestions auto"
               >
-                quitter le builder
+                quitter la composition
               </button>
             </div>
           </div>
@@ -501,7 +502,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           <div class="flex items-center gap-2">
             <span class="p-1 rounded bg-[#FFE566] border border-[#111111]">
               <svg class="w-4 h-4 text-[#111111]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
               </svg>
             </span>
             <div>
@@ -577,6 +579,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         iconClock,
         iconSparkles,
         iconWrench,
+        iconComposer,
+        iconGrip,
         iconStar5,
         iconNewspaper,
         iconFilm,
@@ -602,14 +606,36 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       let prioritySearchFilter = '';
       let priorityMovieScope: 'selected' | 'all_day' = 'selected';
 
-      // Builder Mode State Machine
+      // Builder / Composition Mode State Machine
       let builderModeActive = false;
-      let builderSlots: (Showtime | null)[] = [null, null, null];
+      let builderSlots: (Showtime | null)[] = [];
       let builderPinnedIndex: number = 0;
       let drawerTargetSlot: number | null = null;
       let drawerMode: 'choose_start_movie' | 'choose_slot_showtime' = 'choose_slot_showtime';
       let drawerCandidates: Array<{ showtime: Showtime; gapBeforeMinutes: number; gapAfterMinutes: number }> = [];
       let drawerFilterText = '';
+      let draggedSlotIndex: number | null = null;
+
+      function getTargetCount(): number {
+        const countInput = document.getElementById('range-count') as HTMLInputElement;
+        return parseInt(countInput?.value, 10) || 3;
+      }
+
+      function syncBuilderSlotsLength() {
+        const target = Math.max(1, getTargetCount());
+        if (builderSlots.length === 0) {
+          builderSlots = new Array(target).fill(null);
+        } else if (builderSlots.length < target) {
+          while (builderSlots.length < target) {
+            builderSlots.push(null);
+          }
+        } else if (builderSlots.length > target) {
+          builderSlots = builderSlots.slice(0, target);
+          if (builderPinnedIndex >= target) {
+            builderPinnedIndex = target - 1;
+          }
+        }
+      }
 
       let recalculateTimer: ReturnType<typeof setTimeout> | null = null;
       let persistDebounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -1571,11 +1597,24 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         document.querySelectorAll('#results-container [data-plan-index]').forEach(card => {
           card.addEventListener('click', (ev) => {
             const target = ev.target as HTMLElement;
-            if (target.closest('.poster-thumb') || target.closest('.btn-mark-seen')) {
+            if (target.closest('.poster-thumb') || target.closest('.btn-mark-seen') || target.closest('.btn-build-around')) {
               return;
             }
             const idx = parseInt(card.getAttribute('data-plan-index') || '1', 10) - 1;
             selectActivePlan(idx);
+          });
+        });
+
+        // Click on Composer button on showtimes
+        document.querySelectorAll('#results-container .btn-build-around').forEach(btn => {
+          btn.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            const el = btn as HTMLElement;
+            const title = el.getAttribute('data-movie-title') || '';
+            const cid = el.getAttribute('data-cinema-id') || undefined;
+            const starts = el.getAttribute('data-starts-at') || undefined;
+            startBuilderWithMovie(title, cid, starts);
           });
         });
 
@@ -1831,9 +1870,11 @@ END:VCALENDAR`.trim();
           return;
         }
 
-        builderModeActive = true;
+        const target = Math.max(1, getTargetCount());
+        builderSlots = new Array(target).fill(null);
+        builderSlots[0] = chosenShowtime;
         builderPinnedIndex = 0;
-        builderSlots = [chosenShowtime, null, null];
+        builderModeActive = true;
 
         recomputeBuilderProposals();
         renderBuilderPanel();
@@ -1846,6 +1887,7 @@ END:VCALENDAR`.trim();
       }
 
       function recomputeBuilderProposals() {
+        syncBuilderSlotsLength();
         const pinnedShowtime = builderSlots[builderPinnedIndex];
         if (!pinnedShowtime) return;
 
@@ -1854,33 +1896,32 @@ END:VCALENDAR`.trim();
 
         const results = scheduler.findMarathonsAroundPinned(
           candidateShowtimes,
-          criteria,
-          pinnedShowtime,
-          builderPinnedIndex
+          {
+            pinnedShowtime,
+            pinnedIndex: builderPinnedIndex,
+            targetCount: builderSlots.length,
+            criteria,
+          }
         );
 
         if (results && results.length > 0) {
           const topPlan = results[0];
-          builderSlots = [
-            topPlan.showtimes[0] || null,
-            topPlan.showtimes[1] || null,
-            topPlan.showtimes[2] || null,
-          ];
-          builderSlots[builderPinnedIndex] = pinnedShowtime;
+          for (let i = 0; i < builderSlots.length; i++) {
+            if (i === builderPinnedIndex) {
+              builderSlots[i] = pinnedShowtime;
+            } else {
+              builderSlots[i] = topPlan.showtimes[i] || null;
+            }
+          }
         }
       }
 
       function shiftPinnedSlot(newIndex: number) {
-        if (newIndex < 0 || newIndex > 2 || newIndex === builderPinnedIndex) return;
+        syncBuilderSlotsLength();
+        if (newIndex < 0 || newIndex >= builderSlots.length || newIndex === builderPinnedIndex) return;
 
         const currentPinned = builderSlots[builderPinnedIndex];
         if (!currentPinned) return;
-
-        const oldPinnedIndex = builderPinnedIndex;
-        const oldSlot1 = builderSlots[1];
-        const oldSlot1Title = oldSlot1 ? oldSlot1.movie_title : null;
-        const oldSlot2 = builderSlots[2];
-        const oldSlot2Title = oldSlot2 ? oldSlot2.movie_title : null;
 
         builderPinnedIndex = newIndex;
 
@@ -1889,39 +1930,31 @@ END:VCALENDAR`.trim();
 
         const results = scheduler.findMarathonsAroundPinned(
           candidateShowtimes,
-          criteria,
-          currentPinned,
-          newIndex
+          {
+            pinnedShowtime: currentPinned,
+            pinnedIndex: newIndex,
+            targetCount: builderSlots.length,
+            criteria,
+          }
         );
 
         if (results && results.length > 0) {
-          let chosenPlan = results[0];
-
-          if (oldPinnedIndex === 0 && newIndex === 1 && oldSlot1Title) {
-            const matchOldSlot1 = results.find(p => p.showtimes[2]?.movie_title === oldSlot1Title);
-            if (matchOldSlot1) {
-              chosenPlan = matchOldSlot1;
-            }
-          } else if (oldPinnedIndex === 1 && newIndex === 0 && oldSlot2Title) {
-            const matchOldSlot2In1 = results.find(p => p.showtimes[1]?.movie_title === oldSlot2Title);
-            const matchOldSlot2In2 = results.find(p => p.showtimes[2]?.movie_title === oldSlot2Title);
-            if (matchOldSlot2In1) {
-              chosenPlan = matchOldSlot2In1;
-            } else if (matchOldSlot2In2) {
-              chosenPlan = matchOldSlot2In2;
+          const chosenPlan = results[0];
+          for (let i = 0; i < builderSlots.length; i++) {
+            if (i === newIndex) {
+              builderSlots[i] = currentPinned;
+            } else {
+              builderSlots[i] = chosenPlan.showtimes[i] || null;
             }
           }
-
-          builderSlots = [
-            chosenPlan.showtimes[0] || null,
-            chosenPlan.showtimes[1] || null,
-            chosenPlan.showtimes[2] || null,
-          ];
-          builderSlots[newIndex] = currentPinned;
         } else {
-          const newSlots: (Showtime | null)[] = [null, null, null];
-          newSlots[newIndex] = currentPinned;
-          builderSlots = newSlots;
+          for (let i = 0; i < builderSlots.length; i++) {
+            if (i === newIndex) {
+              builderSlots[i] = currentPinned;
+            } else {
+              builderSlots[i] = null;
+            }
+          }
         }
 
         renderBuilderPanel();
@@ -2083,13 +2116,23 @@ END:VCALENDAR`.trim();
         const criteria = getCurrentCriteria();
 
         const predecessor = slotIndex > 0 ? builderSlots[slotIndex - 1] : null;
-        const successor = slotIndex < 2 ? builderSlots[slotIndex + 1] : null;
+        const successor = slotIndex < builderSlots.length - 1 ? builderSlots[slotIndex + 1] : null;
+
+        const otherSlotTitles = new Set(
+          builderSlots
+            .filter((s, idx) => idx !== slotIndex && s !== null)
+            .map(s => s!.movie_title)
+        );
 
         drawerCandidates = scheduler.getAvailableCandidatesForSlot(
           candidateShowtimes,
-          criteria,
-          predecessor,
-          successor
+          {
+            predecessor,
+            successor,
+            minBufferMinutes: criteria.min_buffer_minutes,
+            selectedCinemas: new Set(criteria.cinema_ids),
+            excludedTitles: otherSlotTitles,
+          }
         );
 
         if (subtitleEl) {
@@ -2124,58 +2167,85 @@ END:VCALENDAR`.trim();
           return;
         }
 
-        let html = '';
+        // Group by movie title to eliminate duplicate movie entries in the list
+        const groupsMap = new Map<string, {
+          title: string;
+          poster_url?: string;
+          is_priority: boolean;
+          candidates: Array<{ candidateIndex: number; item: typeof list[0] }>;
+        }>();
+
         for (let idx = 0; idx < list.length; idx++) {
           const item = list[idx];
-          const st = item.showtime;
-          const sStart = st.starts_at.split('T')[1].slice(0, 5);
-          const sEnd = st.ends_at.split('T')[1].slice(0, 5);
-          const ratings = movieRatingsMap[st.movie_title];
+          const title = item.showtime.movie_title;
+          if (!groupsMap.has(title)) {
+            groupsMap.set(title, {
+              title,
+              poster_url: item.showtime.poster_url,
+              is_priority: selectedPriorityMovies.has(title),
+              candidates: [],
+            });
+          }
+          groupsMap.get(title)!.candidates.push({ candidateIndex: idx, item });
+        }
+
+        // Sort movies: priority ("coup de coeur") first, then alphabetically
+        const sortedGroups = Array.from(groupsMap.values()).sort((a, b) => {
+          if (a.is_priority && !b.is_priority) return -1;
+          if (!a.is_priority && b.is_priority) return 1;
+          return a.title.localeCompare(b.title);
+        });
+
+        let html = '';
+        for (const group of sortedGroups) {
+          const ratings = movieRatingsMap[group.title];
           const ratingBadge = renderAllocineRatingsBadge(ratings?.user_rating, ratings?.press_rating, true);
 
-          const timingInfo: string[] = [];
-          if (item.gapBeforeMinutes > 0 && drawerTargetSlot !== null && drawerTargetSlot > 0) {
-            timingInfo.push(`pause précédente : ${item.gapBeforeMinutes} min`);
-          }
-          if (item.gapAfterMinutes > 0 && drawerTargetSlot !== null && drawerTargetSlot < 2 && builderSlots[drawerTargetSlot + 1]) {
-            timingInfo.push(`pause suivante : ${item.gapAfterMinutes} min`);
-          }
+          const timeChipsHtml = group.candidates.map(({ candidateIndex, item }) => {
+            const st = item.showtime;
+            const sStart = st.starts_at.split('T')[1].slice(0, 5);
+            const sEnd = st.ends_at.split('T')[1].slice(0, 5);
+            const isVost = st.version && (st.version === 'VOST' || st.version === 'ORIGINAL');
+            const langLabel = isVost ? 'VOST' : 'VF';
+            const cinShort = st.cinema_name ? st.cinema_name.replace(/^Pathé\s+/i, '') : '';
+            const fmt = st.format && st.format !== 'Standard' ? ` [${st.format}]` : '';
 
-          const versionBadge = st.version && (st.version === 'VOST' || st.version === 'ORIGINAL')
-            ? `<span class="px-1.5 py-0.5 rounded text-[0.65rem] font-bold border border-[#111111] bg-[#C4B5FD] text-[#111111]">VOSTFR</span>`
-            : `<span class="px-1.5 py-0.5 rounded text-[0.65rem] font-bold border border-[#111111] bg-[#FAFADF] text-[#111111]">VF</span>`;
+            let gapText = '';
+            if (item.gapBeforeMinutes > 0 && drawerTargetSlot !== null && drawerTargetSlot > 0) {
+              gapText = `pause: ${item.gapBeforeMinutes}m`;
+            }
 
-          const formatBadge = st.format && st.format !== 'Standard'
-            ? `<span class="px-1.5 py-0.5 rounded text-[0.65rem] font-bold border border-[#111111] bg-[#FFE566] text-[#111111]">${escapeHtml(st.format)}</span>`
-            : '';
-
-          html += `
-            <div class="neo-card p-3 bg-white border-2 border-[#111111] rounded-[10px] shadow-[2px_2px_0px_0px_#111111] flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-black transition-colors">
-              <div class="flex items-center gap-3 min-w-0">
-                <div class="text-center font-mono shrink-0 bg-[#FAFADF] border border-[#111111] rounded-[6px] px-2 py-1 shadow-[1px_1px_0px_0px_#111111]">
-                  <span class="block text-xs font-black text-[#111111]">${sStart}</span>
-                  <span class="block text-[0.65rem] text-[#666666]">${sEnd}</span>
-                </div>
-                <div class="min-w-0">
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <span class="font-extrabold text-xs sm:text-sm text-[#111111] font-sans truncate">${escapeHtml(st.movie_title)}</span>
-                    ${ratingBadge}
-                    ${versionBadge}
-                    ${formatBadge}
-                  </div>
-                  <p class="text-[0.68rem] text-[#555555] mt-0.5">
-                    <span class="font-bold text-[#111111]">${escapeHtml(st.cinema_name || '')}</span>
-                    ${timingInfo.length > 0 ? ` &bull; <span class="font-mono">${timingInfo.join(' • ')}</span>` : ''}
-                  </p>
-                </div>
-              </div>
+            return `
               <button
                 type="button"
-                class="btn-select-candidate neo-btn shrink-0 text-xs font-bold px-3 py-1.5 rounded-[6px] bg-[#FFE566] hover:bg-[#ffe043] text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] cursor-pointer"
-                data-candidate-index="${idx}"
+                class="btn-select-candidate neo-btn text-[0.7rem] font-mono font-bold px-2.5 py-1.5 rounded-[6px] bg-white hover:bg-[#FFE566] text-[#111111] border border-[#111111] shadow-[1px_1px_0px_0px_#111111] cursor-pointer transition-all flex items-center gap-1.5 flex-wrap"
+                data-candidate-index="${candidateIndex}"
+                title="${sStart} - ${sEnd} à ${escapeHtml(st.cinema_name || '')} (${langLabel}${fmt})"
               >
-                choisir
+                <span class="font-black text-xs bg-[#FFE566] px-1 py-0.5 rounded border border-[#111111]">${sStart}</span>
+                <span class="text-[0.68rem] text-[#555555] font-sans truncate max-w-[130px]">${escapeHtml(cinShort)}</span>
+                <span class="text-[0.62rem] font-mono px-1 py-0.5 rounded border border-[#111111] ${isVost ? 'bg-[#C4B5FD]' : 'bg-[#FAFADF]'}">${langLabel}</span>
+                ${fmt ? `<span class="text-[0.62rem] font-bold text-[#E8635A]">${escapeHtml(fmt)}</span>` : ''}
+                ${gapText ? `<span class="text-[0.6rem] font-mono text-[#555555]">${gapText}</span>` : ''}
               </button>
+            `;
+          }).join('');
+
+          html += `
+            <div class="neo-card p-3 sm:p-4 bg-white border-2 border-[#111111] rounded-[10px] shadow-[2px_2px_0px_0px_#111111] space-y-2">
+              <div class="flex items-center justify-between gap-2 flex-wrap border-b border-[#E5E5E5] pb-2">
+                <div class="flex items-center gap-2 min-w-0">
+                  ${group.is_priority ? `<span class="w-2.5 h-2.5 rounded-full bg-[#FFE566] border border-[#111111] shrink-0" title="Coup de coeur"></span>` : ''}
+                  <span class="font-black text-xs sm:text-sm text-[#111111] font-sans truncate">${escapeHtml(group.title)}</span>
+                  ${ratingBadge}
+                </div>
+                <span class="text-[0.68rem] font-mono text-[#666666]">
+                  ${group.candidates.length} séance${group.candidates.length > 1 ? 's' : ''} compatible${group.candidates.length > 1 ? 's' : ''}
+                </span>
+              </div>
+              <div class="flex items-center gap-2 flex-wrap pt-0.5">
+                ${timeChipsHtml}
+              </div>
             </div>
           `;
         }
@@ -2220,9 +2290,11 @@ END:VCALENDAR`.trim();
           if (toggleBtn) {
             toggleBtn.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFE566] hover:bg-[#ffe043] border-2 border-[#111111] text-xs font-black shadow-[2px_2px_0px_0px_#111111] transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_#111111] cursor-pointer text-[#111111]';
           }
-          if (toggleLabel) toggleLabel.textContent = 'mode builder';
+          if (toggleLabel) toggleLabel.textContent = 'composer';
           return;
         }
+
+        syncBuilderSlotsLength();
 
         panel?.classList.remove('hidden');
         tabs?.classList.add('hidden');
@@ -2232,14 +2304,14 @@ END:VCALENDAR`.trim();
         if (toggleBtn) {
           toggleBtn.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#111111] text-[#FFE566] border-2 border-[#111111] text-xs font-black shadow-[2px_2px_0px_0px_#111111] transition-all cursor-pointer ring-2 ring-[#FFE566]';
         }
-        if (toggleLabel) toggleLabel.textContent = 'quitter builder';
+        if (toggleLabel) toggleLabel.textContent = 'quitter composition';
 
         if (!slotsContainer) return;
 
         const minBuffer = parseInt((document.getElementById('input-buffer') as HTMLInputElement)?.value, 10) || 15;
         let html = '';
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < builderSlots.length; i++) {
           const st = builderSlots[i];
           const isPinned = i === builderPinnedIndex;
 
@@ -2253,16 +2325,22 @@ END:VCALENDAR`.trim();
               ? `<span class="bg-[#FFE566] text-[#111111] text-[0.65rem] font-black uppercase px-2 py-0.5 rounded border border-[#111111] shadow-[1px_1px_0px_0px_#111111] tracking-wider">film verrouillé</span>`
               : `<span class="bg-[#A7F3D0] text-[#111111] text-[0.65rem] font-black uppercase px-2 py-0.5 rounded border border-[#111111] shadow-[1px_1px_0px_0px_#111111] tracking-wider">proposition auto</span>`;
 
-            const positionSwitcherHtml = isPinned
-              ? `
+            let positionSwitcherHtml = '';
+            if (isPinned) {
+              const posButtons = [];
+              for (let p = 0; p < builderSlots.length; p++) {
+                const label = p === 0 ? '1er' : `${p + 1}e`;
+                const activeCls = i === p ? 'bg-[#FFE566] border-[#111111]' : 'bg-white border-transparent text-[#555555]';
+                posButtons.push(`<button type="button" class="btn-shift-pos px-1.5 py-0.5 text-[0.65rem] font-black rounded border cursor-pointer ${activeCls}" data-pos="${p}">${label}</button>`);
+              }
+              positionSwitcherHtml = `
                 <div class="flex items-center gap-1 bg-[#FAFADF] border border-[#111111] rounded-[6px] p-0.5 shadow-[1px_1px_0px_0px_#111111]">
                   <span class="text-[0.65rem] font-bold text-[#555555] px-1 font-mono">pos:</span>
-                  <button type="button" class="btn-shift-pos px-1.5 py-0.5 text-[0.65rem] font-black rounded border cursor-pointer ${i === 0 ? 'bg-[#FFE566] border-[#111111]' : 'bg-white border-transparent text-[#555555]'}" data-pos="0">1er</button>
-                  <button type="button" class="btn-shift-pos px-1.5 py-0.5 text-[0.65rem] font-black rounded border cursor-pointer ${i === 1 ? 'bg-[#FFE566] border-[#111111]' : 'bg-white border-transparent text-[#555555]'}" data-pos="1">2e</button>
-                  <button type="button" class="btn-shift-pos px-1.5 py-0.5 text-[0.65rem] font-black rounded border cursor-pointer ${i === 2 ? 'bg-[#FFE566] border-[#111111]' : 'bg-white border-transparent text-[#555555]'}" data-pos="2">3e</button>
+                  ${posButtons.join('')}
                 </div>
-              `
-              : `
+              `;
+            } else {
+              positionSwitcherHtml = `
                 <div class="flex items-center gap-1.5">
                   <button type="button" class="btn-open-slot-drawer neo-btn text-[0.7rem] font-bold bg-white hover:bg-[#FAFADF] text-[#111111] border border-[#111111] rounded-[4px] px-2 py-1 cursor-pointer shadow-[1px_1px_0px_0px_#111111]" data-slot-index="${i}">
                     changer séance
@@ -2272,15 +2350,23 @@ END:VCALENDAR`.trim();
                   </button>
                 </div>
               `;
+            }
 
             const posterImg = st.poster_url
               ? `<img src="${st.poster_url}" alt="${escapeHtml(st.movie_title)}" class="w-12 h-16 sm:w-14 sm:h-20 object-cover rounded-[6px] border border-[#111111] shrink-0 shadow-[1px_1px_0px_0px_#111111]" loading="lazy" />`
               : `<div class="w-12 h-16 sm:w-14 sm:h-20 bg-[#FAFADF] border border-[#111111] rounded-[6px] flex items-center justify-center shrink-0 text-xs font-mono text-[#777777] shadow-[1px_1px_0px_0px_#111111]">film</div>`;
 
             html += `
-              <div class="neo-card p-3 sm:p-4 bg-white border-2 border-[#111111] rounded-[12px] shadow-[3px_3px_0px_0px_#111111] ${isPinned ? 'ring-2 ring-[#FFE566]' : ''}">
+              <div
+                class="builder-slot-dropzone neo-card p-3 sm:p-4 bg-white border-2 border-[#111111] rounded-[12px] shadow-[3px_3px_0px_0px_#111111] ${isPinned ? 'ring-2 ring-[#FFE566]' : ''} transition-all"
+                draggable="true"
+                data-slot-index="${i}"
+              >
                 <div class="flex items-center justify-between border-b border-[#E5E5E5] pb-2 mb-2.5">
                   <div class="flex items-center gap-2">
+                    <span class="drag-handle cursor-grab active:cursor-grabbing p-0.5 text-[#777777] hover:text-[#111111] shrink-0" title="Glisser-déposer pour déplacer ce créneau">
+                      ${iconGrip('w-3.5 h-3.5')}
+                    </span>
                     <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#111111] text-[#FFE566] font-mono font-black text-xs">
                       0${i + 1}
                     </span>
@@ -2314,10 +2400,14 @@ END:VCALENDAR`.trim();
           } else {
             html += `
               <div
-                class="btn-open-empty-slot p-4 border-2 border-dashed border-[#111111] rounded-[12px] bg-[#FAFADF]/60 hover:bg-[#FAFADF] transition-all cursor-pointer flex items-center justify-between gap-3 shadow-[2px_2px_0px_0px_#111111]"
+                class="builder-slot-dropzone btn-open-empty-slot p-4 border-2 border-dashed border-[#111111] rounded-[12px] bg-[#FAFADF]/60 hover:bg-[#FAFADF] transition-all cursor-pointer flex items-center justify-between gap-3 shadow-[2px_2px_0px_0px_#111111]"
+                draggable="true"
                 data-slot-index="${i}"
               >
                 <div class="flex items-center gap-3">
+                  <span class="drag-handle cursor-grab active:cursor-grabbing p-0.5 text-[#777777] hover:text-[#111111] shrink-0" title="Glisser-déposer pour déplacer ce créneau">
+                    ${iconGrip('w-3.5 h-3.5')}
+                  </span>
                   <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white border border-[#111111] font-mono font-bold text-xs text-[#777777]">
                     0${i + 1}
                   </span>
@@ -2333,7 +2423,7 @@ END:VCALENDAR`.trim();
             `;
           }
 
-          if (i < 2) {
+          if (i < builderSlots.length - 1) {
             const nextSt = builderSlots[i + 1];
             if (st && nextSt) {
               const gapMin = Math.round((new Date(nextSt.starts_at).getTime() - new Date(st.ends_at).getTime()) / 60000);
@@ -2367,6 +2457,7 @@ END:VCALENDAR`.trim();
 
         slotsContainer.innerHTML = html;
 
+        // Position switcher clicks
         slotsContainer.querySelectorAll('.btn-shift-pos').forEach(btn => {
           btn.addEventListener('click', (ev) => {
             ev.stopPropagation();
@@ -2375,14 +2466,18 @@ END:VCALENDAR`.trim();
           });
         });
 
+        // Open slot drawer
         slotsContainer.querySelectorAll('.btn-open-slot-drawer, .btn-open-empty-slot').forEach(el => {
           el.addEventListener('click', (ev) => {
+            const target = ev.target as HTMLElement;
+            if (target.closest('.drag-handle')) return;
             ev.stopPropagation();
             const slotIdx = parseInt(el.getAttribute('data-slot-index') || '0', 10);
             openBuilderDrawer(slotIdx);
           });
         });
 
+        // Pin slot
         slotsContainer.querySelectorAll('.btn-pin-slot').forEach(btn => {
           btn.addEventListener('click', (ev) => {
             ev.stopPropagation();
@@ -2392,6 +2487,7 @@ END:VCALENDAR`.trim();
           });
         });
 
+        // Clear slot
         slotsContainer.querySelectorAll('.btn-clear-slot').forEach(btn => {
           btn.addEventListener('click', (ev) => {
             ev.stopPropagation();
@@ -2399,6 +2495,65 @@ END:VCALENDAR`.trim();
             builderSlots[slotIdx] = null;
             renderBuilderPanel();
             renderBuilderThermalReceipt();
+          });
+        });
+
+        // HTML5 Drag & Drop handlers on slot elements
+        slotsContainer.querySelectorAll('.builder-slot-dropzone').forEach(dropzone => {
+          const dz = dropzone as HTMLElement;
+          const slotIdx = parseInt(dz.getAttribute('data-slot-index') || '0', 10);
+
+          dz.addEventListener('dragstart', (ev) => {
+            draggedSlotIndex = slotIdx;
+            if (ev.dataTransfer) {
+              ev.dataTransfer.effectAllowed = 'move';
+              ev.dataTransfer.setData('text/plain', slotIdx.toString());
+            }
+            dz.classList.add('opacity-50', 'scale-[0.98]');
+          });
+
+          dz.addEventListener('dragend', () => {
+            draggedSlotIndex = null;
+            dz.classList.remove('opacity-50', 'scale-[0.98]');
+            slotsContainer.querySelectorAll('.builder-slot-dropzone').forEach(el => {
+              el.classList.remove('ring-4', 'ring-[#FFE566]', 'bg-[#FAFADF]');
+            });
+          });
+
+          dz.addEventListener('dragover', (ev) => {
+            ev.preventDefault();
+            if (ev.dataTransfer) {
+              ev.dataTransfer.dropEffect = 'move';
+            }
+            if (draggedSlotIndex !== null && draggedSlotIndex !== slotIdx) {
+              dz.classList.add('ring-4', 'ring-[#FFE566]');
+            }
+          });
+
+          dz.addEventListener('dragleave', () => {
+            dz.classList.remove('ring-4', 'ring-[#FFE566]');
+          });
+
+          dz.addEventListener('drop', (ev) => {
+            ev.preventDefault();
+            dz.classList.remove('ring-4', 'ring-[#FFE566]');
+            const srcIdx = draggedSlotIndex;
+            const targetIdx = slotIdx;
+            if (srcIdx !== null && srcIdx !== targetIdx && srcIdx >= 0 && srcIdx < builderSlots.length) {
+              // Swap slots
+              const tmp = builderSlots[srcIdx];
+              builderSlots[srcIdx] = builderSlots[targetIdx];
+              builderSlots[targetIdx] = tmp;
+
+              if (builderPinnedIndex === srcIdx) {
+                builderPinnedIndex = targetIdx;
+              } else if (builderPinnedIndex === targetIdx) {
+                builderPinnedIndex = srcIdx;
+              }
+
+              renderBuilderPanel();
+              renderBuilderThermalReceipt();
+            }
           });
         });
       }
@@ -2475,21 +2630,26 @@ END:VCALENDAR`.trim();
           }
         });
 
-        // Builder Mode event listeners
+        // Builder / Composition Mode event listeners
         document.getElementById('btn-toggle-builder')?.addEventListener('click', () => {
           if (builderModeActive) {
             builderModeActive = false;
             renderBuilderPanel();
             renderBuilderThermalReceipt();
           } else {
+            const target = Math.max(1, getTargetCount());
             const hasBuilderSlots = builderSlots.some(s => s !== null);
             if (hasBuilderSlots) {
+              syncBuilderSlotsLength();
               builderModeActive = true;
               renderBuilderPanel();
               renderBuilderThermalReceipt();
             } else if (calculatedPlans[activePlanIndex]?.showtimes?.length) {
               const planSts = calculatedPlans[activePlanIndex].showtimes;
-              builderSlots = [planSts[0] || null, planSts[1] || null, planSts[2] || null];
+              builderSlots = new Array(target).fill(null);
+              for (let i = 0; i < target; i++) {
+                builderSlots[i] = planSts[i] || null;
+              }
               builderPinnedIndex = 0;
               builderModeActive = true;
               renderBuilderPanel();
@@ -2699,6 +2859,11 @@ END:VCALENDAR`.trim();
           document.getElementById('target-count-val')!.textContent = t('targetCountText', currentLang, { n: rangeCount.value });
           if (rangeDebounceTimer) clearTimeout(rangeDebounceTimer);
           rangeDebounceTimer = setTimeout(() => {
+            syncBuilderSlotsLength();
+            if (builderModeActive) {
+              renderBuilderPanel();
+              renderBuilderThermalReceipt();
+            }
             recalculate();
           }, 60);
         });
