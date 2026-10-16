@@ -508,6 +508,115 @@ describe('Scheduler', () => {
     expect(results[0].showtimes[0].movie_title).toBe('Short Film');
     expect(results[0].showtimes[1].movie_title).toBe('Pinned Pivot');
   });
+
+  it('prefers Premium screening over Standard screening for Gold pass even if pause is slightly longer', () => {
+    const hungerGames: Showtime = {
+      cinema_id: 'C1',
+      movie_title: 'Hunger Games',
+      starts_at: '2026-10-18T13:30:00',
+      ends_at: '2026-10-18T16:30:00',
+      date_str: '2026-10-18',
+      format: 'Standard',
+    };
+    const verityStandard: Showtime = {
+      cinema_id: 'C1',
+      movie_title: 'Verity',
+      starts_at: '2026-10-18T17:00:00',
+      ends_at: '2026-10-18T19:00:00',
+      date_str: '2026-10-18',
+      format: 'Standard',
+    };
+    const verityPremium: Showtime = {
+      cinema_id: 'C1',
+      movie_title: 'Verity',
+      starts_at: '2026-10-18T17:05:00',
+      ends_at: '2026-10-18T19:05:00',
+      date_str: '2026-10-18',
+      format: 'Premium',
+    };
+
+    const scheduler = new Scheduler();
+    const criteria: PlanCriteria = {
+      cinema_ids: ['C1'],
+      date_str: '2026-10-18',
+      target_films_count: 2,
+      start_time: '10:00',
+      max_end_time: '23:00',
+      priority_movies: [],
+      pass_type: PassType.GOLD,
+      allow_supplements: false,
+      min_buffer_minutes: 15,
+      require_meal_break: false,
+      language: 'ALL',
+      selected_formats: [],
+    };
+
+    const results = scheduler.findMarathonsAroundPinned(
+      [hungerGames, verityStandard, verityPremium],
+      {
+        pinnedShowtime: hungerGames,
+        pinnedIndex: 0,
+        targetCount: 2,
+        criteria,
+      }
+    );
+
+    expect(results.length).toBeGreaterThanOrEqual(1);
+    // The top proposal must choose the Premium screening (17:05) over the Standard (17:00)
+    expect(results[0].showtimes[1].format).toBe('Premium');
+    expect(results[0].showtimes[1].starts_at).toBe('2026-10-18T17:05:00');
+  });
+
+  it('allows 27-minute inter-cinema transition when min_buffer_minutes is 15', () => {
+    const hungerGamesC1: Showtime = {
+      cinema_id: 'C1',
+      movie_title: 'Hunger Games',
+      starts_at: '2026-10-18T13:30:00',
+      ends_at: '2026-10-18T16:38:00',
+      date_str: '2026-10-18',
+      format: 'Standard',
+    };
+    const verityPremiumC2: Showtime = {
+      cinema_id: 'C2',
+      movie_title: 'Verity',
+      starts_at: '2026-10-18T17:05:00',
+      ends_at: '2026-10-18T19:05:00',
+      date_str: '2026-10-18',
+      format: 'Premium',
+    };
+
+    const scheduler = new Scheduler();
+    const criteria: PlanCriteria = {
+      cinema_ids: ['C1', 'C2'],
+      date_str: '2026-10-18',
+      target_films_count: 2,
+      start_time: '10:00',
+      max_end_time: '23:00',
+      priority_movies: [],
+      pass_type: PassType.GOLD,
+      allow_supplements: false,
+      min_buffer_minutes: 15,
+      require_meal_break: false,
+      language: 'ALL',
+      selected_formats: [],
+    };
+
+    const results = scheduler.findMarathonsAroundPinned(
+      [hungerGamesC1, verityPremiumC2],
+      {
+        pinnedShowtime: hungerGamesC1,
+        pinnedIndex: 0,
+        targetCount: 2,
+        criteria,
+      }
+    );
+
+    expect(results.length).toBeGreaterThanOrEqual(1);
+    expect(results[0].showtimes[1].cinema_id).toBe('C2');
+    expect(results[0].showtimes[1].starts_at).toBe('2026-10-18T17:05:00');
+  });
 });
+
+
 
 

@@ -3,6 +3,13 @@ import { coversMealBreak } from './parser_utils';
 
 export const PREMIUM_KEYWORDS = ['IMAX', '4DX', 'DOLBY', 'SCREENX', '3D', 'ONYX', 'PREMIUM', 'PLF'];
 
+export function isPremiumFormat(format?: string): boolean {
+  if (!format) return false;
+  const upper = format.toUpperCase().trim();
+  if (upper === 'STANDARD') return false;
+  return PREMIUM_KEYWORDS.some((kw) => upper.includes(kw));
+}
+
 interface CandidateShowtime extends Showtime {
   start_ms: number;
   end_ms: number;
@@ -103,6 +110,7 @@ export class Scheduler {
       let totalPauseMin = 0;
       let score = path.length * 1000;
       let priorityMatches = 0;
+      const qualifiesForPremiumBonus = criteria.pass_type === PassType.GOLD || criteria.allow_supplements;
 
       for (const st of path) {
         totalMovieMin += st.runtime_min;
@@ -110,6 +118,14 @@ export class Scheduler {
         if (prioritySet.has(st.movie_title)) {
           score += 2000;
           priorityMatches++;
+        }
+
+        if (st.user_rating) {
+          score += (st.user_rating - 3) * 100;
+        }
+
+        if (qualifiesForPremiumBonus && isPremiumFormat(st.format)) {
+          score += 250;
         }
       }
 
@@ -237,7 +253,7 @@ export class Scheduler {
     const results: CandidateShowtime[][] = [];
     const MAX_CANDIDATE_PATHS = 300;
     const minBufferMs = minBufferMinutes * 60 * 1000;
-    const interCinemaBufferMs = Math.max(minBufferMinutes, 30) * 60 * 1000;
+    const interCinemaBufferMs = Math.max(minBufferMinutes, 20) * 60 * 1000;
 
     const backtrack = (
       currentPath: CandidateShowtime[],
@@ -325,7 +341,7 @@ export class Scheduler {
     const { pinnedShowtime, pinnedIndex, targetCount, criteria } = options;
     const minBufferMinutes = criteria.min_buffer_minutes || 15;
     const minBufferMs = minBufferMinutes * 60 * 1000;
-    const interCinemaBufferMs = Math.max(minBufferMinutes, 30) * 60 * 1000;
+    const interCinemaBufferMs = Math.max(minBufferMinutes, 20) * 60 * 1000;
 
     const toCandidate = (st: Showtime): CandidateShowtime => {
       const startMs = new Date(st.starts_at).getTime();
@@ -485,6 +501,8 @@ export class Scheduler {
 
     // Score paths using consistent logic
     const prioritySet = new Set(criteria.priority_movies || []);
+    const qualifiesForPremiumBonus = criteria.pass_type === PassType.GOLD || criteria.allow_supplements;
+
     const itineraries: Itinerary[] = completePaths.map((path) => {
       let totalMovieMin = 0;
       let totalPauseMin = 0;
@@ -498,6 +516,9 @@ export class Scheduler {
         }
         if (st.user_rating) {
           score += (st.user_rating - 3) * 100;
+        }
+        if (qualifiesForPremiumBonus && isPremiumFormat(st.format)) {
+          score += 250;
         }
       }
       for (let i = 0; i < path.length - 1; i++) {
@@ -548,7 +569,7 @@ export class Scheduler {
   ): Array<{ showtime: Showtime; gapBeforeMinutes: number; gapAfterMinutes: number }> {
     const minBuffer = options.minBufferMinutes || 15;
     const minBufferMs = minBuffer * 60 * 1000;
-    const interCinemaBufferMs = Math.max(minBuffer, 30) * 60 * 1000;
+    const interCinemaBufferMs = Math.max(minBuffer, 20) * 60 * 1000;
 
     const predEndMs = options.predecessor ? new Date(options.predecessor.ends_at).getTime() : null;
     const succStartMs = options.successor ? new Date(options.successor.starts_at).getTime() : null;

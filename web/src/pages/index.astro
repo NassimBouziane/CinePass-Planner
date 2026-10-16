@@ -567,7 +567,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
     <!-- CLIENT CONTROLLER SCRIPT -->
     <script>
-      import { Scheduler } from '../core/scheduler';
+      import { Scheduler, isPremiumFormat } from '../core/scheduler';
       import { PassType, type Cinema, type Showtime, type PlanCriteria, type Itinerary } from '../core/models';
       import {
         formatItineraryCardHtml,
@@ -2041,10 +2041,17 @@ END:VCALENDAR`.trim();
               });
 
               if (available.length > 0) {
+                const qualifiesForPremium = criteria.pass_type === PassType.GOLD || criteria.allow_supplements;
                 available.sort((a, b) => {
+                  const premA = qualifiesForPremium && isPremiumFormat(a.showtime.format) ? 1 : 0;
+                  const premB = qualifiesForPremium && isPremiumFormat(b.showtime.format) ? 1 : 0;
+                  if (premB !== premA) return premB - premA;
+
                   const ratingA = (a.showtime.user_rating || 0) + (a.showtime.press_rating || 0);
                   const ratingB = (b.showtime.user_rating || 0) + (b.showtime.press_rating || 0);
-                  return ratingB - ratingA;
+                  if (ratingB !== ratingA) return ratingB - ratingA;
+
+                  return a.gapBeforeMinutes - b.gapBeforeMinutes;
                 });
                 builderSlots[i] = available[0].showtime;
                 filledAny = true;
@@ -2353,7 +2360,7 @@ END:VCALENDAR`.trim();
                 <span class="font-black text-xs bg-[#FFE566] px-1 py-0.5 rounded border border-[#111111]">${sStart}</span>
                 <span class="text-[0.68rem] text-[#555555] font-sans truncate max-w-[130px]">${escapeHtml(cinShort)}</span>
                 <span class="text-[0.62rem] font-mono px-1 py-0.5 rounded border border-[#111111] ${isVost ? 'bg-[#C4B5FD]' : 'bg-[#FAFADF]'}">${langLabel}</span>
-                ${fmt ? `<span class="text-[0.62rem] font-bold ${fmt.toUpperCase().includes('PREMIUM') ? 'bg-[#FFE566] text-[#111111] px-1 py-0.5 rounded border border-[#111111]' : 'text-[#E8635A]'}">${escapeHtml(fmt)}</span>` : ''}
+                ${fmt ? `<span class="text-[0.62rem] font-bold ${isPremiumFormat(st.format) ? 'bg-[#FFE566] text-[#111111] px-1 py-0.5 rounded border border-[#111111]' : 'text-[#E8635A]'}">${escapeHtml(fmt)}</span>` : ''}
                 ${gapText ? `<span class="text-[0.6rem] font-mono text-[#555555]">${gapText}</span>` : ''}
               </button>
             `;
@@ -2525,7 +2532,7 @@ END:VCALENDAR`.trim();
                       <span class="font-mono bg-[#FFE566] px-1.5 py-0.5 rounded border border-[#111111]">${sStart} - ${sEnd}</span>
                       <span class="bg-[#FAFADF] px-1.5 py-0.5 rounded border border-[#111111] truncate max-w-[180px]">${escapeHtml(st.cinema_name || '')}</span>
                       <span class="bg-white px-1.5 py-0.5 rounded border border-[#111111]">${escapeHtml(st.version || 'VF')}</span>
-                      ${st.format && st.format !== 'Standard' ? `<span class="${st.format.toUpperCase().includes('PREMIUM') ? 'bg-[#FFE566] text-[#111111]' : 'bg-[#C4B5FD] text-[#111111]'} font-bold px-1.5 py-0.5 rounded border border-[#111111]">${escapeHtml(st.format)}</span>` : ''}
+                      ${st.format && st.format !== 'Standard' ? `<span class="${isPremiumFormat(st.format) ? 'bg-[#FFE566] text-[#111111]' : 'bg-[#C4B5FD] text-[#111111]'} font-bold px-1.5 py-0.5 rounded border border-[#111111]">${escapeHtml(st.format)}</span>` : ''}
                     </div>
                   </div>
                 </div>
