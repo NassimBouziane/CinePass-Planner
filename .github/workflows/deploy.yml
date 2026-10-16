@@ -16,23 +16,23 @@ on:
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
     inputs:
-      full_sync:
-        description: 'Synchroniser tous les cinémas par lots avec pause (Full Sync)'
+      sync_showtimes:
+        description: 'Synchroniser les seances de cinema depuis Allocine'
         required: false
         default: true
         type: boolean
-      frontend_only:
-        description: 'Déployer UNIQUEMENT le frontend (sans resynchroniser Allociné)'
+      full_sync:
+        description: 'Synchroniser TOUS les cinemas par lots avec pause (si faux: 1 seul lot)'
         required: false
-        default: false
+        default: true
         type: boolean
       refresh_ratings:
-        description: 'Rafraichir les notes Allocine des films'
+        description: 'Rafraichir les notes Allocine (presse et spectateurs)'
         required: false
         default: true
         type: boolean
       batch_pause:
-        description: 'Pause en secondes entre chaque lot de 15 cinémas (défaut: 300s = 5min)'
+        description: 'Pause en secondes entre chaque lot de 15 cinemas (defaut: 300s = 5min)'
         required: false
         default: '300'
         type: string
@@ -105,31 +105,37 @@ jobs:
       - name: Determine execution mode
         id: mode
         run: |
-          IS_SYNC="false"
+          IS_DATA_CHANGED="false"
           EXTRA_FLAGS=""
 
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            IS_SYNC="true"
+            IS_DATA_CHANGED="true"
             EXTRA_FLAGS="--full-sync --batch-pause 300"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            if [ "${{ github.event.inputs.frontend_only }}" = "true" ]; then
-              EXTRA_FLAGS="--skip-seed --skip-sync --skip-ratings"
+            SYNC_SHOWTIMES="${{ github.event.inputs.sync_showtimes }}"
+            FULL_SYNC="${{ github.event.inputs.full_sync }}"
+            REFRESH_RATINGS="${{ github.event.inputs.refresh_ratings }}"
+            BATCH_PAUSE="${{ github.event.inputs.batch_pause || '300' }}"
+
+            if [ "$SYNC_SHOWTIMES" != "true" ]; then
+              EXTRA_FLAGS="--skip-seed --skip-sync"
             else
-              if [ "${{ github.event.inputs.full_sync }}" = "true" ]; then
-                IS_SYNC="true"
-                EXTRA_FLAGS="--full-sync --batch-pause ${{ github.event.inputs.batch_pause || '300' }}"
-              else
-                IS_SYNC="true"
+              IS_DATA_CHANGED="true"
+              if [ "$FULL_SYNC" = "true" ]; then
+                EXTRA_FLAGS="--full-sync --batch-pause $BATCH_PAUSE"
               fi
-              if [ "${{ github.event.inputs.refresh_ratings }}" = "false" ]; then
-                EXTRA_FLAGS="$EXTRA_FLAGS --skip-ratings"
-              fi
+            fi
+
+            if [ "$REFRESH_RATINGS" = "false" ]; then
+              EXTRA_FLAGS="$EXTRA_FLAGS --skip-ratings"
+            else
+              IS_DATA_CHANGED="true"
             fi
           elif [ "${{ github.event_name }}" = "push" ]; then
             EXTRA_FLAGS="--skip-seed --skip-sync --skip-ratings"
           fi
 
-          echo "is_sync=$IS_SYNC" >> $GITHUB_OUTPUT
+          echo "is_sync=$IS_DATA_CHANGED" >> $GITHUB_OUTPUT
           echo "extra_flags=$EXTRA_FLAGS" >> $GITHUB_OUTPUT
 
       - name: Run pipeline (seed, sync, export & build site)
