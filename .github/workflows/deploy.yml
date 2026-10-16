@@ -17,14 +17,14 @@ on:
   workflow_dispatch:
     inputs:
       sync_showtimes:
-        description: 'Synchroniser les seances de cinema depuis Allocine'
+        description: 'Synchroniser les seances de cinema depuis Allocine (Mardi / Hebdo)'
         required: false
-        default: true
+        default: false
         type: boolean
       full_sync:
         description: 'Synchroniser TOUS les cinemas par lots avec pause (si faux: 1 seul lot)'
         required: false
-        default: true
+        default: false
         type: boolean
       refresh_ratings:
         description: 'Rafraichir les notes Allocine (presse et spectateurs)'
@@ -110,7 +110,14 @@ jobs:
 
           if [ "${{ github.event_name }}" = "schedule" ]; then
             IS_DATA_CHANGED="true"
-            EXTRA_FLAGS="--full-sync --batch-pause 300"
+            DAY_OF_WEEK=$(date +%u)
+            if [ "$DAY_OF_WEEK" -eq 2 ]; then
+              # Mardi : publication des horaires hebdomadaires dans les cinemas
+              EXTRA_FLAGS="--full-sync --batch-pause 300"
+            else
+              # Tous les autres jours : rafraichissement des notes Allocine et purge des dates passees uniquement
+              EXTRA_FLAGS="--skip-seed --skip-sync"
+            fi
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             SYNC_SHOWTIMES="${{ github.event.inputs.sync_showtimes }}"
             FULL_SYNC="${{ github.event.inputs.full_sync }}"
