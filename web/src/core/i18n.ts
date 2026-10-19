@@ -52,6 +52,10 @@ export interface Translations {
   priorityOtherCinemasHint: string;
   clearPriorityBtn: string;
   clearPriorityTitle: string;
+  clearPriorityFilterTitle: string;
+  priorityHideUnavailable: string;
+  priorityHideUnavailableTitle: string;
+  priorityNoCompatibleFound: string;
   noPriorityFound: string;
   seenMoviesTitle: string;
   clearSeenBtn: string;
@@ -215,6 +219,10 @@ export const translations: Record<Lang, Translations> = {
     priorityOtherCinemasHint: 'non programmé dans vos cinémas cochés mais disponible ce jour-là :',
     clearPriorityBtn: 'effacer',
     clearPriorityTitle: 'Désélectionner tous les films prioritaires',
+    clearPriorityFilterTitle: 'Effacer la recherche de film',
+    priorityHideUnavailable: 'masquer indisponibles',
+    priorityHideUnavailableTitle: 'Masquer les films sans séance compatible avec vos horaires et filtres actuels',
+    priorityNoCompatibleFound: 'aucun film compatible avec vos horaires et filtres.',
     noPriorityFound: 'aucun film trouvé pour ce filtre.',
     seenMoviesTitle: 'films déjà vus (exclus)',
     clearSeenBtn: 'effacer',
@@ -376,6 +384,10 @@ export const translations: Record<Lang, Translations> = {
     priorityOtherCinemasHint: 'not in checked theaters but playing today:',
     clearPriorityBtn: 'clear',
     clearPriorityTitle: 'Clear all priority movies',
+    clearPriorityFilterTitle: 'Clear movie search',
+    priorityHideUnavailable: 'hide unavailable',
+    priorityHideUnavailableTitle: 'Hide movies without showtimes matching your current time and filter settings',
+    priorityNoCompatibleFound: 'no movies compatible with your time and filter settings.',
     noPriorityFound: 'no movie found for this filter.',
     seenMoviesTitle: 'seen movies (excluded)',
     clearSeenBtn: 'clear',

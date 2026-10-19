@@ -332,14 +332,38 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             </div>
           </div>
 
-          <!-- Filter input inside priority movies when list is long -->
-          <div class="relative">
-            <input
-              type="text"
-              id="input-priority-filter"
-              placeholder="filtrer par titre de film..."
-              class="w-full bg-[#FAFADF] border-2 border-[#111111] rounded-[6px] px-3 py-1.5 text-xs text-[#111111] placeholder:text-[#777777] font-medium focus:outline-none focus:ring-2 focus:ring-[#FFE566] shadow-[1px_1px_0px_0px_#111111]"
-            />
+          <!-- Filter input & Compatible Only Toggle -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <!-- Search bar with clear button -->
+            <div class="relative flex-1">
+              <input
+                type="text"
+                id="input-priority-filter"
+                placeholder="filtrer par titre de film..."
+                class="w-full bg-[#FAFADF] border-2 border-[#111111] rounded-[6px] pl-3 pr-8 py-1.5 text-xs text-[#111111] placeholder:text-[#777777] font-medium focus:outline-none focus:ring-2 focus:ring-[#FFE566] shadow-[1px_1px_0px_0px_#111111]"
+              />
+              <button
+                type="button"
+                id="btn-clear-priority-filter"
+                class="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-[#777777] hover:text-[#111111] cursor-pointer p-1 leading-none"
+                style="display: none;"
+                title="Effacer la recherche de film"
+              >
+                ✕
+              </button>
+            </div>
+
+            <!-- Toggle: Hide unavailable movies based on current parameters -->
+            <button
+              type="button"
+              id="btn-toggle-priority-available-only"
+              class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[6px] border-2 border-[#111111] text-xs font-bold transition-all shadow-[1px_1px_0px_0px_#111111] cursor-pointer select-none shrink-0 bg-white text-[#555555] hover:bg-[#FAFADF]"
+              title="Masquer les films sans séance compatible avec vos horaires et filtres actuels"
+              aria-pressed="false"
+            >
+              <span id="indicator-priority-available-only" class="w-2.5 h-2.5 rounded-full border border-[#111111] bg-gray-300 transition-colors"></span>
+              <span id="label-priority-available-only">masquer indisponibles</span>
+            </button>
           </div>
 
           <!-- Enlarged container for movies with scrollbar -->
@@ -615,6 +639,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       let cinemaSearchFilter = '';
       let prioritySearchFilter = '';
       let priorityMovieScope: 'selected' | 'all_day' = 'selected';
+      let priorityHideUnavailable = false;
 
       // Builder / Composition Mode State Machine
       let builderModeActive = false;
@@ -693,6 +718,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         }
         if (prefs.priority_movies && Array.isArray(prefs.priority_movies)) {
           prefs.priority_movies.forEach(m => selectedPriorityMovies.add(m));
+        }
+        if (prefs.priority_hide_unavailable !== undefined) {
+          priorityHideUnavailable = Boolean(prefs.priority_hide_unavailable);
         }
 
         try {
@@ -917,11 +945,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         if (elPriorityTitle) elPriorityTitle.textContent = t('priorityTitle', lang);
         const elPriorityFilter = document.getElementById('input-priority-filter') as HTMLInputElement;
         if (elPriorityFilter) elPriorityFilter.placeholder = t('prioritySearchPlaceholder', lang);
+        const elClearPriorityFilter = document.getElementById('btn-clear-priority-filter') as HTMLButtonElement;
+        if (elClearPriorityFilter) elClearPriorityFilter.title = t('clearPriorityFilterTitle', lang);
         const elClearPriority = document.getElementById('btn-clear-priority');
         if (elClearPriority) {
           elClearPriority.textContent = t('clearPriorityBtn', lang);
           elClearPriority.title = t('clearPriorityTitle', lang);
         }
+        updatePriorityAvailableToggleUI();
 
         // Seen movies
         const elSeenTitle = document.getElementById('seen-movies-title');
@@ -1218,6 +1249,117 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         }
       }
 
+      function computeCompatibleMoviesSet(): Set<string> {
+        const criteria = getCurrentCriteria();
+        const compatible = new Set<string>();
+
+        if (!criteria.date_str || !currentShowtimesMap) {
+          return compatible;
+        }
+
+        const startTime = criteria.start_time || '10:00';
+        const endTime = criteria.max_end_time || '23:00';
+        const dtStartWindow = new Date(`${criteria.date_str}T${startTime}:00`).getTime();
+        let dtEndWindow = new Date(`${criteria.date_str}T${endTime}:00`).getTime();
+        if (dtEndWindow <= dtStartWindow) {
+          dtEndWindow += 24 * 3600 * 1000;
+        }
+
+        const formatSet = criteria.selected_formats && criteria.selected_formats.length > 0
+          ? new Set(criteria.selected_formats)
+          : null;
+
+        const cinemasById = new Map(allCinemas.map(c => [c.id, c]));
+        const cityFilter = (document.getElementById('select-city') as HTMLSelectElement)?.value || 'Toutes';
+
+        for (const [cid, stList] of Object.entries(currentShowtimesMap)) {
+          const cin = cinemasById.get(cid);
+          if (cityFilter !== 'Toutes' && cin && cin.city !== cityFilter) {
+            continue;
+          }
+
+          if (priorityMovieScope === 'selected' && !selectedCinemaIds.has(cid)) {
+            continue;
+          }
+
+          const cinName = cin?.name || cid;
+          const isKnownPremium = cid === 'G02BG' || cid === 'C0158' || cinName.toLowerCase().includes('palace') || cinName.toLowerCase().includes('parnasse');
+
+          for (const raw of stList) {
+            if (!raw || !raw.title || !raw.starts_at) continue;
+            if (compatible.has(raw.title)) continue;
+
+            if (selectedSeenMovies.has(raw.title)) continue;
+
+            const dtStarts = new Date(raw.starts_at).getTime();
+            const dtEnds = raw.ends_at ? new Date(raw.ends_at).getTime() : dtStarts + 7200000;
+
+            if (dtStarts < dtStartWindow || dtEnds > dtEndWindow) {
+              continue;
+            }
+
+            let fmt = raw.format || 'Standard';
+            if (fmt === 'Standard' && isKnownPremium) {
+              fmt = 'Premium';
+            }
+
+            const isPremium = isPremiumFormat(fmt);
+            if (isPremium && criteria.pass_type !== PassType.GOLD && !criteria.allow_supplements) {
+              continue;
+            }
+
+            if (criteria.language === 'VOST') {
+              const vUpper = (raw.version || '').toUpperCase();
+              if (!vUpper.includes('VOST') && vUpper !== 'ORIGINAL') continue;
+            } else if (criteria.language === 'VF') {
+              const vUpper = (raw.version || '').toUpperCase();
+              if (!vUpper.includes('VF') && vUpper !== 'DUBBED') continue;
+            }
+
+            if (formatSet && !formatSet.has(fmt)) {
+              continue;
+            }
+
+            compatible.add(raw.title);
+          }
+        }
+
+        return compatible;
+      }
+
+      function updatePriorityAvailableToggleUI() {
+        const btn = document.getElementById('btn-toggle-priority-available-only');
+        const indicator = document.getElementById('indicator-priority-available-only');
+        const label = document.getElementById('label-priority-available-only');
+        if (!btn || !indicator || !label) return;
+
+        btn.setAttribute('aria-pressed', priorityHideUnavailable ? 'true' : 'false');
+        btn.title = t('priorityHideUnavailableTitle', currentLang);
+        label.textContent = t('priorityHideUnavailable', currentLang);
+
+        if (priorityHideUnavailable) {
+          btn.className = 'inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[6px] border-2 border-[#111111] text-xs font-black transition-all shadow-[2px_2px_0px_0px_#111111] cursor-pointer select-none shrink-0 bg-[#FFE566] text-[#111111]';
+          indicator.className = 'w-2.5 h-2.5 rounded-full border border-[#111111] bg-[#111111] transition-colors';
+        } else {
+          btn.className = 'inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[6px] border-2 border-[#111111] text-xs font-bold transition-all shadow-[1px_1px_0px_0px_#111111] cursor-pointer select-none shrink-0 bg-white text-[#555555] hover:bg-[#FAFADF]';
+          indicator.className = 'w-2.5 h-2.5 rounded-full border border-[#111111] bg-gray-300 transition-colors';
+        }
+      }
+
+      function updatePriorityMoviesAvailability() {
+        const container = document.getElementById('priority-movies-container');
+        if (!container) return;
+        const compatible = computeCompatibleMoviesSet();
+        const buttons = container.querySelectorAll<HTMLButtonElement>('button[data-movie-title]');
+        buttons.forEach((b) => {
+          const title = b.getAttribute('data-movie-title') || '';
+          const isSelected = selectedPriorityMovies.has(title);
+          b.setAttribute('data-compatible', compatible.has(title) ? 'true' : 'false');
+          b.setAttribute('data-selected', isSelected ? 'true' : 'false');
+        });
+        filterPriorityMoviesInPlace();
+      }
+
       function renderPriorityMovies() {
         const container = document.getElementById('priority-movies-container')!;
         const countSpan = document.getElementById('priority-movies-count')!;
@@ -1281,11 +1423,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           return;
         }
 
+        const compatibleMovies = computeCompatibleMoviesSet();
         const frag = document.createDocumentFragment();
 
         for (const title of titlesToShow) {
           const isSelected = selectedPriorityMovies.has(title);
           const isSeen = selectedSeenMovies.has(title);
+          const isCompatible = compatibleMovies.has(title);
           const cids = movieCinemasMap.get(title) || new Set<string>();
           const isPlayingInCheckedCinema = Array.from(cids).some(cid => selectedCinemaIds.has(cid));
 
@@ -1297,6 +1441,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           btn.setAttribute('data-movie-title', title);
           btn.setAttribute('data-clean-title', normalizeText(title));
           btn.setAttribute('data-in-selected', isPlayingInCheckedCinema ? 'true' : 'false');
+          btn.setAttribute('data-compatible', isCompatible ? 'true' : 'false');
+          btn.setAttribute('data-selected', isSelected ? 'true' : 'false');
           btn.title = isPlayingInCheckedCinema
             ? `${title} (${cinemasTooltip})`
             : `${title} - ${cinemasTooltip} (${currentLang === 'en' ? 'click to add cinema & prioritize' : 'cliquer pour ajouter ce cinéma et prioriser'})`;
@@ -1376,8 +1522,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         let matched = 0;
         buttons.forEach((b) => {
           const t = b.getAttribute('data-clean-title') || '';
-          const isMatch = !cleanFilter || t.includes(cleanFilter);
-          b.classList.toggle('hidden', !isMatch);
+          const isCompatible = b.getAttribute('data-compatible') === 'true';
+          const isSelected = b.getAttribute('data-selected') === 'true';
+
+          const matchesSearch = !cleanFilter || t.includes(cleanFilter);
+          const matchesAvailability = !priorityHideUnavailable || isCompatible || isSelected;
+
+          const isMatch = matchesSearch && matchesAvailability;
+          b.style.display = isMatch ? '' : 'none';
           if (isMatch) matched++;
         });
 
@@ -1389,7 +1541,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             emptyMsg.id = emptyMsgId;
             emptyMsg.className = 'w-full py-3 text-center flex flex-col items-center gap-2';
 
-            if (priorityMovieScope === 'selected') {
+            if (priorityHideUnavailable && !cleanFilter) {
+              emptyMsg.innerHTML = `<span class="text-[#777777] text-xs font-mono py-1">${t('priorityNoCompatibleFound', currentLang)}</span>`;
+            } else if (priorityMovieScope === 'selected') {
               emptyMsg.innerHTML = `
                 <span class="text-[#777777] text-xs font-mono">${t('priorityOtherCinemasHint', currentLang)}</span>
                 <button type="button" id="btn-quick-switch-all-scope" class="px-3 py-1 rounded-full text-xs font-bold bg-[#FFE566] text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_0px_#111111] cursor-pointer hover:bg-[#FAFADF]">
@@ -1517,6 +1671,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           `;
         }
 
+        updatePriorityMoviesAvailability();
         const candidateShowtimes = getAllAvailableShowtimes();
 
         if (candidateShowtimes.length === 0) {
@@ -1785,6 +1940,7 @@ END:VCALENDAR`.trim();
           scenario: activeScenario,
           seen_movies: Array.from(selectedSeenMovies),
           priority_movies: Array.from(selectedPriorityMovies),
+          priority_hide_unavailable: priorityHideUnavailable,
         });
 
         try {
@@ -2876,12 +3032,49 @@ END:VCALENDAR`.trim();
           scheduleRecalculate(0);
         });
 
-        // Instant In-Place Filter for priority movies
+        // Instant In-Place Filter & Compatible-only toggle for priority movies
         const priorityFilterInput = document.getElementById('input-priority-filter') as HTMLInputElement;
-        priorityFilterInput.addEventListener('input', () => {
-          prioritySearchFilter = priorityFilterInput.value;
-          filterPriorityMoviesInPlace();
-        });
+        const clearPriorityFilterBtn = document.getElementById('btn-clear-priority-filter') as HTMLButtonElement;
+        const togglePriorityAvailableBtn = document.getElementById('btn-toggle-priority-available-only');
+
+        if (priorityFilterInput) {
+          priorityFilterInput.addEventListener('input', () => {
+            prioritySearchFilter = priorityFilterInput.value;
+            if (clearPriorityFilterBtn) {
+              clearPriorityFilterBtn.style.display = prioritySearchFilter ? '' : 'none';
+            }
+            filterPriorityMoviesInPlace();
+          });
+          priorityFilterInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+              priorityFilterInput.value = '';
+              prioritySearchFilter = '';
+              if (clearPriorityFilterBtn) clearPriorityFilterBtn.style.display = 'none';
+              filterPriorityMoviesInPlace();
+            }
+          });
+        }
+
+        if (clearPriorityFilterBtn) {
+          clearPriorityFilterBtn.addEventListener('click', () => {
+            if (priorityFilterInput) {
+              priorityFilterInput.value = '';
+              prioritySearchFilter = '';
+              clearPriorityFilterBtn.style.display = 'none';
+              priorityFilterInput.focus();
+              filterPriorityMoviesInPlace();
+            }
+          });
+        }
+
+        if (togglePriorityAvailableBtn) {
+          togglePriorityAvailableBtn.addEventListener('click', () => {
+            priorityHideUnavailable = !priorityHideUnavailable;
+            updatePriorityAvailableToggleUI();
+            filterPriorityMoviesInPlace();
+            schedulePersistPreferences(250);
+          });
+        }
 
         // Mobile filter panel toggle
         const toggleBtnMobile = document.getElementById('btn-toggle-filters-mobile');
@@ -3031,8 +3224,23 @@ END:VCALENDAR`.trim();
           }, 60);
         });
 
-        document.getElementById('input-start')!.addEventListener('change', () => scheduleRecalculate(0));
-        document.getElementById('input-end')!.addEventListener('change', () => scheduleRecalculate(0));
+        let timeInputDebounce: ReturnType<typeof setTimeout> | null = null;
+        const handleTimeInput = () => {
+          if (timeInputDebounce) clearTimeout(timeInputDebounce);
+          timeInputDebounce = setTimeout(() => {
+            scheduleRecalculate(0);
+          }, 200);
+        };
+        const elInputStart = document.getElementById('input-start');
+        const elInputEnd = document.getElementById('input-end');
+        if (elInputStart) {
+          elInputStart.addEventListener('change', () => scheduleRecalculate(0));
+          elInputStart.addEventListener('input', handleTimeInput);
+        }
+        if (elInputEnd) {
+          elInputEnd.addEventListener('change', () => scheduleRecalculate(0));
+          elInputEnd.addEventListener('input', handleTimeInput);
+        }
         document.getElementById('check-meal')!.addEventListener('change', () => scheduleRecalculate(0));
         document.getElementById('input-buffer')!.addEventListener('change', () => scheduleRecalculate(0));
 

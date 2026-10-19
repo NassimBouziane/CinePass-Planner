@@ -13,6 +13,7 @@ export interface UserPreferences {
   scenario?: string; // "optimal", "same_cinema", "short_breaks"
   seen_movies?: string[];
   priority_movies?: string[];
+  priority_hide_unavailable?: boolean;
 }
 
 const STORAGE_KEY = 'cinepass_planner_prefs_v1';
