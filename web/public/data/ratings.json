@@ -3308,5 +3308,20 @@
     "user_rating": 3.2,
     "press_rating": 2.6,
     "updated_at": "2026-10-20T10:06:31.938099+00:00"
+  },
+  "Camembert": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-20T11:20:27.851168+00:00"
+  },
+  "Gabin": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-20T11:20:27.851168+00:00"
+  },
+  "Ma toute petite école": {
+    "user_rating": null,
+    "press_rating": null,
+    "updated_at": "2026-10-20T11:20:27.851168+00:00"
   }
 }
