@@ -455,6 +455,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "Standard"
     ]
   },
@@ -470,6 +471,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "Dolby Atmos",
       "Standard"
     ]
@@ -501,6 +503,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -574,6 +577,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "4DX ScreenX",
       "Dolby Atmos",
       "Dolby Cinema",
@@ -606,6 +610,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "Dolby Atmos",
       "IMAX",
       "Standard"
@@ -637,6 +642,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -667,7 +673,9 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -683,7 +691,9 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -728,6 +738,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -1069,6 +1080,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -1211,6 +1223,7 @@
     "accepts_under26": true,
     "is_pathe_network": false,
     "formats": [
+      "Dolby Atmos",
       "Standard"
     ]
   },
@@ -1426,6 +1439,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "Standard"
     ]
   },
@@ -1441,6 +1455,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "Dolby Cinema",
       "Standard"
     ]
@@ -1472,6 +1487,7 @@
     "formats": [
       "4DX",
       "4DX ScreenX",
+      "4DX ScreenX 3D",
       "Dolby Atmos",
       "Dolby Cinema",
       "Onyx LED",
@@ -1491,6 +1507,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "Dolby Cinema",
       "Standard"
     ]
@@ -1521,6 +1538,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -1537,6 +1555,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -1552,6 +1571,7 @@
     "accepts_under26": true,
     "is_pathe_network": true,
     "formats": [
+      "Dolby Atmos",
       "Standard"
     ]
   },
@@ -1595,7 +1615,9 @@
     "accepts_under26": true,
     "is_pathe_network": true,
     "formats": [
+      "3D",
       "4DX",
+      "4DX 3D",
       "IMAX",
       "ScreenX",
       "ScreenX 3D",
@@ -1628,6 +1650,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "Standard"
     ]
   },
@@ -1702,6 +1725,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
