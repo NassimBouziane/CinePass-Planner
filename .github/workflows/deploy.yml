@@ -159,10 +159,10 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [ -d "web/public/data" ] && [ -n "$(git status --porcelain web/public/data)" ]; then
             git add web/public/data
-            git commit -m "chore(data): synchronisation automatique des seances et notes [skip ci]"
+            git commit -m "chore(data): auto-sync showtimes and ratings [skip ci]"
             git push origin main
           else
-            echo "Aucune modification de donnees a committer."
+            echo "No data changes to commit."
           fi
 
       - name: Upload artifact to GitHub Pages
