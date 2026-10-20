@@ -1742,6 +1742,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "Standard"
     ]
   },
@@ -1800,6 +1801,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -1861,6 +1863,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -1919,6 +1922,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "Dolby Atmos",
       "IMAX",
       "Standard"
@@ -1936,6 +1940,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -1966,6 +1971,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -2012,6 +2018,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
@@ -2028,6 +2035,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "IMAX",
       "Standard"
     ]
