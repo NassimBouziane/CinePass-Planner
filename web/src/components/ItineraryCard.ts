@@ -152,7 +152,7 @@ export function formatItineraryCardHtml(
 
     // Enlarge movie poster thumbnail for much better visual clarity (w-20 sm:w-24 h-28 sm:h-34)
     const posterImg = st.poster_url
-      ? `<img src="${escapeHtml(st.poster_url)}" alt="${escapeHtml(st.movie_title)}" class="w-full h-full object-cover transition-transform group-hover:scale-105" loading="lazy" />`
+      ? `<img src="${escapeHtml(st.poster_url)}" alt="${escapeHtml(st.movie_title)}" class="w-full h-full object-cover transition-transform group-hover:scale-105" loading="lazy" onerror="this.onerror=null; this.style.display='none';" />`
       : `<div class="w-full h-full flex flex-col items-center justify-center text-[#777777] p-1 text-center font-mono text-[0.65rem] font-bold">${iconFilm('w-5 h-5 text-[#111111] mb-1')}<span>affiche</span></div>`;
 
     const posterHtml = `

@@ -838,6 +838,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
           applyLanguage(currentLang);
           setupEventListeners();
+          registerServiceWorker();
           await onDateOrCinemaChanged();
         } catch (e) {
           console.error('Failed to initialize planner', e);
@@ -848,6 +849,18 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, '/');
               <span>${t('syncErrorMessage', currentLang)}</span>
             </div>
           `;
+        }
+      }
+
+      function registerServiceWorker() {
+        if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker
+              .register(`${BASE_PATH}sw.js`, { scope: BASE_PATH })
+              .catch((err) => {
+                console.warn('Service worker registration failed:', err);
+              });
+          });
         }
       }
 
@@ -2650,7 +2663,7 @@ END:VCALENDAR`.trim();
             }
 
             const posterImg = st.poster_url
-              ? `<img src="${st.poster_url}" alt="${escapeHtml(st.movie_title)}" class="w-12 h-16 sm:w-14 sm:h-20 object-cover rounded-[6px] border border-[#111111] shrink-0 shadow-[1px_1px_0px_0px_#111111]" loading="lazy" />`
+              ? `<img src="${st.poster_url}" alt="${escapeHtml(st.movie_title)}" class="w-12 h-16 sm:w-14 sm:h-20 object-cover rounded-[6px] border border-[#111111] shrink-0 shadow-[1px_1px_0px_0px_#111111]" loading="lazy" onerror="this.onerror=null; this.style.display='none';" />`
               : `<div class="w-12 h-16 sm:w-14 sm:h-20 bg-[#FAFADF] border border-[#111111] rounded-[6px] flex items-center justify-center shrink-0 text-xs font-mono text-[#777777] shadow-[1px_1px_0px_0px_#111111]">film</div>`;
 
             html += `
