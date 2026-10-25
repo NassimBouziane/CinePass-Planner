@@ -60,7 +60,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Alice comedies 2": {
-    "user_rating": 3.2,
+    "user_rating": 3.1,
     "press_rating": 4.0,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -86,7 +86,7 @@
   },
   "Aprile": {
     "user_rating": 3.5,
-    "press_rating": 4.3,
+    "press_rating": 4.2,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Artou": {
@@ -275,7 +275,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Certains l'aiment chaud": {
-    "user_rating": 4.3,
+    "user_rating": 4.2,
     "press_rating": 3.2,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -480,7 +480,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Ducobu et le fantôme de Saint-Potache": {
-    "user_rating": 2.5,
+    "user_rating": 2.6,
     "press_rating": 2.5,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -490,7 +490,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Détective Conan : L'Ange déchu de l'asphalte": {
-    "user_rating": 3.2,
+    "user_rating": 3.1,
     "press_rating": null,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -521,7 +521,7 @@
   },
   "Englouti": {
     "user_rating": 2.9,
-    "press_rating": 2.5,
+    "press_rating": 2.6,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Entre ciel et terre": {
@@ -570,7 +570,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Fausse note": {
-    "user_rating": 2.8,
+    "user_rating": 2.9,
     "press_rating": 2.4,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -650,7 +650,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Ghost in the Shell": {
-    "user_rating": 4.1,
+    "user_rating": 4.0,
     "press_rating": null,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -665,7 +665,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Hair, Paper, Water...": {
-    "user_rating": 3.9,
+    "user_rating": 4.0,
     "press_rating": 3.6,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -690,7 +690,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Her Private Hell": {
-    "user_rating": 1.6,
+    "user_rating": 1.5,
     "press_rating": 2.5,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -800,7 +800,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Jailer 2": {
-    "user_rating": 3.2,
+    "user_rating": 3.0,
     "press_rating": null,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -960,7 +960,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "L'Oeuf de l'ange": {
-    "user_rating": 3.6,
+    "user_rating": 3.5,
     "press_rating": 4.0,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -1090,7 +1090,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "La Frappe": {
-    "user_rating": 3.6,
+    "user_rating": 3.5,
     "press_rating": 3.9,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -1155,7 +1155,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "La Pat' Patrouille : Le film mission Dino": {
-    "user_rating": 3.2,
+    "user_rating": 3.1,
     "press_rating": 3.1,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -1170,7 +1170,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "La Rivière": {
-    "user_rating": 3.6,
+    "user_rating": 3.5,
     "press_rating": null,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -1346,7 +1346,7 @@
   },
   "Le Jour de son retour": {
     "user_rating": 3.3,
-    "press_rating": 3.7,
+    "press_rating": 3.8,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Le Kid": {
@@ -1500,7 +1500,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Les Héros du Louvre": {
-    "user_rating": 3.2,
+    "user_rating": 3.1,
     "press_rating": 2.5,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -1516,12 +1516,12 @@
   },
   "Les Malheurs de Sophie": {
     "user_rating": 2.7,
-    "press_rating": null,
+    "press_rating": 3.5,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Les Misérables": {
     "user_rating": 4.0,
-    "press_rating": 4.3,
+    "press_rating": 3.1,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Les Parapluies de Cherbourg": {
@@ -1560,7 +1560,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Les Éléphants dans la brume": {
-    "user_rating": 3.8,
+    "user_rating": 3.9,
     "press_rating": 3.7,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -1570,7 +1570,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Leviticus": {
-    "user_rating": 3.1,
+    "user_rating": 3.0,
     "press_rating": 3.4,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -1711,7 +1711,7 @@
   },
   "Memories of Murder": {
     "user_rating": 4.3,
-    "press_rating": 4.4,
+    "press_rating": 4.3,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Meurtres en cascade": {
@@ -1770,7 +1770,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Mr Chat et les Shammies": {
-    "user_rating": 2.6,
+    "user_rating": 2.5,
     "press_rating": null,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -1880,8 +1880,8 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Octobre à Paris": {
-    "user_rating": 3.7,
-    "press_rating": 3.9,
+    "user_rating": 3.6,
+    "press_rating": 3.8,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Old Boy": {
@@ -1960,8 +1960,8 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Petite Casbah": {
-    "user_rating": 3.4,
-    "press_rating": 3.5,
+    "user_rating": 3.2,
+    "press_rating": 3.4,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Petites aventures": {
@@ -1985,7 +1985,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Poison": {
-    "user_rating": 3.4,
+    "user_rating": 3.5,
     "press_rating": null,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -2005,7 +2005,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Poupi": {
-    "user_rating": 3.2,
+    "user_rating": 3.1,
     "press_rating": 3.0,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -2020,7 +2020,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Pressure": {
-    "user_rating": 4.1,
+    "user_rating": 4.0,
     "press_rating": 3.5,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -2070,7 +2070,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Qui vit encore": {
-    "user_rating": 3.7,
+    "user_rating": 3.5,
     "press_rating": 3.5,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -2171,7 +2171,7 @@
   },
   "Salvation": {
     "user_rating": 3.5,
-    "press_rating": 3.6,
+    "press_rating": 3.5,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Sam le pompier - nouvelle caserne, grandes aventures !": {
@@ -2216,7 +2216,7 @@
   },
   "Sham": {
     "user_rating": 4.0,
-    "press_rating": 3.3,
+    "press_rating": 3.2,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Shanghai Express": {
@@ -2310,7 +2310,7 @@
     "updated_at": "2026-10-16T15:07:17.636810+00:00"
   },
   "Street Fighter": {
-    "user_rating": 2.5,
+    "user_rating": 2.6,
     "press_rating": 3.0,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -2335,7 +2335,7 @@
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
   "Tad l'explorateur et la lampe magique": {
-    "user_rating": 3.2,
+    "user_rating": 3.1,
     "press_rating": 3.2,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
@@ -2515,7 +2515,7 @@
     "updated_at": "2026-10-16T15:30:25.821650+00:00"
   },
   "Verity": {
-    "user_rating": 2.7,
+    "user_rating": 2.8,
     "press_rating": 2.5,
     "updated_at": "2026-10-24T10:44:06.952661+00:00"
   },
