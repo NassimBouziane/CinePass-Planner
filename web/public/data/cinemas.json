@@ -840,6 +840,7 @@
     "accepts_under26": true,
     "is_pathe_network": true,
     "formats": [
+      "Dolby Atmos",
       "Standard"
     ]
   },
@@ -995,6 +996,7 @@
     "is_pathe_network": false,
     "formats": [
       "Laser",
+      "Laser 3D",
       "Standard"
     ]
   },
@@ -1325,6 +1327,7 @@
     "is_pathe_network": false,
     "formats": [
       "Laser",
+      "Laser 3D",
       "Standard"
     ]
   },
@@ -1925,6 +1928,7 @@
       "4DX 3D",
       "Dolby Atmos",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
