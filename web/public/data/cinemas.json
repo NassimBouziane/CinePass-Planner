@@ -170,6 +170,7 @@
     "is_pathe_network": true,
     "formats": [
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -309,6 +310,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -396,6 +398,7 @@
     "is_pathe_network": true,
     "formats": [
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -505,6 +508,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -613,6 +617,7 @@
       "4DX 3D",
       "Dolby Atmos",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -644,6 +649,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -692,6 +698,7 @@
     "formats": [
       "4DX",
       "4DX 3D",
+      "Dolby Atmos",
       "IMAX",
       "IMAX 3D",
       "Standard"
@@ -784,6 +791,7 @@
     "is_pathe_network": true,
     "formats": [
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -1084,6 +1092,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -1460,6 +1469,7 @@
       "4DX",
       "4DX 3D",
       "Dolby Cinema",
+      "Dolby Cinema 3D",
       "Standard"
     ]
   },
@@ -1543,6 +1553,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -1560,6 +1571,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -1621,7 +1633,9 @@
       "3D",
       "4DX",
       "4DX 3D",
+      "Dolby Atmos",
       "IMAX",
+      "IMAX 3D",
       "ScreenX",
       "ScreenX 3D",
       "Standard"
@@ -1669,6 +1683,7 @@
     "is_pathe_network": true,
     "formats": [
       "Dolby Cinema",
+      "Dolby Cinema 3D",
       "Standard"
     ]
   },
@@ -1730,6 +1745,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -1806,6 +1822,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -1822,6 +1839,7 @@
     "formats": [
       "4DX",
       "Dolby Cinema",
+      "Dolby Cinema 3D",
       "Standard"
     ]
   },
@@ -1851,6 +1869,7 @@
     "is_pathe_network": true,
     "formats": [
       "Dolby Cinema",
+      "Dolby Cinema 3D",
       "Standard"
     ]
   },
@@ -1868,6 +1887,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -1977,6 +1997,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   },
@@ -2041,6 +2062,7 @@
       "4DX",
       "4DX 3D",
       "IMAX",
+      "IMAX 3D",
       "Standard"
     ]
   }
