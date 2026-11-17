@@ -188,8 +188,10 @@
     "accepts_under26": true,
     "is_pathe_network": true,
     "formats": [
+      "3D",
       "4DX",
       "4DX 3D",
+      "ScreenX",
       "Standard"
     ]
   },
@@ -207,6 +209,7 @@
       "3D",
       "4DX",
       "4DX 3D",
+      "IMAX",
       "Standard"
     ]
   },
@@ -1013,6 +1016,7 @@
     "accepts_under26": true,
     "is_pathe_network": false,
     "formats": [
+      "3D",
       "Standard"
     ]
   },
