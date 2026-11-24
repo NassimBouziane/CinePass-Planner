@@ -142,6 +142,7 @@
     "accepts_under26": true,
     "is_pathe_network": true,
     "formats": [
+      "3D",
       "Dolby Atmos",
       "Standard"
     ]
@@ -157,6 +158,7 @@
     "accepts_under26": true,
     "is_pathe_network": false,
     "formats": [
+      "3D",
       "Standard"
     ]
   },
@@ -257,6 +259,7 @@
       "3D",
       "4DX",
       "4DX 3D",
+      "Dolby Atmos",
       "Standard"
     ]
   },
@@ -273,6 +276,7 @@
     "formats": [
       "3D",
       "4DX",
+      "4DX 3D",
       "Standard"
     ]
   },
@@ -336,6 +340,7 @@
     "accepts_under26": true,
     "is_pathe_network": false,
     "formats": [
+      "3D",
       "Standard"
     ]
   },
@@ -445,6 +450,7 @@
       "3D",
       "4DX",
       "4DX 3D",
+      "Dolby Cinema",
       "Standard"
     ]
   },
@@ -509,6 +515,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "Standard"
     ]
   },
@@ -571,6 +578,7 @@
     "accepts_under26": true,
     "is_pathe_network": false,
     "formats": [
+      "3D",
       "Standard"
     ]
   },
@@ -653,6 +661,7 @@
     "accepts_under26": true,
     "is_pathe_network": false,
     "formats": [
+      "3D",
       "Standard"
     ]
   },
@@ -719,6 +728,7 @@
     "accepts_under26": true,
     "is_pathe_network": true,
     "formats": [
+      "3D",
       "4DX",
       "4DX 3D",
       "Dolby Atmos",
@@ -801,6 +811,7 @@
     "formats": [
       "3D",
       "4DX",
+      "4DX 3D",
       "Standard"
     ]
   },
@@ -1103,6 +1114,7 @@
     "accepts_under26": true,
     "is_pathe_network": false,
     "formats": [
+      "IMAX",
       "Standard"
     ]
   },
@@ -1234,6 +1246,7 @@
     "is_pathe_network": false,
     "formats": [
       "Laser",
+      "Laser 3D",
       "Standard"
     ]
   },
@@ -1529,6 +1542,7 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
       "4DX ScreenX",
       "4DX ScreenX 3D",
       "Dolby Atmos",
@@ -1809,6 +1823,8 @@
     "is_pathe_network": true,
     "formats": [
       "4DX",
+      "4DX 3D",
+      "Dolby Atmos",
       "Standard"
     ]
   },
